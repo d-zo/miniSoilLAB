@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module miniSoilLAB.plotausgabe</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.plotausgabe</strong></big></big></font></td
+><td align=right valign=bottom
+></td></tr></table>
+    <p><tt>plotausgabe.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2020-02)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-DarstellungsgrenzenFinden"><strong>DarstellungsgrenzenFinden</strong></a>(minwert, maxwert)</dt><dd><tt>Ermittle&nbsp;fuer&nbsp;das&nbsp;Intervall&nbsp;[minwert,&nbsp;maxwert]&nbsp;eine&nbsp;sinnvolle&nbsp;untere&nbsp;und&nbsp;obere<br>
+Darstellungsgrenze.&nbsp;Sinnvoll&nbsp;bezeichnet&nbsp;hier&nbsp;Zahlen&nbsp;mit&nbsp;maximal&nbsp;zwei&nbsp;charakteristichen<br>
+Stellen&nbsp;im&nbsp;Schema,&nbsp;d.h.&nbsp;#.#e+-#&nbsp;fuer&nbsp;#&nbsp;als&nbsp;Zahl&nbsp;von&nbsp;0-9,&nbsp;die&nbsp;sich&nbsp;recht&nbsp;nah&nbsp;an<br>
+den&nbsp;Grenzen&nbsp;des&nbsp;Intervalls&nbsp;befinden&nbsp;(oder&nbsp;den&nbsp;Grenzen&nbsp;entsprechen).</tt></dd></dl>
+ <dl><dt><a name="-EmbeddedPlot"><strong>EmbeddedPlot</strong></a>(plotdaten, figure)</dt><dd><tt>Erzeuge&nbsp;einen&nbsp;Plot&nbsp;in&nbsp;der&nbsp;uebergebenen&nbsp;figure.&nbsp;Die&nbsp;Daten&nbsp;dazu&nbsp;werden&nbsp;aus&nbsp;plotdaten&nbsp;extrahiert.<br>
+Die&nbsp;plotdaten&nbsp;solten&nbsp;auf&nbsp;das&nbsp;Resultat&nbsp;von&nbsp;<a href="#-PlotvorlageVorbereiten">PlotvorlageVorbereiten</a>()&nbsp;oder&nbsp;einer&nbsp;der&nbsp;anderen<br>
+Plotdaten...()-Funktionen&nbsp;aufbauen,&nbsp;damit&nbsp;alle&nbsp;relevanten&nbsp;Schluessel&nbsp;in&nbsp;der&nbsp;plotdaten-Struktur<br>
+existieren.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenAusSchluesselbegriff"><strong>PlotdatenAusSchluesselbegriff</strong></a>(boden, schluesselbegriff)</dt><dd><tt>Bereite&nbsp;Plotdaten&nbsp;zu&nbsp;einem&nbsp;boden&nbsp;anhand&nbsp;eines&nbsp;uebergebenen&nbsp;schluesselbegriff&nbsp;vor&nbsp;und&nbsp;gebe<br>
+diese&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenKVS"><strong>PlotdatenKVS</strong></a>(boden)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;einer&nbsp;Koernungsverteilung&nbsp;vor,&nbsp;die&nbsp;fuer<br>
+einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden&nbsp;anhand&nbsp;der&nbsp;Daten<br>
+in&nbsp;boden&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.&nbsp;Es&nbsp;werden&nbsp;die&nbsp;Datensaetze&nbsp;aus&nbsp;bis&nbsp;zu&nbsp;acht&nbsp;Schluesseln&nbsp;in<br>
+boden&nbsp;fuer&nbsp;die&nbsp;Erstellung&nbsp;der&nbsp;Plotdaten&nbsp;verwendet.&nbsp;Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenOedo"><strong>PlotdatenOedo</strong></a>(boden, varianten)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;gewoehnlichen&nbsp;Oedometerversuchs&nbsp;vor,<br>
+die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden<br>
+anhand&nbsp;der&nbsp;Daten&nbsp;in&nbsp;boden&nbsp;und&nbsp;varianten&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.<br>
+Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenOedoCRL"><strong>PlotdatenOedoCRL</strong></a>(boden, variante, kurve=0)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;Oedo-CRL-Versuchs&nbsp;vor,<br>
+die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden<br>
+anhand&nbsp;der&nbsp;Daten&nbsp;in&nbsp;boden['Oedo-CRL'],&nbsp;variante&nbsp;und&nbsp;kurve&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.<br>
+Dabei&nbsp;steht&nbsp;kurve&nbsp;=&nbsp;0&nbsp;fuer&nbsp;alle&nbsp;Kurven&nbsp;und&nbsp;1-8&nbsp;fuer&nbsp;die&nbsp;Kurve&nbsp;der&nbsp;jeweiligen&nbsp;Laststufe.<br>
+Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenOedoCRS"><strong>PlotdatenOedoCRS</strong></a>(boden, varianten=None, yparam='Porenzahl [-]', yflip=False)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;Oedo-CRS-Versuchs&nbsp;vor,&nbsp;die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit<br>
+TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden&nbsp;anhand&nbsp;der&nbsp;Daten&nbsp;in<br>
+boden['Oedo-CRS']&nbsp;und&nbsp;varianten&nbsp;(oder&nbsp;boden['Oedo-CRS-Visko']&nbsp;wenn&nbsp;variante=['Visko']&nbsp;extrahiert<br>
+und&nbsp;gespeichert.&nbsp;Die&nbsp;y-Variable&nbsp;kann&nbsp;mit&nbsp;yparam&nbsp;gewaehlt&nbsp;werden&nbsp;(sofern&nbsp;sie&nbsp;in&nbsp;boden['Oedo-CRS']<br>
+existiert).&nbsp;Optional&nbsp;kann&nbsp;ausserdem&nbsp;die&nbsp;y-Achse&nbsp;gespiegelt&nbsp;werden.&nbsp;Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten<br>
+zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenTriaxCU"><strong>PlotdatenTriaxCU</strong></a>(boden, yparam='(sig_1 - sig_3)/2.0 [kN/m^2]')</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;undrainierten&nbsp;Triaxialversuchs&nbsp;vor,&nbsp;die&nbsp;fuer<br>
+einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden&nbsp;anhand&nbsp;der&nbsp;Daten<br>
+in&nbsp;boden&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.&nbsp;Die&nbsp;y-Variable&nbsp;kann&nbsp;mit&nbsp;yparam&nbsp;gewaehlt&nbsp;werden&nbsp;(sofern&nbsp;sie<br>
+in&nbsp;boden[einzelvarianten]&nbsp;existiert).&nbsp;Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenTriaxD"><strong>PlotdatenTriaxD</strong></a>(boden, varianten, yparam='delta V/V_0 [%]')</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;drainierten&nbsp;Triaxialversuchs&nbsp;vor,&nbsp;die&nbsp;fuer<br>
+einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden&nbsp;anhand&nbsp;der&nbsp;Daten<br>
+in&nbsp;boden&nbsp;und&nbsp;varianten&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.&nbsp;Die&nbsp;y-Variable&nbsp;kann&nbsp;mit&nbsp;yparam&nbsp;gewaehlt&nbsp;<br>
+werden&nbsp;(sofern&nbsp;sie&nbsp;in&nbsp;boden[einzelvarianten]&nbsp;fuer&nbsp;alle&nbsp;einzelvarianten&nbsp;in&nbsp;varianten&nbsp;existiert).<br>
+Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenTriaxMC"><strong>PlotdatenTriaxMC</strong></a>(boden, varianten, kreise=True, kohaesion=False)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;des&nbsp;Spannungsfeld&nbsp;eines&nbsp;Triaxialversuchs&nbsp;vor,<br>
+die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.<br>
+Relevante&nbsp;Daten&nbsp;fuer&nbsp;die&nbsp;Bruchgerade&nbsp;oder&nbsp;Mohrschen&nbsp;Spannungskreise&nbsp;werden&nbsp;anhand&nbsp;der&nbsp;Daten<br>
+in&nbsp;boden&nbsp;und&nbsp;varianten&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.&nbsp;Falls&nbsp;kreise=True&nbsp;werden&nbsp;die&nbsp;Daten&nbsp;fuer<br>
+die&nbsp;Mohrschen&nbsp;Spannungskreise&nbsp;bereitgestellt.&nbsp;Fuer&nbsp;die&nbsp;Ausgleichsgerade&nbsp;wird&nbsp;abhaengig&nbsp;von<br>
+kohaesion&nbsp;ein&nbsp;vertikales&nbsp;Offset&nbsp;beruecksichtigt&nbsp;(oder&nbsp;nicht).&nbsp;Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotdatenTriaxPQ"><strong>PlotdatenTriaxPQ</strong></a>(boden, xparam, yparam)</dt><dd><tt>Bereitet&nbsp;eine&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;eines&nbsp;Triaxialversuchs&nbsp;mit&nbsp;speziellem&nbsp;Spannungspfad<br>
+vor,&nbsp;die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit&nbsp;TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Relevante&nbsp;Daten&nbsp;werden<br>
+anhand&nbsp;der&nbsp;Daten&nbsp;in&nbsp;boden,&nbsp;xparam&nbsp;und&nbsp;yparam&nbsp;extrahiert&nbsp;und&nbsp;gespeichert.<br>
+Gibt&nbsp;die&nbsp;fertigen&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-PlotvorlageVorbereiten"><strong>PlotvorlageVorbereiten</strong></a>(typ='')</dt><dd><tt>Bereite&nbsp;eine&nbsp;generische&nbsp;Struktur&nbsp;fuer&nbsp;die&nbsp;Plotdaten&nbsp;vor,&nbsp;die&nbsp;fuer&nbsp;einen&nbsp;Plot&nbsp;mit<br>
+TkPlot&nbsp;oder&nbsp;EmbeddedPlot&nbsp;genutzt&nbsp;wird.&nbsp;Vor&nbsp;dem&nbsp;eigentlichen&nbsp;Plotten&nbsp;muss&nbsp;noch&nbsp;(mindestens)<br>
+xdaten&nbsp;und&nbsp;ydaten&nbsp;dieser&nbsp;Struktur&nbsp;aktualisiert&nbsp;werden.&nbsp;Typischerweise&nbsp;wird&nbsp;diese&nbsp;Funktion<br>
+innerhalb&nbsp;der&nbsp;Plotdaten...()-Funktionen&nbsp;aufgerufen,&nbsp;aber&nbsp;sie&nbsp;kann&nbsp;auch&nbsp;fuer&nbsp;die&nbsp;Erstellung<br>
+eigener&nbsp;Plots&nbsp;oder&nbsp;Plotfunktionen&nbsp;verwendet&nbsp;werden.&nbsp;Der&nbsp;Uebergabewert&nbsp;typ&nbsp;kann&nbsp;zum&nbsp;Speichern<br>
+von&nbsp;einem&nbsp;Schluesselbegriff&nbsp;verwendet&nbsp;werden.&nbsp;Gibt&nbsp;die&nbsp;Struktur&nbsp;mit&nbsp;den&nbsp;Plotdaten&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-TkPlot"><strong>TkPlot</strong></a>(plotdaten)</dt><dd><tt>Erzeuge&nbsp;ein&nbsp;neues&nbsp;Fenster&nbsp;mit&nbsp;einem&nbsp;Plot.&nbsp;Die&nbsp;Daten&nbsp;dazu&nbsp;werden&nbsp;aus&nbsp;plotdaten&nbsp;extrahiert.<br>
+Die&nbsp;plotdaten&nbsp;solten&nbsp;auf&nbsp;das&nbsp;Resultat&nbsp;von&nbsp;<a href="#-PlotvorlageVorbereiten">PlotvorlageVorbereiten</a>()&nbsp;oder&nbsp;einer&nbsp;der&nbsp;anderen<br>
+Plotdaten...()-Funktionen&nbsp;aufbauen,&nbsp;damit&nbsp;alle&nbsp;relevanten&nbsp;Schluessel&nbsp;in&nbsp;der&nbsp;plotdaten-Struktur<br>
+existieren.</tt></dd></dl>
+ <dl><dt><a name="-VordefinierteMultiPlots"><strong>VordefinierteMultiPlots</strong></a>(boden, plotname, figure=None)</dt><dd><tt>Plottet&nbsp;alle&nbsp;Datensaetze&nbsp;aus&nbsp;boden&nbsp;anhand&nbsp;von&nbsp;Schluesselwoertern&nbsp;in&nbsp;plotname.&nbsp;Aehnlich&nbsp;wie<br>
+<a href="#-VordefiniertePlots">VordefiniertePlots</a>(),&nbsp;aber&nbsp;fuer&nbsp;viele&nbsp;Bodensaetze&nbsp;in&nbsp;boden&nbsp;statt&nbsp;nur&nbsp;einem.</tt></dd></dl>
+ <dl><dt><a name="-VordefiniertePlots"><strong>VordefiniertePlots</strong></a>(boden, plotname, figure=None)</dt><dd><tt>Plottet&nbsp;einen&nbsp;Datensatz&nbsp;aus&nbsp;boden,&nbsp;der&nbsp;anhand&nbsp;von&nbsp;Schluesselwoertern&nbsp;in&nbsp;plotname&nbsp;ausgewaehlt<br>
+wird.&nbsp;Falls&nbsp;keine&nbsp;figure&nbsp;uebergeben&nbsp;wird,&nbsp;wird&nbsp;ein&nbsp;neues&nbsp;Fenster&nbsp;erstellt,&nbsp;in&nbsp;dem&nbsp;geplottet&nbsp;wird.<br>
+Andernfalls&nbsp;wird&nbsp;die&nbsp;uebergebene&nbsp;figure&nbsp;als&nbsp;Leinwand&nbsp;fuer&nbsp;den&nbsp;ausgewaehlten&nbsp;Plot&nbsp;verwendet.<br>
+Schluesselwoerter&nbsp;fuer&nbsp;plotname&nbsp;setzen&nbsp;sich&nbsp;aus&nbsp;einem&nbsp;Freitext&nbsp;aus&nbsp;der&nbsp;Versuchsbezeichnung<br>
+(wie&nbsp;er&nbsp;auch&nbsp;in&nbsp;der&nbsp;boden-Struktur&nbsp;gespeichert&nbsp;ist),&nbsp;der&nbsp;Lagerungsdichte&nbsp;und&nbsp;evtl.&nbsp;weiteren<br>
+Begriffen&nbsp;zusammen.&nbsp;Beispielsweise&nbsp;werden&nbsp;aus<br>
+plotname='dichter&nbsp;Oedo-CRS'&nbsp;oder&nbsp;plotname='Oedo-CRS-Versuch&nbsp;(dichte&nbsp;Lagerung)'<br>
+jeweils&nbsp;die&nbsp;gleichen&nbsp;Schluesselwoerter&nbsp;'dicht'&nbsp;und&nbsp;'Oedo-CRS'&nbsp;fuer&nbsp;die&nbsp;Auswahl&nbsp;des&nbsp;Plots<br>
+extrahiert.</tt></dd></dl>
+</td></tr></table>
+</body></html>

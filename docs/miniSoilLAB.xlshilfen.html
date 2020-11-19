@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module miniSoilLAB.xlshilfen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.xlshilfen</strong></big></big></font></td
+><td align=right valign=bottom
+></td></tr></table>
+    <p><tt>xlshilfen.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2019-11)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-EinzelEintragEinlesen"><strong>EinzelEintragEinlesen</strong></a>(workbook, tabellenname, zeile, spalte, name, tabellentyp, inhalt, warnen=True)</dt><dd><tt>Lese&nbsp;aus&nbsp;dem&nbsp;uebergebenen&nbsp;workbook&nbsp;einer&nbsp;eingelesenen&nbsp;Excel-Tabelle&nbsp;Daten&nbsp;aus&nbsp;einer&nbsp;Zelle&nbsp;aus.<br>
+Fuer&nbsp;diese&nbsp;Zelle&nbsp;muss&nbsp;ueber&nbsp;tabellenname,&nbsp;zeile&nbsp;und&nbsp;spalte&nbsp;die&nbsp;exakte&nbsp;Position&nbsp;angegeben&nbsp;werden.<br>
+Zusaetzlich&nbsp;ist&nbsp;der&nbsp;ueber&nbsp;den&nbsp;tabellentyp&nbsp;(xls/xlsx)&nbsp;anzugeben,&nbsp;ob&nbsp;die&nbsp;Datei&nbsp;und&nbsp;deren&nbsp;Daten<br>
+nach&nbsp;den&nbsp;alten&nbsp;Dateistandards&nbsp;oder&nbsp;den&nbsp;XML-basierten&nbsp;Dateistandards&nbsp;zu&nbsp;interpretieren&nbsp;sind.<br>
+Falls&nbsp;inhalt='zahl'&nbsp;wird&nbsp;der&nbsp;Zelleninhalt&nbsp;zu&nbsp;einem&nbsp;float&nbsp;umgewandelt&nbsp;und&nbsp;zurueckgegeben,<br>
+andernfalls&nbsp;als&nbsp;String.&nbsp;Falls&nbsp;die&nbsp;Zelle&nbsp;nicht&nbsp;gefunden&nbsp;werden&nbsp;konnte,&nbsp;wird&nbsp;None&nbsp;zurueckgegeben.</tt></dd></dl>
+ <dl><dt><a name="-EinzelEintragHinzufuegen"><strong>EinzelEintragHinzufuegen</strong></a>(datenbank, workbook, tabellenname, zeile, spalte, name, tabellentyp, inhalt, grenzen=None)</dt><dd><tt>Lese&nbsp;aus&nbsp;dem&nbsp;uebergebenen&nbsp;workbook&nbsp;einer&nbsp;eingelesenen&nbsp;Excel-Tabelle&nbsp;Daten&nbsp;aus&nbsp;einer&nbsp;Zelle&nbsp;aus<br>
+und&nbsp;speichere&nbsp;den&nbsp;Wert&nbsp;in&nbsp;datenbank.&nbsp;Fuer&nbsp;inhalt&nbsp;=&nbsp;'zahl'&nbsp;kann&nbsp;auch&nbsp;eine&nbsp;Ueberpruefung&nbsp;der<br>
+grenzen&nbsp;erfolgen&nbsp;(sofern&nbsp;diese&nbsp;nicht&nbsp;None&nbsp;sind).&nbsp;Ruft&nbsp;intern&nbsp;<a href="#-EinzelEintragEinlesen">EinzelEintragEinlesen</a>()&nbsp;auf&nbsp;und<br>
+speichert&nbsp;den&nbsp;(erfolgreich)&nbsp;eingelesenen&nbsp;Zelleninhalt&nbsp;darin&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;name.</tt></dd></dl>
+ <dl><dt><a name="-GelesenenEintragHinzufuegen"><strong>GelesenenEintragHinzufuegen</strong></a>(datenbank, name, daten, grenzen=None)</dt><dd><tt>Speichere&nbsp;bereits&nbsp;eingelesene&nbsp;Inhalte&nbsp;aus&nbsp;daten&nbsp;in&nbsp;datenbank&nbsp;(unter&nbsp;dem&nbsp;Schluessel&nbsp;name).<br>
+Fuer&nbsp;Zahlen&nbsp;kann&nbsp;auch&nbsp;eine&nbsp;Ueberpruefung&nbsp;der&nbsp;grenzen&nbsp;erfolgen&nbsp;(sofern&nbsp;diese&nbsp;nicht&nbsp;None&nbsp;sind).<br>
+Nur&nbsp;erfolgreich&nbsp;gepruefte&nbsp;daten&nbsp;werden&nbsp;gespeichert.</tt></dd></dl>
+ <dl><dt><a name="-LeseXLSDaten"><strong>LeseXLSDaten</strong></a>(dateiname, ignoriere=['rohdaten'])</dt><dd><tt>Lese&nbsp;eine&nbsp;Excel-Tabelle&nbsp;namens&nbsp;dateiname&nbsp;ein.&nbsp;Abhaengig&nbsp;von&nbsp;den&nbsp;verfuegbaren&nbsp;Vorlagen&nbsp;wird<br>
+unterschieden,&nbsp;welche&nbsp;Art&nbsp;von&nbsp;Versuchsdaten&nbsp;in&nbsp;der&nbsp;Datei&nbsp;gespeichert&nbsp;sind&nbsp;und&nbsp;versucht,&nbsp;ebenjene<br>
+einzulesen.&nbsp;Gibt&nbsp;bei&nbsp;Erfolg&nbsp;eine&nbsp;Datenstruktur&nbsp;mit&nbsp;den&nbsp;eingelesenen&nbsp;Daten&nbsp;unter&nbsp;dem&nbsp;Schluessel<br>
+Versuchsart&nbsp;zurueck&nbsp;(bspw.&nbsp;als&nbsp;LoDi&nbsp;fuer&nbsp;eine&nbsp;Tabelle&nbsp;zur&nbsp;Bestimmung&nbsp;der&nbsp;lockersten/dichtesten<br>
+Lagerung&nbsp;oder&nbsp;Triax-D-dicht&nbsp;fuer&nbsp;einen&nbsp;drainierten&nbsp;Triaxialversuch&nbsp;mit&nbsp;dicht&nbsp;im&nbsp;Dateinamen).<br>
+Wenn&nbsp;die&nbsp;Datei&nbsp;ignoriert&nbsp;wird&nbsp;oder&nbsp;nicht&nbsp;gefunden/geparst&nbsp;werden&nbsp;kann,&nbsp;wird&nbsp;eine&nbsp;leere&nbsp;Struktur<br>
+zurueckgegeben&nbsp;(eine&nbsp;Datei&nbsp;wird&nbsp;ignoriert,&nbsp;wenn&nbsp;der&nbsp;Name&nbsp;(mindestens)&nbsp;ein&nbsp;Element&nbsp;aus&nbsp;der&nbsp;Liste<br>
+ignoriere&nbsp;enthaelt).</tt></dd></dl>
+ <dl><dt><a name="-ParseXLSDaten"><strong>ParseXLSDaten</strong></a>(daten, workbook, tabellentyp, tabellenname, vorlage)</dt><dd><tt>Ein&nbsp;(ggfs.&nbsp;verschachteltes)&nbsp;dict&nbsp;wird&nbsp;als&nbsp;vorlage&nbsp;uebergeben&nbsp;und&nbsp;abgearbeitet.&nbsp;Fuer&nbsp;jeden<br>
+der&nbsp;Eintraege&nbsp;wird&nbsp;eine&nbsp;Struktur&nbsp;in&nbsp;daten&nbsp;angelegt&nbsp;und&nbsp;mit&nbsp;Werten&nbsp;aus&nbsp;der&nbsp;Tabelle&nbsp;tabellenname<br>
+eines&nbsp;workbook&nbsp;des&nbsp;Typs&nbsp;tabellentyp&nbsp;aufgefuellt.<br>
+&nbsp;<br>
+Fuer&nbsp;alle&nbsp;Schluessel&nbsp;in&nbsp;vorlage,&nbsp;die&nbsp;nicht&nbsp;in&nbsp;eckigen&nbsp;Klammern&nbsp;stehen,&nbsp;wird&nbsp;ein&nbsp;gleicher<br>
+Schluessel&nbsp;mit&nbsp;der&nbsp;gleichen&nbsp;Struktur&nbsp;in&nbsp;daten&nbsp;angelegt.&nbsp;In&nbsp;den&nbsp;Werten&nbsp;eines&nbsp;Schluessels&nbsp;wird<br>
+ein&nbsp;Bereich&nbsp;an&nbsp;Zellen&nbsp;in&nbsp;einer&nbsp;Liste&nbsp;erwartet,&nbsp;die&nbsp;fuer&nbsp;diesen&nbsp;Schluessel&nbsp;eingelesen&nbsp;werden&nbsp;sollen<br>
+(bspw.&nbsp;["G14"]&nbsp;oder&nbsp;["A7:A20"]).&nbsp;Falls&nbsp;die&nbsp;Zellen&nbsp;nicht&nbsp;als&nbsp;Text,&nbsp;sondern&nbsp;als&nbsp;Zahlenwerte<br>
+eingelesen&nbsp;werden&nbsp;sollen,&nbsp;muss&nbsp;in&nbsp;einer&nbsp;Liste&nbsp;&nbsp;Zellenbereich&nbsp;und&nbsp;Wertbereich&nbsp;angegeben&nbsp;werden,<br>
+(bspw.&nbsp;([["G14"],&nbsp;[0.0,&nbsp;100.0]]).<br>
+&nbsp;<br>
+Wenn&nbsp;ein&nbsp;Schluessel&nbsp;in&nbsp;vorlage&nbsp;in&nbsp;eckigen&nbsp;Klammern&nbsp;steht,&nbsp;werden&nbsp;alle&nbsp;Eintraege&nbsp;in&nbsp;den&nbsp;Werten<br>
+als&nbsp;Gruppe&nbsp;eingelesen.&nbsp;Das&nbsp;fuehrt&nbsp;dazu,&nbsp;dass&nbsp;bei&nbsp;Bereichen&nbsp;einzelne&nbsp;Werte&nbsp;von&nbsp;allen<br>
+Gruppenmitgliedern&nbsp;uebersprungen&nbsp;werden,&nbsp;wenn&nbsp;fuer&nbsp;mindestens&nbsp;ein&nbsp;Gruppenmitglied&nbsp;kein&nbsp;gueltiger<br>
+Wert&nbsp;existiert.&nbsp;Die&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Namen&nbsp;in&nbsp;eckigen&nbsp;Klammern&nbsp;wird&nbsp;nicht&nbsp;angelegt,&nbsp;sondern&nbsp;alle<br>
+Gruppenmitglieder&nbsp;werden&nbsp;in&nbsp;der&nbsp;Elternstruktur&nbsp;gespeichert.</tt></dd></dl>
+ <dl><dt><a name="-TabellenDimension"><strong>TabellenDimension</strong></a>(workbook, tabellenname, tabellentyp)</dt><dd><tt>Lese&nbsp;aus&nbsp;dem&nbsp;uebergebenen&nbsp;workbook&nbsp;einer&nbsp;eingelesenen&nbsp;Excel-Tabelle&nbsp;aus,&nbsp;wieviele&nbsp;Zeilen<br>
+und&nbsp;Spalten&nbsp;in&nbsp;der&nbsp;Tabelle&nbsp;namens&nbsp;tabellenname&nbsp;maximal&nbsp;verwendet&nbsp;sind.&nbsp;Zusaetzlich&nbsp;ist&nbsp;der&nbsp;ueber<br>
+den&nbsp;tabellentyp&nbsp;(xls/xlsx)&nbsp;anzugeben,&nbsp;ob&nbsp;die&nbsp;Datei&nbsp;und&nbsp;deren&nbsp;Daten&nbsp;nach&nbsp;den&nbsp;alten&nbsp;Dateistandards<br>
+oder&nbsp;den&nbsp;XML-basierten&nbsp;Dateistandards&nbsp;zu&nbsp;interpretieren&nbsp;sind.&nbsp;Gibt&nbsp;[zeilen,&nbsp;spalten]&nbsp;zurueck<br>
+oder&nbsp;[None,&nbsp;None],&nbsp;falls&nbsp;die&nbsp;Tabelle&nbsp;nicht&nbsp;gefunden&nbsp;werden&nbsp;konnte.</tt></dd></dl>
+ <dl><dt><a name="-VorhandeneTabellenseiten"><strong>VorhandeneTabellenseiten</strong></a>(workbook, tabellentyp)</dt><dd><tt>Lese&nbsp;aus&nbsp;dem&nbsp;uebergebenen&nbsp;workbook&nbsp;einer&nbsp;eingelesenen&nbsp;Excel-Tabelle&nbsp;die&nbsp;Liste&nbsp;an&nbsp;vorhandenen<br>
+Tabellenseiten&nbsp;aus.&nbsp;Gibt&nbsp;diese&nbsp;Liste&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-ZeileUndSpalteAusZellenbezeichnung"><strong>ZeileUndSpalteAusZellenbezeichnung</strong></a>(zellenname)</dt><dd><tt>Ermitttle&nbsp;die&nbsp;Zeile&nbsp;und&nbsp;Spalte&nbsp;einer&nbsp;Zelle&nbsp;aus&nbsp;dem&nbsp;uebergebenem&nbsp;zellenname.&nbsp;Der&nbsp;Zellenname<br>
+besteht&nbsp;aus&nbsp;einem&nbsp;oder&nbsp;mehreren&nbsp;Buchstaben&nbsp;fuer&nbsp;die&nbsp;Spalte&nbsp;und&nbsp;einer&nbsp;Zahl&nbsp;(ggfs.&nbsp;mit&nbsp;mehreren<br>
+Stellen)&nbsp;fuer&nbsp;die&nbsp;Zeile.&nbsp;Gibt&nbsp;[zeile,&nbsp;spalte]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-ZellenbereichKoordinaten"><strong>ZellenbereichKoordinaten</strong></a>(workbook, tabellentyp, tabellenname, bereich)</dt><dd><tt>Ermittelt,&nbsp;ob&nbsp;der&nbsp;uebergebene&nbsp;bereich&nbsp;(bspw.&nbsp;"D14&nbsp;oder&nbsp;"G5:R5")&nbsp;fuer&nbsp;die&nbsp;Tabellenseite<br>
+tabellenname&nbsp;im&nbsp;workbook&nbsp;des&nbsp;tabellentyps&nbsp;zulaessig&nbsp;ist,&nbsp;oder&nbsp;nicht.&nbsp;Wenn&nbsp;der&nbsp;Bereich&nbsp;zulaessig<br>
+ist,&nbsp;werden&nbsp;die&nbsp;umgewandelten&nbsp;Koordinaten&nbsp;fuer&nbsp;jede&nbsp;Zelle&nbsp;[(zeile,&nbsp;spalte),&nbsp;(zeile,&nbsp;spalte),&nbsp;...]<br>
+zurueckgegeben,&nbsp;sonst&nbsp;[(None,&nbsp;None)].</tt></dd></dl>
+</td></tr></table>
+</body></html>

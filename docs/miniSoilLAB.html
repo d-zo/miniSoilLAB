@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package miniSoilLAB</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>miniSoilLAB</strong></big></big> (version 0.5.5)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"></font></td></tr></table>
+    <p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v0.5.5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;_&nbsp;&nbsp;.--.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;.----.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(_)&nbsp;&nbsp;&nbsp;&nbsp;(_).´&nbsp;__|&nbsp;&nbsp;&nbsp;&nbsp;(_)|&nbsp;|&nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;`&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<br>
+&nbsp;_&nbsp;_&nbsp;_&nbsp;&nbsp;_&nbsp;_&nbsp;_&nbsp;&nbsp;_&nbsp;.&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;_&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;&nbsp;|&nbsp;&nbsp;()&nbsp;&nbsp;|<br>
+|&nbsp;'&nbsp;`&nbsp;`|&nbsp;|&nbsp;'&nbsp;`|&nbsp;|`.&nbsp;`.&nbsp;´&nbsp;&nbsp;`|&nbsp;||&nbsp;|&nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;/`&nbsp;&nbsp;`&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<br>
+|&nbsp;..&nbsp;.&nbsp;|&nbsp;|&nbsp;..&nbsp;|&nbsp;|&nbsp;&nbsp;`&nbsp;&nbsp;'&nbsp;()&nbsp;|&nbsp;||&nbsp;|&nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'--'&nbsp;'&nbsp;|&nbsp;&nbsp;()&nbsp;&nbsp;|<br>
+|&nbsp;||&nbsp;|&nbsp;|&nbsp;|&nbsp;||&nbsp;|&nbsp;|_.´&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;|.&nbsp;'.|&nbsp;&nbsp;&nbsp;--./&nbsp;&nbsp;.--.&nbsp;&nbsp;`|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+|_||_|_|_|_||_|_|___.´&nbsp;\__,|_|&nbsp;\_,`_____'__/&nbsp;&nbsp;&nbsp;&nbsp;`__.___.-'<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D.Zobel&nbsp;2019-2020<br>
+&nbsp;<br>
+Programm&nbsp;zur&nbsp;Aufbereitung&nbsp;von&nbsp;geotechnischen&nbsp;Laborversuchen</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="miniSoilLAB.dateneinlesen.html">dateneinlesen</a><br>
+<i>datenstruktur</i><br>
+<a href="miniSoilLAB.gleichungsloeser.html">gleichungsloeser</a><br>
+</td><td width="25%" valign=top><i>gui</i><br>
+<a href="miniSoilLAB.kennwerte.html">kennwerte</a><br>
+<a href="miniSoilLAB.konstanten.html">konstanten</a><br>
+</td><td width="25%" valign=top><a href="miniSoilLAB.parameterbestimmung.html">parameterbestimmung</a><br>
+<a href="miniSoilLAB.plotausgabe.html">plotausgabe</a><br>
+<a href="miniSoilLAB.rohdaten.html">rohdaten</a><br>
+</td><td width="25%" valign=top><a href="miniSoilLAB.rohdatenverarbeitung.html">rohdatenverarbeitung</a><br>
+<i>vorlagen</i><br>
+<a href="miniSoilLAB.xlshilfen.html">xlshilfen</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>basispfad</strong> = './Vorlagen/'<br>
+<strong>debugmodus</strong> = False<br>
+<strong>g</strong> = 9.81<br>
+<strong>grad2rad</strong> = 0.017453292519943295<br>
+<strong>gueltige_vorlagen</strong> = ['Atterberg', 'Auswertung-Hypoplastisch', 'LoDi', 'Oedo', 'Oedo-CRL', 'Oedo-CRS', 'Oedo-CRS-Visko', 'Triax-CU', 'Triax-D', 'Triax-p-q']<br>
+<strong>korndichte</strong> = 2.65<br>
+<strong>oedo_gewichte_kopfplatte</strong> = [0.36324, 0.4649, 1.1]<br>
+<strong>oedo_gewichtsplatten</strong> = [0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0]<br>
+<strong>oedo_hebel</strong> = 10.0<br>
+<strong>pi</strong> = 3.141592653589793</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#7799ee">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Author</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#7799ee"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Dominik&nbsp;Zobel</td></tr></table>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module miniSoilLAB.gleichungsloeser</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.gleichungsloeser</strong></big></big></font></td
+><td align=right valign=bottom
+></td></tr></table>
+    <p><tt>gleichungsloeser.py&nbsp;&nbsp;&nbsp;v0.4&nbsp;(2019-11)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-AbleitungDyNachDx"><strong>AbleitungDyNachDx</strong></a>(x, y)</dt><dd><tt>Berechne&nbsp;fuer&nbsp;alle&nbsp;y-Werte&nbsp;die&nbsp;Ableitungen&nbsp;dy/dx&nbsp;ueber&nbsp;Differenzenquotienten<br>
+dy_dx&nbsp;=&nbsp;(y_(i+1)&nbsp;-&nbsp;y_i)/(x_(i+1)&nbsp;-&nbsp;x_i).&nbsp;Da&nbsp;die&nbsp;Ableitungen&nbsp;jeweils&nbsp;fuer&nbsp;einen&nbsp;Bereich&nbsp;zwischen<br>
+zwei&nbsp;Punkten&nbsp;x_i&nbsp;und&nbsp;x_(i+1)&nbsp;ausgewertet&nbsp;werden,&nbsp;wird&nbsp;auch&nbsp;ein&nbsp;dazugehoeriger&nbsp;Vektor&nbsp;mit&nbsp;den<br>
+Mittelpunkten&nbsp;x_(m,i)&nbsp;=&nbsp;(x_i&nbsp;+&nbsp;x_(i+1))/2&nbsp;erstellt.&nbsp;Gibt&nbsp;[x_m,&nbsp;dy_dx]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-FunktionswerteAnGleichenXWerten"><strong>FunktionswerteAnGleichenXWerten</strong></a>(fx, fy, gx, gy)</dt><dd><tt>Benoetigt&nbsp;werden&nbsp;zwei&nbsp;streng&nbsp;monoton&nbsp;steigende&nbsp;Vektoren&nbsp;fx&nbsp;und&nbsp;gx,&nbsp;die&nbsp;aber&nbsp;unterschiedlich<br>
+lang&nbsp;sein&nbsp;koennen.&nbsp;Die&nbsp;dazugehoerigen&nbsp;fy-Werte&nbsp;muessen&nbsp;aber&nbsp;so&nbsp;viele&nbsp;Eintraege&nbsp;enthalten&nbsp;wie&nbsp;fx<br>
+(analog&nbsp;gy&nbsp;wie&nbsp;gx).&nbsp;Es&nbsp;wird&nbsp;eine&nbsp;aufsteigende&nbsp;Liste&nbsp;aller&nbsp;x-Werte&nbsp;in&nbsp;den&nbsp;gemeinsamen&nbsp;Grenzen<br>
+erstellt&nbsp;und&nbsp;die&nbsp;y-Werte&nbsp;für&nbsp;alle&nbsp;Zwischenpunkte&nbsp;beider&nbsp;x-Vektoren&nbsp;interpoliert.<br>
+Gibt&nbsp;[xwerte,&nbsp;fy_interp,&nbsp;gy_interp]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-GlaettungFunktionswerte"><strong>GlaettungFunktionswerte</strong></a>(werte, glaettungsbereich)</dt><dd><tt>Glaette&nbsp;die&nbsp;uebergebenen&nbsp;werte&nbsp;mit&nbsp;einem&nbsp;gleitenden&nbsp;Mittelwert.&nbsp;Der&nbsp;Einflussbereich&nbsp;des<br>
+Fensters&nbsp;von&nbsp;Werten&nbsp;fuer&nbsp;die&nbsp;Mittelwertbildung&nbsp;sind&nbsp;die&nbsp;naechsten&nbsp;glaettungsbereich&nbsp;Punkte&nbsp;vom<br>
+aktuellen&nbsp;Wert&nbsp;aus.&nbsp;Folglich&nbsp;hat&nbsp;der&nbsp;geglaettete&nbsp;Vektor&nbsp;glaettungsbereich-Eintraege&nbsp;weniger.<br>
+Gibt&nbsp;den&nbsp;geglaetteten&nbsp;Vektor&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-IntegrationDyMitDx"><strong>IntegrationDyMitDx</strong></a>(x0, y0, dx, dy)</dt><dd><tt>Integriere&nbsp;alle&nbsp;dy-Werte&nbsp;mit&nbsp;einem&nbsp;einfachen&nbsp;Euler-Explizit-Verfahren&nbsp;bezueglich&nbsp;der&nbsp;Abstaende<br>
+x_(i+1)&nbsp;-&nbsp;x_i.&nbsp;Der&nbsp;Startwert&nbsp;fuer&nbsp;die&nbsp;integrierten&nbsp;Werte&nbsp;y&nbsp;ist&nbsp;y0.&nbsp;Fuer&nbsp;die&nbsp;Differenzen&nbsp;dx<br>
+wird&nbsp;mit&nbsp;dem&nbsp;Startwert&nbsp;x0&nbsp;die&nbsp;x-Werte&nbsp;erzeugt.&nbsp;Gibt&nbsp;[x,&nbsp;y]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-LetzterIndexMitWertKleinerAls"><strong>LetzterIndexMitWertKleinerAls</strong></a>(liste, grenzwert)</dt><dd><tt>Finde&nbsp;in&nbsp;einer&nbsp;uebergebenen&nbsp;liste&nbsp;mit&nbsp;Zahlen&nbsp;die&nbsp;letzte&nbsp;Stelle,&nbsp;an&nbsp;der&nbsp;ein&nbsp;Listenwert&nbsp;kleiner<br>
+oder&nbsp;gleich&nbsp;dem&nbsp;grenzwert&nbsp;ist.&nbsp;Gibt&nbsp;den&nbsp;Index&nbsp;dieses&nbsp;Werts&nbsp;zurueck&nbsp;oder&nbsp;None,&nbsp;falls&nbsp;kein&nbsp;Eintrag<br>
+kleiner/gleich&nbsp;dem&nbsp;grenzwert&nbsp;ist.</tt></dd></dl>
+ <dl><dt><a name="-LinearInterpoliertenIndexUndFaktor"><strong>LinearInterpoliertenIndexUndFaktor</strong></a>(vergleichswert, vergleichswertliste)</dt><dd><tt>Bestimme&nbsp;die&nbsp;Position&nbsp;von&nbsp;einem&nbsp;vergleichswert&nbsp;in&nbsp;einer&nbsp;(streng&nbsp;monoton&nbsp;steigenden)<br>
+vergleichswertliste.&nbsp;Dabei&nbsp;wird&nbsp;linear&nbsp;zwischen&nbsp;Zwei&nbsp;Werten&nbsp;interpoliert.&nbsp;Gibt&nbsp;den&nbsp;Indiex&nbsp;des<br>
+Wertes&nbsp;vor/zu&nbsp;dem&nbsp;vergleichswert&nbsp;und&nbsp;einen&nbsp;faktor&nbsp;zurueck&nbsp;[idx_davor,&nbsp;faktor].<br>
+Fuer&nbsp;spaeteres&nbsp;Interpolieren&nbsp;kann&nbsp;folgender,&nbsp;linearer&nbsp;Zusammenhang&nbsp;genutzt&nbsp;werden:<br>
+zielwert&nbsp;=&nbsp;zielvec[idx_davor]&nbsp;+&nbsp;faktor*(zielvec[idx_davor+1]-zielvec[idx_davor])</tt></dd></dl>
+ <dl><dt><a name="-LinearesAusgleichsproblem"><strong>LinearesAusgleichsproblem</strong></a>(x, y)</dt><dd><tt>Bestimmt&nbsp;die&nbsp;Steigung&nbsp;m&nbsp;und&nbsp;den&nbsp;y-Achsen-Abstand&nbsp;b&nbsp;fuer&nbsp;das&nbsp;lineare&nbsp;Ausgleichsproblem&nbsp;mit&nbsp;der<br>
+Gleichung&nbsp;y&nbsp;=&nbsp;m*x&nbsp;+&nbsp;b.&nbsp;Gibt&nbsp;Steigung&nbsp;und&nbsp;y-Achsen-Abstand&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-LoeseGleichung"><strong>LoeseGleichung</strong></a>(gleichung, x, y, intervall, max_it=500, puffergroesse=0.5, tol=1e-06)</dt><dd><tt>Gleichungsloeser,&nbsp;der&nbsp;numerisch&nbsp;die&nbsp;Parameter&nbsp;fuer&nbsp;die&nbsp;gegebene&nbsp;Gleichung&nbsp;bestimmt&nbsp;(sofern<br>
+die&nbsp;Gleichung&nbsp;implementiert&nbsp;ist).&nbsp;Dazu&nbsp;wird&nbsp;die&nbsp;Abweichung&nbsp;zwischen&nbsp;dem&nbsp;berechneten&nbsp;y*=f(x)&nbsp;und&nbsp;y<br>
+bestimmt&nbsp;und&nbsp;minimiert.&nbsp;Als&nbsp;Suchraum&nbsp;muss&nbsp;ein&nbsp;intervall&nbsp;an&nbsp;Werten&nbsp;fuer&nbsp;den&nbsp;freien&nbsp;Parameter&nbsp;der<br>
+entsprechenden&nbsp;Gleichung&nbsp;uebergeben&nbsp;werden.&nbsp;Das&nbsp;Intervall&nbsp;wird&nbsp;in&nbsp;jedem&nbsp;Schritt&nbsp;um&nbsp;puffergroesse<br>
+verkleinert.&nbsp;Sinnvolle&nbsp;Werte&nbsp;sind&nbsp;im&nbsp;Bereich&nbsp;0.5&nbsp;(um&nbsp;die&nbsp;Haelfte&nbsp;verkleinern&nbsp;auf&nbsp;Mittelwert)&nbsp;bis<br>
+0.99&nbsp;(ein&nbsp;Prozent&nbsp;vom&nbsp;Ende&nbsp;mit&nbsp;der&nbsp;groesseren&nbsp;Abweichung&nbsp;entfernen).<br>
+Bei&nbsp;zu&nbsp;grosser&nbsp;puffergroesse&nbsp;wird&nbsp;die&nbsp;Konvergenz&nbsp;verlangsamt,&nbsp;bei&nbsp;zu&nbsp;kleiner&nbsp;puffergroesse&nbsp;kann<br>
+je&nbsp;nach&nbsp;Gleichung&nbsp;der&nbsp;Bereich&nbsp;mit&nbsp;der&nbsp;besten&nbsp;Loesung&nbsp;uebersprungen&nbsp;werden.<br>
+&nbsp;<br>
+Diese&nbsp;Funktion&nbsp;verkleinert&nbsp;das&nbsp;intervall,&nbsp;bis&nbsp;das&nbsp;Intervall&nbsp;um&nbsp;den&nbsp;Zielwert&nbsp;auf&nbsp;die&nbsp;gewuenschte<br>
+Toleranz&nbsp;tol&nbsp;minimiert&nbsp;worden&nbsp;ist&nbsp;oder&nbsp;vorher&nbsp;max_it&nbsp;Iterationen&nbsp;durchlaufen&nbsp;woren&nbsp;sind.<br>
+Gibt&nbsp;die&nbsp;berechneten&nbsp;Parameter&nbsp;der&nbsp;geforderten&nbsp;Gleichung&nbsp;mit&nbsp;der&nbsp;minimalen&nbsp;Abweichung&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-LokalerExtremwert"><strong>LokalerExtremwert</strong></a>(werte, intervall, maximum=True)</dt><dd><tt>Bestimme&nbsp;je&nbsp;nach&nbsp;maximum&nbsp;entweder&nbsp;Maximalwerte&nbsp;oder&nbsp;Minimalwerte&nbsp;aus&nbsp;werte.&nbsp;Dabei&nbsp;werden&nbsp;nur<br>
+Extremwerte&nbsp;beruecksichtigt,&nbsp;die&nbsp;mindestens&nbsp;im&nbsp;lokalen&nbsp;Bereich&nbsp;intervall&nbsp;vor&nbsp;und&nbsp;nach&nbsp;dem&nbsp;Wert<br>
+groesser&nbsp;oder&nbsp;kleiner&nbsp;als&nbsp;alle&nbsp;anderen&nbsp;Werte&nbsp;sind.&nbsp;Gibt&nbsp;[indizes]&nbsp;der&nbsp;Extremwerte&nbsp;aus&nbsp;werte&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-NaechsterWert"><strong>NaechsterWert</strong></a>(wert, spanne, aufsteigend=True)</dt><dd><tt>Bestimme&nbsp;eine&nbsp;sinnvolle&nbsp;Schrittgroesse&nbsp;auf&nbsp;Basis&nbsp;der&nbsp;uebergebenen&nbsp;spanne.<br>
+Ermittle&nbsp;auf&nbsp;Basis&nbsp;einer&nbsp;zu&nbsp;ermittelnden&nbsp;Schrittgroesse&nbsp;naechste/vorherige&nbsp;Zahl&nbsp;(Vielfaches&nbsp;der<br>
+Schrittgroesse&nbsp;von&nbsp;wert&nbsp;aus&nbsp;gesehen,&nbsp;abhaengig&nbsp;von&nbsp;austeigend)&nbsp;und&nbsp;gebe&nbsp;sie&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-QuadratischesAusgleichsproblem"><strong>QuadratischesAusgleichsproblem</strong></a>(x, y)</dt><dd><tt>Bestimme&nbsp;die&nbsp;Parameter&nbsp;a,&nbsp;b&nbsp;und&nbsp;c&nbsp;fuer&nbsp;das&nbsp;lineare&nbsp;Ausgleichsproblem&nbsp;mit&nbsp;quadratischer<br>
+Gleichung&nbsp;y&nbsp;=&nbsp;a*x**2&nbsp;+&nbsp;b*x&nbsp;+&nbsp;c.&nbsp;Gibt&nbsp;die&nbsp;drei&nbsp;Parameter&nbsp;[a,&nbsp;b,&nbsp;c]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-SortierenUndDoppelteXEintraegeEntfernen"><strong>SortierenUndDoppelteXEintraegeEntfernen</strong></a>(x, y)</dt><dd><tt>Verknuepfe&nbsp;die&nbsp;Eintraege&nbsp;zweier&nbsp;gleichlanger&nbsp;Vektoren&nbsp;x&nbsp;und&nbsp;y&nbsp;und&nbsp;sortiere&nbsp;sie&nbsp;nach&nbsp;x&nbsp;ohne<br>
+die&nbsp;Zuordnung&nbsp;x_i&nbsp;zu&nbsp;y_i&nbsp;zu&nbsp;aendern&nbsp;(d.h.&nbsp;die&nbsp;Eintraege&nbsp;aus&nbsp;y&nbsp;werden&nbsp;i.A.&nbsp;ihre&nbsp;Position&nbsp;aendern).<br>
+Entferne&nbsp;anschliessend&nbsp;doppelte&nbsp;Eintraege&nbsp;in&nbsp;x.&nbsp;Der&nbsp;Mittelwert&nbsp;aller&nbsp;dazugehoerigen&nbsp;y-Werte<br>
+wird&nbsp;dem&nbsp;y-Wert&nbsp;des&nbsp;verbleibenden&nbsp;x-Wertes&nbsp;zugewiesen.&nbsp;Gibt&nbsp;[xsort,&nbsp;ysort]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-Spline2DInterpolation"><strong>Spline2DInterpolation</strong></a>(xwerte, ywerte, zwischenpunkte=5, tangentenfaktor=1.0)</dt><dd><tt>Erwartet&nbsp;zwei&nbsp;gleichlange&nbsp;Vektoren&nbsp;xwerte&nbsp;und&nbsp;ywerte.&nbsp;Auf&nbsp;Basis&nbsp;kubischer&nbsp;Splines&nbsp;werden<br>
+jeweils&nbsp;zwischen&nbsp;zwei&nbsp;Punkten&nbsp;neue&nbsp;Punkte&nbsp;interpoliert&nbsp;(zwischenpunkte).&nbsp;Der&nbsp;Einfluss&nbsp;der<br>
+Kruemmung&nbsp;aus&nbsp;der&nbsp;Tangentenbestimmung&nbsp;kann&nbsp;mit&nbsp;tangentenfaktor&nbsp;[0-1]&nbsp;gesteuert&nbsp;werden,&nbsp;wobei<br>
+ein&nbsp;hoeherer&nbsp;Faktor&nbsp;fuer&nbsp;einen&nbsp;groesseren&nbsp;Einfluss&nbsp;steht.&nbsp;Gibt&nbsp;die&nbsp;interpolierten&nbsp;Punkte<br>
+[xinterp,&nbsp;yinterp]&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-SteigungUndGrenzeLinearerAnfangsbereich"><strong>SteigungUndGrenzeLinearerAnfangsbereich</strong></a>(x, y, refbereich, delta_max)</dt><dd><tt>Betrachte&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Daten&nbsp;x&nbsp;und&nbsp;y&nbsp;einen&nbsp;refbereich,&nbsp;der&nbsp;als&nbsp;(mehr&nbsp;oder&nbsp;weniger)<br>
+linear&nbsp;angesehen&nbsp;werden&nbsp;kann.&nbsp;Erhoehe&nbsp;die&nbsp;obere&nbsp;Grenze&nbsp;von&nbsp;refbereich&nbsp;so&nbsp;lange,&nbsp;wie&nbsp;die<br>
+Abweichung&nbsp;zwischen&nbsp;einer&nbsp;linearen&nbsp;Ausgleichsfunktion&nbsp;und&nbsp;dem&nbsp;Funktionswert&nbsp;selbst&nbsp;kleiner<br>
+als&nbsp;delta_max&nbsp;ist.&nbsp;Gebe&nbsp;die&nbsp;Steigung&nbsp;der&nbsp;linearen&nbsp;Ausgleichsfunktion&nbsp;zurueck&nbsp;und&nbsp;den&nbsp;Index,<br>
+an&nbsp;dem&nbsp;die&nbsp;Abweichung&nbsp;gerade&nbsp;noch&nbsp;kleiner&nbsp;als&nbsp;delta_max&nbsp;ist.</tt></dd></dl>
+ <dl><dt><a name="-WertInZulaessigemBereich"><strong>WertInZulaessigemBereich</strong></a>(name, liste, minmax, meldung=True)</dt><dd><tt>Ueberpruefe,&nbsp;ob&nbsp;sich&nbsp;alle&nbsp;Werte&nbsp;der&nbsp;uebergebene&nbsp;liste&nbsp;mit&nbsp;der&nbsp;Bezeichnung&nbsp;name&nbsp;in&nbsp;den<br>
+Schranken&nbsp;minmax=[min_wert,&nbsp;max_wert]&nbsp;befindet.&nbsp;Gibt&nbsp;bei&nbsp;erfolgreicher&nbsp;Ueberpruefung&nbsp;True<br>
+zurueck,&nbsp;ansonsten&nbsp;(bei&nbsp;meldung=True)&nbsp;eine&nbsp;Fehlermeldung&nbsp;und&nbsp;False.</tt></dd></dl>
+ <dl><dt><a name="-WinkelTangenteAnKreisboegen"><strong>WinkelTangenteAnKreisboegen</strong></a>(x_min, x_max, y_0, winkeldelta=0.05)</dt><dd><tt>Bildet&nbsp;Halbkreise&nbsp;aus&nbsp;den&nbsp;gegebenen&nbsp;x_min&nbsp;und&nbsp;x_max,&nbsp;die&nbsp;auf&nbsp;der&nbsp;x-Achse&nbsp;liegen.<br>
+(x_min[i]&nbsp;und&nbsp;x_max[i]&nbsp;sind&nbsp;je&nbsp;Schnittpunkte&nbsp;von&nbsp;einem&nbsp;Kreis&nbsp;mit&nbsp;Radius&nbsp;(x_min[i]+x_max[i])/2.0)<br>
+Findet&nbsp;die&nbsp;Gerade,&nbsp;die&nbsp;fuer&nbsp;x=0&nbsp;den&nbsp;gegebenen&nbsp;y-Achsen-Abstand&nbsp;y_0&nbsp;hat&nbsp;und&nbsp;alle&nbsp;Halbkreise<br>
+moeglichst&nbsp;nur&nbsp;tangiert.&nbsp;Minimiert&nbsp;den&nbsp;Abstand&nbsp;zwischen&nbsp;dem&nbsp;idealen&nbsp;Tangentenpunkt&nbsp;jedes<br>
+Halbkreises&nbsp;und&nbsp;der&nbsp;Geraden.&nbsp;Gibt&nbsp;den&nbsp;Winkel&nbsp;(in&nbsp;Grad)&nbsp;zurueck,&nbsp;fuer&nbsp;den&nbsp;der&nbsp;Fehler&nbsp;minimal&nbsp;ist.</tt></dd></dl>
+</td></tr></table>
+</body></html>

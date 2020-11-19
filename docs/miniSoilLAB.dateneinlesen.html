@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module miniSoilLAB.dateneinlesen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.dateneinlesen</strong></big></big></font></td
+><td align=right valign=bottom
+></td></tr></table>
+    <p><tt>dateneinlesen.py&nbsp;&nbsp;&nbsp;v0.4&nbsp;(2019-10)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-BodendatenEinlesen"><strong>BodendatenEinlesen</strong></a>(bodenname, dateimuster, zielordner, rohdaten=False)</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dem&nbsp;zielordner&nbsp;ein,&nbsp;die&nbsp;dateimuster&nbsp;enthalten.&nbsp;Speichere&nbsp;die&nbsp;eingelesenen<br>
+Datein&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.&nbsp;Standardmaessig<br>
+werden&nbsp;rohdaten&nbsp;ignoriert,&nbsp;koennen&nbsp;aber&nbsp;bei&nbsp;Bedarf&nbsp;beruecksichtigt&nbsp;werden.</tt></dd></dl>
+ <dl><dt><a name="-BodendatenMitSchluesselAusMusterEinlesen"><strong>BodendatenMitSchluesselAusMusterEinlesen</strong></a>(muster, schluessel=None, rohdaten=False)</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;der&nbsp;Boeden&nbsp;ein,&nbsp;die&nbsp;in&nbsp;muster&nbsp;hinterlegt&nbsp;sind&nbsp;(falls&nbsp;schluessel=None),<br>
+oder&nbsp;nur&nbsp;diejenigen,&nbsp;die&nbsp;als&nbsp;Liste&nbsp;an&nbsp;schluessel&nbsp;uebergeben&nbsp;worden&nbsp;sind.&nbsp;Die&nbsp;Werte&nbsp;der&nbsp;Schluessel<br>
+in&nbsp;muster&nbsp;entsprechen&nbsp;dem&nbsp;dateimuster&nbsp;und&nbsp;dem&nbsp;zielordner&nbsp;fuer&nbsp;den&nbsp;jeweiligen&nbsp;Bodennamen.<br>
+Standardmaessig&nbsp;werden&nbsp;rohdaten&nbsp;ignoriert,&nbsp;koennen&nbsp;aber&nbsp;bei&nbsp;Bedarf&nbsp;beruecksichtigt&nbsp;werden.</tt></dd></dl>
+ <dl><dt><a name="-BodenmusterdateiEinlesen"><strong>BodenmusterdateiEinlesen</strong></a>(dateiname)</dt><dd><tt>Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Bodenmuster-Datei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;in&nbsp;jeder&nbsp;Zeile&nbsp;durch&nbsp;Semikolons<br>
+getrennt&nbsp;die&nbsp;drei&nbsp;Eintraege&nbsp;Bodenname,&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.<br>
+Gibt&nbsp;ein&nbsp;dict&nbsp;mit&nbsp;den&nbsp;Bodennamen&nbsp;als&nbsp;Schluessel&nbsp;zurueck,&nbsp;das&nbsp;fuer&nbsp;jeden&nbsp;Bodennamen&nbsp;die<br>
+Eintraege&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.</tt></dd></dl>
+ <dl><dt><a name="-DateiEinlesen"><strong>DateiEinlesen</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;die&nbsp;Datei&nbsp;namens&nbsp;dateiname&nbsp;ein,&nbsp;sofern&nbsp;es&nbsp;sich&nbsp;um&nbsp;einen&nbsp;unterstuetzten&nbsp;Dateityp/-namen<br>
+handelt.</tt></dd></dl>
+ <dl><dt><a name="-DatensatzEinlesen"><strong>DatensatzEinlesen</strong></a>(dateiname)</dt><dd><tt>Lade&nbsp;eine&nbsp;JSON-formatierte&nbsp;Datei,&nbsp;die&nbsp;mit&nbsp;Datensatz_Speichern&nbsp;erstellt&nbsp;worden&nbsp;ist.&nbsp;Gib&nbsp;die<br>
+eingelesene&nbsp;Struktur&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-DatensatzSpeichern"><strong>DatensatzSpeichern</strong></a>(datensatz, dateiname)</dt><dd><tt>Speichere&nbsp;die&nbsp;Stuktur&nbsp;datensatz&nbsp;als&nbsp;JSON-formatierte&nbsp;Datei&nbsp;namens&nbsp;dateiname.</tt></dd></dl>
+ <dl><dt><a name="-ExistiertDatei"><strong>ExistiertDatei</strong></a>(dateiname)</dt><dd><tt>Pruefe&nbsp;die&nbsp;Existenz&nbsp;einer&nbsp;Datei.&nbsp;Gibt&nbsp;True&nbsp;zurueck,&nbsp;falls&nbsp;die&nbsp;Datei&nbsp;vorhanden&nbsp;ist.</tt></dd></dl>
+ <dl><dt><a name="-ZieldateienFinden"><strong>ZieldateienFinden</strong></a>(zielordner, dateimuster, ignoriereOrdnernamen=['alt'])</dt><dd><tt>Ermittle&nbsp;im&nbsp;zielordner&nbsp;und&nbsp;allen&nbsp;Unterordnern&nbsp;alle&nbsp;Dateien,&nbsp;deren&nbsp;Namen&nbsp;dateimuster&nbsp;enthaelt.<br>
+Falls&nbsp;ignoriereOrdnernamen&nbsp;keine&nbsp;leere&nbsp;Liste&nbsp;ist,&nbsp;werden&nbsp;alle&nbsp;Unterordner&nbsp;in&nbsp;der&nbsp;Liste&nbsp;ignoriert<br>
+(deren&nbsp;Name&nbsp;einem&nbsp;der&nbsp;Eintraege&nbsp;entspricht).<br>
+Gibt&nbsp;eine&nbsp;Liste&nbsp;aller&nbsp;Dateinamen&nbsp;der&nbsp;so&nbsp;ausgewaehlten&nbsp;Dateien&nbsp;zurueck.<br>
+&nbsp;<br>
+Kann&nbsp;auch&nbsp;zum&nbsp;Testen&nbsp;von&nbsp;Bodenmusterdatei-Eintraegen&nbsp;verwendet&nbsp;werden.&nbsp;Wenn&nbsp;Pfad&nbsp;und&nbsp;regulaerer<br>
+Ausdruck&nbsp;richtig&nbsp;gewaehlt&nbsp;sind,&nbsp;sollten&nbsp;exakt&nbsp;die&nbsp;gewuenschten&nbsp;Dateien&nbsp;aufgelistet/eingelesen<br>
+werden.&nbsp;Fuer&nbsp;die&nbsp;Wahl&nbsp;von&nbsp;sinnvollen&nbsp;regulaeren&nbsp;Ausdrucken&nbsp;sei&nbsp;auf&nbsp;das&nbsp;Python-Modul&nbsp;re&nbsp;und<br>
+die&nbsp;offizielle&nbsp;Dokumentation&nbsp;verwiesen&nbsp;(Standard&nbsp;Library&nbsp;Reference&nbsp;unter&nbsp;https://docs.python.org)</tt></dd></dl>
+</td></tr></table>
+</body></html>
