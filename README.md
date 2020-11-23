@@ -22,8 +22,10 @@ Installation
 
 miniSoilLAB requires a working Python 3.x environment and
 can either be installed (e. g. with `pip`) or downloaded and run with Python.
-It uses `openpyxl` for reading `.xlsx`-files and [Matplotlib](https://matplotlib.org/)
-for plotting the results.
+It uses [openpyxl](https://openpyxl.readthedocs.io)
+and its dependencies [et_xmlfile](https://pypi.org/project/et_xmlfile/)
+and [jdcal](https://github.com/phn/jdcal) for reading `.xlsx`-files and
+[matplotlib](https://matplotlib.org/) for plotting the results.
 
 
 Running the program
