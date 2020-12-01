@@ -1,0 +1,29 @@
+{
+   "LoDi_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "C1": "Lockerste und dichteste Lagerung",
+            "A11": "Lockerste Lagerung",
+            "A17": "Dichteste Lagerung",
+            "A23": "Setzung:"
+         },
+         "Korndichte [g/cm^3]": ["B8", [0.2, 10.0]],
+         "Lockerste-Lagerung": {
+            "Zylindervolumen [cm^3]": ["B13", [50.0, 5000.0]],
+            "Probenmasse [g]": ["B14:F14", [50.0, 5000.0]]
+         },
+         "Dichteste-Lagerung": {
+            "Zylinderhoehe [cm]": ["B19", [1.0, 100.0]],
+            "Zylindergrundflaeche [cm^2]": ["B20", [10.0, 1000.0]],
+            "Plattenhoehe [cm]": ["B21", [0.1, 10.0]],
+            "Probenmasse [g]": ["B22", [50.0, 5000.0]],
+            "Setzung [mm]": ["B23:D23", [-100.0, 100.0]]
+         },
+         "Projektnummer": ["B4"],
+         "Projektname": ["B5"],
+         "Bodenname": ["B6"],
+         "Bodenart": ["B7"],
+         "Datum": ["B3"]
+      }
+   }
+}

@@ -1,0 +1,49 @@
+{
+   "Oedo_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "D1": "Oedometerversuch",
+            "A10": "Durchmesser:",
+            "A15": "Belastungsphase",
+            "A31": "Wiederbelastungsphase"
+         },
+         "Durchmesser [mm]": ["B10", [5.0, 500.0]],
+         "Hoehe [mm]": ["B11", [5.0, 500.0]],
+         "Korndichte [g/cm^3]": ["B8", [0.2, 10.0]],
+         "Feuchtmasse [g]": ["B12", [10.0, 1000.0]],
+         "Feuchtmasse mit Behaelter [g]": ["G10", [1.0, 1000.0]],
+         "Trockenmasse mit Behaelter [g]": ["G11", [1.0, 1000.0]],
+         "Behaeltermasse [g]": ["G12", [0.0, 1000.0]],
+         "Kopfplatte": {
+            "Last-ref [kg]": ["B17", [0.0, 100.0]],
+            "Spannung-ref [kN/m^2]": ["B18", [0.0, 1000.0]]
+         },
+         "Erstbelastung": {
+            "Sekantensteigung [-]": ["B20", [0.0, 10.0]],
+            "[Gruppe Setzung-Spannung]": {
+               "Setzung [mm]": ["B19:G19", [0.0, 100.0]],
+               "Spannung [kN/m^2]": ["B18:G18", [0.0, 10000.0]]
+            }
+         },
+         "Entlastung": {
+            "Sekantensteigung [-]": ["B28", [0.0, 10.0]],
+            "[Gruppe Setzung-Spannung]": {
+               "Setzung [mm]": ["B27:E27", [0.0, 100.0]],
+               "Spannung [kN/m^2]": ["B26:E26", [0.0, 10000.0]]
+            }
+         },
+         "Wiederbelastung": {
+            "Sekantensteigung [-]": ["B36", [0.0, 10.0]],
+            "[Gruppe Setzung-Spannung]": {
+               "Setzung [mm]": ["B35:I35", [0.0, 100.0]],
+               "Spannung [kN/m^2]": ["B34:I34", [0.0, 10000.0]]
+            }
+         },
+         "Projektnummer": ["B4"],
+         "Projektname": ["B5"],
+         "Datum": ["B3"],
+         "Bodenart": ["B7"],
+         "Bodenname": ["B6"]
+      }
+   }
+}

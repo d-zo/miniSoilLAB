@@ -1,0 +1,99 @@
+{
+   "Oedo-CRL_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "A10": "Durchmesser:",
+            "A15": "Erstbelastung",
+            "A23": "Laststufe 1",
+            "A71": "Laststufe 4"
+         },
+         "Durchmesser [mm]": ["B10", [5.0, 500.0]],
+         "Hoehe [mm]": ["B11", [5.0, 500.0]],
+         "Korndichte [g/cm^3]": ["B8", [0.2, 10.0]],
+         "Feuchtmasse [g]": ["B12", [10.0, 1000.0]],
+         "Feuchtmasse mit Behaelter [g]": ["F10", [1.0, 1000.0]],
+         "Trockenmasse mit Behaelter [g]": ["F11", [1.0, 1000.0]],
+         "Behaeltermasse [g]": ["F12", [0.0, 1000.0]],
+         "Kopfplatte": {
+            "Last-ref [kg]": ["B17", [0.0, 100.0]],
+            "Spannung-ref [kN/m^2]": ["B18", [0.0, 1000.0]]
+         },
+         "Erstbelastung": {
+            "Sekantensteigung [-]": ["B20", [0.0, 10.0]],
+            "[Gruppe Setzung-Spannung]": {
+               "Setzung [mm]": ["B19:K19", [0.0, 100.0], "min_schnitt"],
+               "Spannung [kN/m^2]": ["B18:K18", [0.0, 10000.0]]
+            }
+         },
+         "Laststufe 1": {
+            "Laststufen [kN/m^2]": ["B25:B26", [0.1, 5000.0]],
+            "[Gruppe Zeit-Setzung]": {
+               "Zeitwerte": ["B27:V27"],
+               "Setzung [mm]": ["B28:V28", [0.0, 100.0], "min_schnitt"]
+            },
+            "Parameter-Labor": {
+               "Setzung-primaer-100% [h]": ["C30", [0.01, 50.0]],
+               "c_v [m^2/s]": ["C31", [1e-9, 0.1]],
+               "c_alpha [-]": ["C32", [0.0, 1.0]],
+               "Steifemodul [kN/m^2]": ["C33", [1.0, 300000.0]],
+               "Durchlaessigkeitsbeiwert [-]": ["C34", [1e-12, 1e-2]],
+               "Kompressionsbeiwert [-]": ["C35", [0.0, 50.0]],
+               "I_v [-]": ["C36", [0.0, 1.0]]
+            }
+         },
+         "Laststufe 2": {
+            "Laststufen [kN/m^2]": ["B41:B42", [0.1, 5000.0]],
+            "[Gruppe Zeit-Setzung]": {
+               "Zeitwerte": ["B43:U43"],
+               "Setzung [mm]": ["B44:U44", [0.0, 100.0], "min_schnitt"]
+            },
+            "Parameter-Labor": {
+               "Setzung-primaer-100% [h]": ["C46", [0.01, 50.0]],
+               "c_v [m^2/s]": ["C47", [1e-9, 0.1]],
+               "c_alpha [-]": ["C48", [0.0, 1.0]],
+               "Steifemodul [kN/m^2]": ["C49", [1.0, 300000.0]],
+               "Durchlaessigkeitsbeiwert [-]": ["C50", [1e-12, 1e-2]],
+               "Kompressionsbeiwert [-]": ["C51", [0.0, 50.0]],
+               "I_v [-]": ["C52", [0.0, 1.0]]
+            }
+         },
+         "Laststufe 3": {
+            "Laststufen [kN/m^2]": ["B57:B58", [0.1, 5000.0]],
+            "[Gruppe Zeit-Setzung]": {
+               "Zeitwerte": ["B59:U59"],
+               "Setzung [mm]": ["B60:U60", [0.0, 100.0], "min_schnitt"]
+            },
+            "Parameter-Labor": {
+               "Setzung-primaer-100% [h]": ["C62", [0.01, 50.0]],
+               "c_v [m^2/s]": ["C63", [1e-9, 0.1]],
+               "c_alpha [-]": ["C64", [0.0, 1.0]],
+               "Steifemodul [kN/m^2]": ["C65", [1.0, 300000.0]],
+               "Durchlaessigkeitsbeiwert [-]": ["C66", [1e-12, 1e-2]],
+               "Kompressionsbeiwert [-]": ["C67", [0.0, 50.0]],
+               "I_v [-]": ["C68", [0.0, 1.0]]
+            }
+         },
+         "Laststufe 4": {
+            "Laststufen [kN/m^2]": ["B73:B74", [0.1, 5000.0]],
+            "[Gruppe Zeit-Setzung]": {
+               "Zeitwerte": ["B75:U75"],
+               "Setzung [mm]": ["B76:U76", [0.0, 100.0], "min_schnitt"]
+            },
+            "Parameter-Labor": {
+               "Setzung-primaer-100% [h]": ["C78", [0.01, 50.0]],
+               "c_v [m^2/s]": ["C79", [1e-9, 0.1]],
+               "c_alpha [-]": ["C80", [0.0, 1.0]],
+               "Steifemodul [kN/m^2]": ["C81", [1.0, 300000.0]],
+               "Durchlaessigkeitsbeiwert [-]": ["C82", [1e-12, 1e-2]],
+               "Kompressionsbeiwert [-]": ["C83", [0.0, 50.0]],
+               "I_v [-]": ["C84", [0.0, 1.0]]
+            }
+         },
+         "Projektnummer": ["B5"],
+         "Projektname": ["B4"],
+         "Datum": ["B3"],
+         "Bodenart": ["B7"],
+         "Bodenname": ["B6"]
+      }
+   }
+}

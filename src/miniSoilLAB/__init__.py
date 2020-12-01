@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+"""
+                                                    v0.5.5
+        _      _    __      _  _  .--.       ..    .----.
+       (_)    (_).´ __|    (_)| | |  |      /  `   |     `
+ _ _ _  _ _ _  _ . (    __  _ | | |  |     '    '  |  ()  |
+| ' ` `| | ' `| |`. `. ´  `| || | |  |    /  /`  ` |     <
+| .. . | | .. | |  `  ' () | || | |  |    ' '--' ' |  ()  |
+| || | | | || | |_.´  .    | |. '.|   --./  .--.  `|      /
+|_||_|_|_|_||_|_|___.´ \__,|_| \_,`_____'__/    `__.___.-'
+
+                                          D.Zobel 2019-2020
+
+Programm zur Aufbereitung von geotechnischen Laborversuchen
+"""
+
+# Copyright 2020 Dominik Zobel.
+# All rights reserved.
+#
+# This file is part of the SimpleScriptGenerator package.
+# SimpleScriptGenerator is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# SimpleScriptGenerator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with SimpleScriptGenerator. If not, see <http://www.gnu.org/licenses/>.
+
+
+from .rohdatenverarbeitung import *
+from .vorlagen import *
+from .xlshilfen import *
+from .plotausgabe import *
+from .kennwerte import *
+from .parameterbestimmung import *
+from .rohdaten import *
+from .dateneinlesen import *
+from .datenstruktur import *
+from .gleichungsloeser import *
+from .konstanten import *
+
+__author__ = 'Dominik Zobel';
+__version__ = '0.5.5';
+__package__ = 'miniSoilLAB';

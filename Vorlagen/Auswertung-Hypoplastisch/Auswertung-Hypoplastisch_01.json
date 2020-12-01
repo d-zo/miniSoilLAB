@@ -1,0 +1,89 @@
+{
+   "Auswertung-Hypoplastisch_01": {
+      "LoDi-Schuettkegel": {
+         "[Checks]": {
+            "A4": "Korndichte:",
+            "A9": "min. Dichte:",
+            "A16": "max. Dichte:",
+            "A23": "Reibungswinkel:"
+         },
+         "Schuettkegel": {
+            "Korndichte [g/cm^3]": ["B4", [0.2, 10.0]],
+            "Dichte-min [g/cm^3]": ["B9", [0.2, 10.0]],
+            "Porenanteil-max [-]": ["B10", [0.0, 1.0]],
+            "Porenzahl-max [-]": ["B11", [0.01, 20.0]],
+            "Dichte-max [g/cm^3]": ["B16", [0.2, 10.0]],
+            "Porenanteil-min [-]": ["B17", [0.0, 1.0]],
+            "Porenzahl-min [-]": ["B18", [0.01, 20.0]],
+            "Reibungswinkel-krit [Grad]": ["B23", [10.0, 60.0]]
+         }
+      },
+      "Oedo": {
+         "[Checks]": {
+            "A5": "Oedo-locker",
+            "A10": "Hoehe:",
+            "E5": "Oedo-dicht",
+            "E10": "Hoehe:"
+         },
+         "Oedo-locker": {
+            "[Gruppe Setzung-Spannung]": {
+               "Spannung [kN/m^2]": ["A15:A-1", [0.0, 10000.0]],
+               "Setzung [mm]": ["B15:B-1", [0.0, 100.0]]
+            },
+            "Dateiname": ["B7"],
+            "Masse [g]": ["B8", [10.0, 5000.0]],
+            "Durchmesser [cm]": ["B9", [0.5, 50.0]],
+            "Hoehe [cm]": ["B10", [0.5, 50.0]]
+         },
+         "Oedo-dicht": {
+            "[Gruppe Setzung-Spannung]": {
+               "Spannung [kN/m^2]": ["E15:E-1", [0.0, 10000.0]],
+               "Setzung [mm]": ["F15:F-1", [0.0, 100.0]]
+            },
+            "Dateiname": ["F7"],
+            "Masse [g]": ["F8", [10.0, 5000.0]],
+            "Durchmesser [cm]": ["F9", [0.5, 50.0]],
+            "Hoehe [cm]": ["F10", [0.5, 50.0]]
+         }
+      },
+      "Triax-D": {
+         "[Checks]": {
+            "A4": "Triax-D locker",
+            "A6": "Peakreibungswinkel:",
+            "A9": "Triax-D dicht",
+            "A12": "Peakreibungswinkel:"
+         },
+         "Triax-D": {
+            "Reibungswinkel-Peak-locker [Grad]": ["B6", [10.0, 60.0]],
+            "Reibungswinkel-Peak-dicht [Grad]": ["B12", [10.0, 60.0]],
+            "Dilatanzwinkel [Grad]": ["B11", [10.0, 60.0]],
+            "Spannung-Peak-eff [kN/m^2]": ["B13", [10.0, 5000.0]],
+            "Porenzahl-Peak [-]": ["B14", [0.01, 20.0]]
+         }
+      },
+      "Parameter": {
+         "[Checks]": {
+            "C1": "Hypoplastische Parameter",
+            "A4": "Referenzspannung-max:"
+         },
+         "Parameter": {
+            "Parameter-Labor": ["A8:H8", [0.0, 10000000.0]],
+            "Referenzspannung-min [kN/m^2]": ["C3", [5.0, 500.0]],
+            "Referenzspannung-max [kN/m^2]": ["C4", [100.0, 10000.0]]
+         }
+      },
+      "Referenz": {
+         "[Checks]": {
+            "C1": "Referenzdaten",
+            "A5": "Projektnummer:",
+            "A6": "Projektname:"
+         },
+         "Projektnummer": ["B5"],
+         "Projektname": ["B6"],
+         "Entnahmestelle": ["B8"],
+         "Entnahmetiefe": ["B9"],
+         "Bodenart": ["B7"],
+         "Datum": ["B4"]
+      }
+   }
+}

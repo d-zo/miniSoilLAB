@@ -31,6 +31,12 @@ setup(
    long_description='miniSoilLAB is a graphical frontend for viewing and managing results of selected geotechnical experiments for soil identification and (hypoplastic/viscohypoplastic) parameter determination',
    license='GPL',
    url='https://github.com/d-zo/miniSoilLAB',
-   install_requires=['openpyxl', 'matplotlib'],
+   install_requires=['xlrd', 'openpyxl', 'matplotlib'],
+   classifiers=[
+      'Programming Language :: Python :: 3',
+      'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+      'Operating System :: OS Independent',
+      'Natural Language :: German',
+   ],
    )
    

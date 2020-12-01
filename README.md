@@ -14,7 +14,7 @@ at the Hamburg University of Technology.
 Project status
 --------------
 
-The source files are to be uploaded until 2020-12-01.
+Example files for the templates are to be uploaded until 2020-12-03.
 
 
 Installation
@@ -136,6 +136,6 @@ License
 
 miniSoilLAB is released under the
 [GPL](https://www.gnu.org/licenses/gpl-3.0.html "GNU General Public License"),
-version 3 or greater (see als COPYRIGHT file).
+version 3 or greater (see als [LICENSE](https://github.com/d-zo/miniSoilLAB/blob/master/LICENSE) file).
 It is provided without any warranty.
 

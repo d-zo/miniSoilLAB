@@ -1,0 +1,93 @@
+{
+   "Triax-CU_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "C1": "Triaxialversuch (CU)",
+            "A10": "Ausrollgrenze:",
+            "A18": "Probenherstellung",
+            "A32": "Konsolidation"
+         },
+         "Projektnummer": ["B5"],
+         "Projektname": ["B4"],
+         "Datum": ["B3"],
+         "Bodenname": ["B6"],
+         "Bodenart": ["B7"],
+         "Korndichte [g/cm^3]": ["B8", [0.2, 10.0]],
+         "Feuchtmasse mit Behaelter [g]": ["B13:D13", [1.0, 1000.0]],
+         "Trockenmasse mit Behaelter [g]": ["B14:D14", [1.0, 1000.0]],
+         "Behaeltermasse [g]": ["B15:D15", [0.0, 1000.0]],
+         "Fliessgrenze [%]": ["B9", [0.0, 250.0]],
+         "Ausrollgrenze [%]": ["B10", [0.0, 250.0]],
+         "Ueberkorn > 0,4mm [%]": ["B11", [0.0, 100.0]],
+         "1-Probenherstellung": {
+            "Hoehe [mm]": ["B20:D20", [5.0, 500.0]],
+            "Durchmesser [mm]": ["B21:D21", [5.0, 500.0]],
+            "Feuchtmasse [g]": ["B22:D22", [10.0, 1000.0]]
+         },
+         "2-Saettigung": {
+            "Zelldruck [kN/m^2]": ["B27:D27", [5.0, 5000.0]],
+            "Saettigungsdruck [kN/m^2]": ["B28:D28", [5.0, 5000.0]],
+            "Drucksteigerung [kN/m^2/min]": ["B29:D29", [5.0, 5000.0]]
+         },
+         "3-Konsolidation": {
+            "Zelldruck [kN/m^2]": ["B34:D34", [5.0, 5000.0]],
+            "Porenwasserdruck [kN/m^2]": ["B35:D35", [5.0, 5000.0]],
+            "Delta Hoehe [mm]": ["B36:D36", [-5.0, 500.0]]
+         }
+      },
+      "Versuch01": {
+         "[Checks]": {
+            "C1": "Einzelversuch",
+            "A4": "Datum",
+            "D4": "Porenwass. [kPa]",
+            "F4": "Stauchung [mm]"
+         },
+         "Versuch 1": {
+            "[Gruppe Einzeldaten1]": {
+               "Datum": ["A5:A-1"],
+               "Uhrzeit": ["B5:B-1"],
+               "Radialdruck [kN/m^2]": ["C5:C-1", [5.0, 5000.0]],
+               "Porenwasserdruck [kN/m^2]": ["D5:D-1", [5.0, 5000.0]],
+               "Axialkraft [N]": ["E5:E-1", [0.0, 100000.0], "min_schnitt"],
+               "Stauchung [mm]": ["F5:F-1", [0.0, 500.0]]
+            }
+         }
+      },
+      "Versuch02": {
+         "[Checks]": {
+            "C1": "Einzelversuch",
+            "A4": "Datum",
+            "D4": "Porenwass. [kPa]",
+            "F4": "Stauchung [mm]"
+         },
+         "Versuch 2": {
+            "[Gruppe Einzeldaten2]": {
+               "Datum": ["A5:A-1"],
+               "Uhrzeit": ["B5:B-1"],
+               "Radialdruck [kN/m^2]": ["C5:C-1", [5.0, 5000.0]],
+               "Porenwasserdruck [kN/m^2]": ["D5:D-1", [5.0, 5000.0]],
+               "Axialkraft [N]": ["E5:E-1", [0.0, 100000.0], "min_schnitt"],
+               "Stauchung [mm]": ["F5:F-1", [0.0, 500.0]]
+            }
+         }
+      },
+      "Versuch03": {
+         "[Checks]": {
+            "C1": "Einzelversuch",
+            "A4": "Datum",
+            "D4": "Porenwass. [kPa]",
+            "F4": "Stauchung [mm]"
+         },
+         "Versuch 3": {
+            "[Gruppe Einzeldaten3]": {
+               "Datum": ["A5:A-1"],
+               "Uhrzeit": ["B5:B-1"],
+               "Radialdruck [kN/m^2]": ["C5:C-1", [5.0, 5000.0]],
+               "Porenwasserdruck [kN/m^2]": ["D5:D-1", [5.0, 5000.0]],
+               "Axialkraft [N]": ["E5:E-1", [0.0, 100000.0], "min_schnitt"],
+               "Stauchung [mm]": ["F5:F-1", [0.0, 500.0]]
+            }
+         }
+      }
+   }
+}

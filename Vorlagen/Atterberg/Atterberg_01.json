@@ -1,0 +1,33 @@
+{
+   "Atterberg_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "A3": "Datum:",
+            "A8": "Wassergehalt:",
+            "A20": "Ausrollgrenze"
+         },
+         "Wassergehalt [%]": ["B8", [0.0, 200.0]],
+         "Ueberkornanteil [%]": ["B9", [0.0, 200.0]],
+         "Daten-Fliessgrenze": {
+            "[Gewichte Fliessgrenze]": {
+               "Schlaege-Anzahl [-]": ["C14:G14", [0.0, 200.0]],
+               "Feuchtmasse mit Behaelter [g]": ["C15:G15", [0.0, 1000.0]],
+               "Trockenmasse mit Behaelter [g]": ["C16:G16", [0.0, 1000.0]],
+               "Behaeltermasse [g]": ["C17:G17", [0.0, 1000.0]]
+            }
+         },
+         "Daten-Ausrollgrenze": {
+            "[Gewichte Ausrollgrenze]": {
+               "Feuchtmasse mit Behaelter [g]": ["C22:E22", [0.0, 1000.0]],
+               "Trockenmasse mit Behaelter [g]": ["C23:E23", [0.0, 1000.0]],
+               "Behaeltermasse [g]": ["C24:E24", [0.0, 1000.0]]
+            }
+         },
+         "Projektnummer": ["B4"],
+         "Projektname": ["B5"],
+         "Datum": ["B3"],
+         "Bodennart": ["B7"],
+         "Bodenname": ["B6"]
+      }
+   }
+}
