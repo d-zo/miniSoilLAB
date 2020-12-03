@@ -2,7 +2,6 @@ SOURCE_DIR = ../src
 TEMP_DIR = temp_work_dir
 OUTPUT_DIR = ../miniSoilLAB
 DOC_DIR = ../docs
-CUR_DIR = ${PWD}
 
 DOC_BLACKLIST = __init__ datenstruktur gui vorlagen
 

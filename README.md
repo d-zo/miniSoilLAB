@@ -11,21 +11,17 @@ It was created alongside work at the Institute of Geotechnical Engineering
 at the Hamburg University of Technology.
 
 
-Project status
---------------
-
-Example files for the templates are to be uploaded until 2020-12-03.
-
 
 Installation
 ------------
 
 miniSoilLAB requires a working Python 3.x environment and
-can either be installed (e. g. with `pip`) or downloaded and run with Python.
+can be downloaded and run with Python.
 It uses [openpyxl](https://openpyxl.readthedocs.io)
 and its dependencies [et_xmlfile](https://pypi.org/project/et_xmlfile/)
 and [jdcal](https://github.com/phn/jdcal) for reading `.xlsx`-files and
 [matplotlib](https://matplotlib.org/) for plotting the results.
+
 
 
 Running the program
@@ -87,17 +83,19 @@ If the templates are not located in a folder called `Vorlagen` (in the current w
 the path to the template folder has to be provided as an argument when starting miniSoilLAB.
 
 
+
 Usage and Documentation
 -----------------------
 
 A simple function documentation (in german) created with pydoc can be found
 [here](https://d-zo.github.io/miniSoilLAB/miniSoilLAB.html "miniSoilLAB documentation").
 More information about how to use miniSoilLAB and an example can be found in the
-”Using miniSoilLAB“ tutorial (coming soon).
-<!--A html-version of the tutorial can be found
+”Using miniSoilLAB“ tutorial.
+A html-version of the tutorial can be found
 [here](https://d-zo.github.io/miniSoilLAB/usingminisoillab.html "Using miniSoilLAB [html]")
 and a pdf-version
-[here](https://d-zo.github.io/miniSoilLAB/usingminisoillab.pdf "Using miniSoilLAB [pdf]").-->
+[here](https://d-zo.github.io/miniSoilLAB/usingminisoillab.pdf "Using miniSoilLAB [pdf]").
+
 
 
 Contributing
@@ -129,6 +127,7 @@ Afterwards, please submit a report in the
 
  - why this feature would be useful (use cases)
  - what could possible drawbacks be (e.g. compatibility, dependencies, ...)
+
 
 
 License
