@@ -3,7 +3,7 @@ TEMP_DIR = temp_work_dir
 OUTPUT_DIR = ../miniSoilLAB
 DOC_DIR = ../docs
 
-DOC_BLACKLIST = __init__ datenstruktur gui vorlagen
+DOC_BLACKLIST = __init__ datenstruktur gui guistil guihilfen vorlagen
 
 .PHONY: all program pycdoc
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-gleichungsloeser.py   v0.4 (2019-11)
+gleichungsloeser.py   v0.5 (2019-12)
 """
 
 # Copyright 2020 Dominik Zobel.
@@ -353,7 +353,7 @@ def AbleitungDyNachDx(x, y):
    xneu = [(x[idx+1] + x[idx])/2.0 for idx in range(len(x)-1)];
    nenner = [x[idx+1] - x[idx] for idx in range(len(x)-1)];
    if (any([(wert == 0)  for wert in nenner])):
-      print('# Abbruch: Muesste beim Ableiten durch Null teilen');
+      print('# Fehler: Muesste beim Ableiten durch Null teilen');
       idx = nenner.index(0);
       print('           Wert an Stelle ' + str(idx) + ' und Folgewert identisch');
       return [None, None];
@@ -369,7 +369,6 @@ def IntegrationDyMitDx(x0, y0, dx, dy):
    x_(i+1) - x_i. Der Startwert fuer die integrierten Werte y ist y0. Fuer die Differenzen dx
    wird mit dem Startwert x0 die x-Werte erzeugt. Gibt [x, y] zurueck.
    """
-   # FIXME: Anpassung von x sinnvoll?
    xinteg = [x0];
    yinteg = [y0];
    for idx in range(len(dx)-1):
@@ -381,10 +380,13 @@ def IntegrationDyMitDx(x0, y0, dx, dy):
 
 
 # -------------------------------------------------------------------------------------------------
-def LokalerExtremwert(werte, intervall, maximum=True):
+def LokalerExtremwert(werte, intervall, maximum=True, multiminanfang=True, multimaxanfang=False):
    """Bestimme je nach maximum entweder Maximalwerte oder Minimalwerte aus werte. Dabei werden nur
-   Extremwerte beruecksichtigt, die mindestens im lokalen Bereich intervall vor und nach dem Wert
-   groesser oder kleiner als alle anderen Werte sind. Gibt [indizes] der Extremwerte aus werte zurueck.
+   Extremwerte beruecksichtigt, die im lokalen Bereich intervall vor und nach dem Wert
+   groesser oder kleiner als alle anderen Werte sind. Falls es mehrere identische Minimalwerte geben
+   sollte, wird anhand von multiminanfang entweder der erste oder der letzte Minimalwert verwendet.
+   Analog wird mit multimaxanfang bei mehreren identische Maximalwerten verfahren.
+   Gibt [indizes] der Extremwerte aus werte zurueck.
    """
    idxliste = [];
    num_werte = len(werte);
@@ -406,9 +408,26 @@ def LokalerExtremwert(werte, intervall, maximum=True):
       if (maximum):
          if (any([einzelwert > wert for einzelwert in temp_werte])):
             continue;
+         #
+         if (multiminanfang):
+            if (any([einzelwert >= wert for einzelwert in werte[idx_links:idx_wert]])):
+               continue;
+         else:
+            if (any([einzelwert >= wert for einzelwert in werte[idx_wert+1:idx_rechts]])):
+               continue;
+      #
       else:
          if (any([einzelwert < wert for einzelwert in temp_werte])):
             continue;
+         #
+         #
+         if (multimaxanfang):
+            if (any([einzelwert <= wert for einzelwert in werte[idx_links:idx_wert]])):
+               continue;
+         else:
+            if (any([einzelwert <= wert for einzelwert in werte[idx_wert+1:idx_rechts]])):
+               continue;
+      #
       idxliste += [idx_wert];
    #
    return idxliste;

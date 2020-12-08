@@ -51,7 +51,7 @@ def LeseXLSDaten(dateiname, ignoriere=['rohdaten']):
    if (any([ignoriermuster in datei for ignoriermuster in ignoriere])):
       print('# - LeseXLS: Ignoriere ' + dateiname);
    #
-   # FIXME: with open oder aehnliche Konstruktion, die automatisch das workbook wieder schliesst
+   # FIXME: "with open" oder aehnliche Konstruktion, die automatisch das workbook wieder schliesst
    workbook, tabellentyp = _OeffneXLSDatei(dateiname=dateiname);
    if (workbook is None):
       return bodendaten;
@@ -110,7 +110,8 @@ def LeseXLSDaten(dateiname, ignoriere=['rohdaten']):
 
 # -------------------------------------------------------------------------------------------------
 def _OeffneXLSDatei(dateiname):
-   """FIXME
+   """Oeffnet eine Excel-Datei und gibt das darin enthaltene workbook und den tabellentyp (xls/xlsx)
+   zurueck.
    """
    tabellentyp = '';
    if (dateiname[-3:].lower() == 'xls'):

@@ -9,7 +9,7 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.dateneinlesen</strong></big></big></font></td
 ><td align=right valign=bottom
 ></td></tr></table>
-    <p><tt>dateneinlesen.py&nbsp;&nbsp;&nbsp;v0.4&nbsp;(2019-10)</tt></p>
+    <p><tt>dateneinlesen.py&nbsp;&nbsp;&nbsp;v0.5&nbsp;(2020-12)</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -17,13 +17,14 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-BodendatenEinlesen"><strong>BodendatenEinlesen</strong></a>(bodenname, dateimuster, zielordner, rohdaten=False)</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dem&nbsp;zielordner&nbsp;ein,&nbsp;die&nbsp;dateimuster&nbsp;enthalten.&nbsp;Speichere&nbsp;die&nbsp;eingelesenen<br>
-Datein&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.&nbsp;Standardmaessig<br>
-werden&nbsp;rohdaten&nbsp;ignoriert,&nbsp;koennen&nbsp;aber&nbsp;bei&nbsp;Bedarf&nbsp;beruecksichtigt&nbsp;werden.</tt></dd></dl>
- <dl><dt><a name="-BodendatenMitSchluesselAusMusterEinlesen"><strong>BodendatenMitSchluesselAusMusterEinlesen</strong></a>(muster, schluessel=None, rohdaten=False)</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;der&nbsp;Boeden&nbsp;ein,&nbsp;die&nbsp;in&nbsp;muster&nbsp;hinterlegt&nbsp;sind&nbsp;(falls&nbsp;schluessel=None),<br>
+<td width="100%"><dl><dt><a name="-BodendatenEinlesen"><strong>BodendatenEinlesen</strong></a>(bodenname, dateimuster, zielordner, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'])</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dem&nbsp;zielordner&nbsp;ein,&nbsp;die&nbsp;dateimuster&nbsp;enthalten.&nbsp;Speichere&nbsp;die<br>
+eingelesenen&nbsp;Datein&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.<br>
+Es&nbsp;werden&nbsp;alle&nbsp;Dateien&nbsp;ignoriert,&nbsp;in&nbsp;deren&nbsp;Namen&nbsp;sich&nbsp;ein&nbsp;in&nbsp;ignoriere&nbsp;definierter&nbsp;Begriff<br>
+befindet.</tt></dd></dl>
+ <dl><dt><a name="-BodendatenMitSchluesselAusMusterEinlesen"><strong>BodendatenMitSchluesselAusMusterEinlesen</strong></a>(muster, schluessel=None, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'])</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;der&nbsp;Boeden&nbsp;ein,&nbsp;die&nbsp;in&nbsp;muster&nbsp;hinterlegt&nbsp;sind&nbsp;(falls&nbsp;schluessel=None),<br>
 oder&nbsp;nur&nbsp;diejenigen,&nbsp;die&nbsp;als&nbsp;Liste&nbsp;an&nbsp;schluessel&nbsp;uebergeben&nbsp;worden&nbsp;sind.&nbsp;Die&nbsp;Werte&nbsp;der&nbsp;Schluessel<br>
-in&nbsp;muster&nbsp;entsprechen&nbsp;dem&nbsp;dateimuster&nbsp;und&nbsp;dem&nbsp;zielordner&nbsp;fuer&nbsp;den&nbsp;jeweiligen&nbsp;Bodennamen.<br>
-Standardmaessig&nbsp;werden&nbsp;rohdaten&nbsp;ignoriert,&nbsp;koennen&nbsp;aber&nbsp;bei&nbsp;Bedarf&nbsp;beruecksichtigt&nbsp;werden.</tt></dd></dl>
+in&nbsp;muster&nbsp;entsprechen&nbsp;dem&nbsp;dateimuster&nbsp;und&nbsp;dem&nbsp;zielordner&nbsp;fuer&nbsp;den&nbsp;jeweiligen&nbsp;Bodennamen.&nbsp;Es<br>
+werden&nbsp;alle&nbsp;Dateien&nbsp;ignoriert,&nbsp;in&nbsp;deren&nbsp;Namen&nbsp;sich&nbsp;ein&nbsp;in&nbsp;ignoriere&nbsp;definierter&nbsp;Begriff&nbsp;befindet.</tt></dd></dl>
  <dl><dt><a name="-BodenmusterdateiEinlesen"><strong>BodenmusterdateiEinlesen</strong></a>(dateiname)</dt><dd><tt>Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Bodenmuster-Datei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;in&nbsp;jeder&nbsp;Zeile&nbsp;durch&nbsp;Semikolons<br>
 getrennt&nbsp;die&nbsp;drei&nbsp;Eintraege&nbsp;Bodenname,&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.<br>
 Gibt&nbsp;ein&nbsp;dict&nbsp;mit&nbsp;den&nbsp;Bodennamen&nbsp;als&nbsp;Schluessel&nbsp;zurueck,&nbsp;das&nbsp;fuer&nbsp;jeden&nbsp;Bodennamen&nbsp;die<br>

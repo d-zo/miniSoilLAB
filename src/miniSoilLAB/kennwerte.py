@@ -119,7 +119,7 @@ def _KennwerteAtterberg(daten):
          einpunktexp = 0.1;
       #
       fliess.update([('Exponent-Einpunktmethode [-]', einpunktexp)]);
-      # FIXME: Warum nur die ersten drei und nicht alle?
+      # Nur die ersten drei Werte beruecksichtigen
       fliessgrenze = sum(wassergehalt_f[:3])/3.0 * (schlaege[0]/25.0)**einpunktexp;
    else:
       fliessgrenze = B_wert + log10(25)*A_wert;
@@ -212,11 +212,11 @@ def _KennwerteHypo(daten):
       testwert = schuettkegel['Reibungswinkel-krit [Grad]'];
       testwert = oedo_locker['Spannung [kN/m^2]'];
       testwert = oedo_dicht['Spannung [kN/m^2]'];
-      testwert = triax_d['Reibungswinkel-Peak-locker [Grad]'];
-      testwert = triax_d['Reibungswinkel-Peak-dicht [Grad]'];
-      testwert = triax_d['Dilatanzwinkel [Grad]'];
-      testwert = triax_d['Spannung-Peak-eff [kN/m^2]'];
-      testwert = triax_d['Porenzahl-Peak [-]'];
+      testwert = triax['Reibungswinkel-Peak-locker [Grad]'];
+      testwert = triax['Reibungswinkel-Peak-dicht [Grad]'];
+      testwert = triax['Dilatanzwinkel [Grad]'];
+      testwert = triax['Spannung-Peak-eff [kN/m^2]'];
+      testwert = triax['Porenzahl-Peak [-]'];
    except KeyError as errormessage:
       print('# Warnung: Mindestens ein erforderlicher Wert nicht vorhanden - ' + str(errormessage));
       return False;
@@ -500,7 +500,7 @@ def _KennwerteOedo(daten):
       belastung.update([('Dehnung-axial [-]', dehnung)]);
       #
       einstellungen = Datenstruktur();
-      # FIXME: Einstellbare Parameter
+      # FIXME: Einstellbare Parameter am besten an anderer Stelle definieren
       max_it = 500;
       puffergroesse = 0.95;
       intervall = [2*10**(idx) - min(spannung) for idx in range(-10, 6)];
@@ -619,7 +619,7 @@ def _KennwerteOedoCrl(daten):
       parameter = Datenstruktur();
       einstellungen = Datenstruktur();
       #
-      # FIXME: Einstellbare Parameter
+      # FIXME: Einstellbare Parameter am besten an anderer STelle definieren
       log_zu_sqrt = [1, 2];
       zwischenpunkte = 5;
       glaettungswert = 10;
@@ -637,7 +637,6 @@ def _KennwerteOedoCrl(daten):
       else:
          E_s = None;
       #
-      # FIXME: Wenn nicht ein fehlerfreies Ablaufen garantiert werden kann, lieber mit try-except arbeiten
       try:
          c_alpha, I_v = _ViskohypoplastischCalphaUndIv(zeit=stunden, porenzahl=porenzahl,
             zwischenpunkte=zwischenpunkte);
@@ -868,7 +867,7 @@ def _KennwerteOedoCrsvisko(daten):
    daten.update([('Porenzahl [-]', porenzahl)]);
    #
    einstellungen = Datenstruktur();
-   # FIXME: Einstellbare Parameter
+   # FIXME: Einstellbare Parameter am besten an anderer Stelle definieren
    intervallgroesse = 25;
    p1logverhaeltnis = 0.5;
    p5logverhaeltnis = 0.5;
@@ -1116,7 +1115,6 @@ def _KennwerteTriaxVersuchstabelle(daten):
       delta_volumen_n = [volumen_e[idx] - volumen_n[idx] for idx in range(anzahl_versuche)];
    else:
       nachkon = Datenstruktur();
-      # FIXME: Sind die Werte fuer Hoehe/Durchmesser nur mit Annahme einer isotropen Volumenaenderung korrekt?
       if (variante == 'drainiert'):
          delta_volumen_n = [(backvolume_ende_s[idx] - backvolume_ende_k[idx])/1000.0 for idx in range(anzahl_versuche)];
          volumen_n = [volumen_e[idx] - delta_volumen_n[idx] for idx in range(anzahl_versuche)];
@@ -1213,7 +1211,6 @@ def _KennwerteTriaxVersuchstabelle(daten):
       delta_volumen_a = [(backvolume_ende_k[idx] - backvolume_ende_a[idx])/1000.0 for idx in range(anzahl_versuche)];
    else:
       abscheren = Datenstruktur();
-      # FIXME: Immer?
       delta_volumen_a = [0.0, 0.0, 0.0];
    #
    abscheren.update([('Volumenaenderung [cm^3]', delta_volumen_a)]);
@@ -1431,7 +1428,6 @@ def _KennwerteTriax(daten):
          triax.update([('sig1_prime/sig3_prime [-]', sig1psig3p)]);
          triax.update([('Porenwasserdruck-Delta [kN/m^2]', [porendruck - porenwasserdruck[0] for porendruck in porenwasserdruck])]);
       #
-      # FIXME: Gezieltere Ueberpruefung
       try:
          phi_prime = [asin((sigma1prime[idx]-sigma3prime[idx])/(sigma1prime[idx]+sigma3prime[idx]))/grad2rad for idx in range(numdaten)];
       except:
@@ -1454,6 +1450,7 @@ def _KennwerteTriax(daten):
             #
             triax_porenzahlen = [korndichte/(trockenmasse_e[idx_triax]/(volumen_n[idx_triax]+delta_volumen[idx]))-1.0 for idx in range(numdaten)];
          else:
+            # FIXME: Keine Porenzahlentwicklung ohne Aenderungsinformationen (idx nicht verwendet)
             triax_porenzahlen = [korndichte*volumen_n[idx_triax]/trockenmasse_e[idx_triax]-1.0 for idx in range(numdaten)];
          #
          triax.update([('Porenzahl [-]', triax_porenzahlen)]);
@@ -1644,7 +1641,7 @@ def _KennwerteTriaxpq(daten):
       geglaettet = Datenstruktur();
       einstellungen = Datenstruktur();
       #
-      # FIXME: Einstellbare Parameter
+      # FIXME: Einstellbare Parameter am besten an anderer Stelle definieren
       offset = 0;# Standardmaessig wird kein Offset verwendet
       glaettungswert = 10;
       refspanne = 3;
@@ -1664,7 +1661,7 @@ def _KennwerteTriaxpq(daten):
       q2 = [x/2.0 for x in q[startidx:]];
       eps_glatt, q_glatt, e_modul_glatt, R_max, E_max, fitoffset = _ErweiterteHypoParamHilfsfunktion(eps=eps,
          q=q2, glaettungswert=glaettungswert, refspanne=refspanne);
-      # FIXME: Rueckgabewert koennte ungueltig sein!
+      # FIXME: Gueltigkeit der Rueckgabewerte pruefen
       #
       geglaettet.update([('Dehnung [-]', eps_glatt)]);
       geglaettet.update([('E-Modul [kN/m^2]', e_modul_glatt)]);
@@ -1698,7 +1695,7 @@ def _KennwerteTriaxpq(daten):
    #
    eps_som = _ErweiterteHypoParamHilfsfunktionEpssom(eps0=epsliste[0], eps180=epsliste[2],
       emodul0=emodulliste[0], emodul180=emodulliste[2]);
-   # FIXME: Rueckgabewert koennte ungueltig sein!
+   # FIXME: Gueltigkeit des Rueckgabewerts pruefen
    #
    daten['Parameter'].update([('Parameter-Hilfen', ['m_T [-]', 'm_R [-]', 'R_max [-]', 'beta_r [-]', 'chi [-]'])]);
    daten['Parameter'].update([('eps_som [-]', eps_som)]);

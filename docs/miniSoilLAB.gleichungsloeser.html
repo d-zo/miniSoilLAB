@@ -9,7 +9,7 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.gleichungsloeser</strong></big></big></font></td
 ><td align=right valign=bottom
 ></td></tr></table>
-    <p><tt>gleichungsloeser.py&nbsp;&nbsp;&nbsp;v0.4&nbsp;(2019-11)</tt></p>
+    <p><tt>gleichungsloeser.py&nbsp;&nbsp;&nbsp;v0.5&nbsp;(2019-12)</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -55,9 +55,12 @@ je&nbsp;nach&nbsp;Gleichung&nbsp;der&nbsp;Bereich&nbsp;mit&nbsp;der&nbsp;besten&
 Diese&nbsp;Funktion&nbsp;verkleinert&nbsp;das&nbsp;intervall,&nbsp;bis&nbsp;das&nbsp;Intervall&nbsp;um&nbsp;den&nbsp;Zielwert&nbsp;auf&nbsp;die&nbsp;gewuenschte<br>
 Toleranz&nbsp;tol&nbsp;minimiert&nbsp;worden&nbsp;ist&nbsp;oder&nbsp;vorher&nbsp;max_it&nbsp;Iterationen&nbsp;durchlaufen&nbsp;woren&nbsp;sind.<br>
 Gibt&nbsp;die&nbsp;berechneten&nbsp;Parameter&nbsp;der&nbsp;geforderten&nbsp;Gleichung&nbsp;mit&nbsp;der&nbsp;minimalen&nbsp;Abweichung&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LokalerExtremwert"><strong>LokalerExtremwert</strong></a>(werte, intervall, maximum=True)</dt><dd><tt>Bestimme&nbsp;je&nbsp;nach&nbsp;maximum&nbsp;entweder&nbsp;Maximalwerte&nbsp;oder&nbsp;Minimalwerte&nbsp;aus&nbsp;werte.&nbsp;Dabei&nbsp;werden&nbsp;nur<br>
-Extremwerte&nbsp;beruecksichtigt,&nbsp;die&nbsp;mindestens&nbsp;im&nbsp;lokalen&nbsp;Bereich&nbsp;intervall&nbsp;vor&nbsp;und&nbsp;nach&nbsp;dem&nbsp;Wert<br>
-groesser&nbsp;oder&nbsp;kleiner&nbsp;als&nbsp;alle&nbsp;anderen&nbsp;Werte&nbsp;sind.&nbsp;Gibt&nbsp;[indizes]&nbsp;der&nbsp;Extremwerte&nbsp;aus&nbsp;werte&nbsp;zurueck.</tt></dd></dl>
+ <dl><dt><a name="-LokalerExtremwert"><strong>LokalerExtremwert</strong></a>(werte, intervall, maximum=True, multiminanfang=True, multimaxanfang=False)</dt><dd><tt>Bestimme&nbsp;je&nbsp;nach&nbsp;maximum&nbsp;entweder&nbsp;Maximalwerte&nbsp;oder&nbsp;Minimalwerte&nbsp;aus&nbsp;werte.&nbsp;Dabei&nbsp;werden&nbsp;nur<br>
+Extremwerte&nbsp;beruecksichtigt,&nbsp;die&nbsp;im&nbsp;lokalen&nbsp;Bereich&nbsp;intervall&nbsp;vor&nbsp;und&nbsp;nach&nbsp;dem&nbsp;Wert<br>
+groesser&nbsp;oder&nbsp;kleiner&nbsp;als&nbsp;alle&nbsp;anderen&nbsp;Werte&nbsp;sind.&nbsp;Falls&nbsp;es&nbsp;mehrere&nbsp;identische&nbsp;Minimalwerte&nbsp;geben<br>
+sollte,&nbsp;wird&nbsp;anhand&nbsp;von&nbsp;multiminanfang&nbsp;entweder&nbsp;der&nbsp;erste&nbsp;oder&nbsp;der&nbsp;letzte&nbsp;Minimalwert&nbsp;verwendet.<br>
+Analog&nbsp;wird&nbsp;mit&nbsp;multimaxanfang&nbsp;bei&nbsp;mehreren&nbsp;identische&nbsp;Maximalwerten&nbsp;verfahren.<br>
+Gibt&nbsp;[indizes]&nbsp;der&nbsp;Extremwerte&nbsp;aus&nbsp;werte&nbsp;zurueck.</tt></dd></dl>
  <dl><dt><a name="-NaechsterWert"><strong>NaechsterWert</strong></a>(wert, spanne, aufsteigend=True)</dt><dd><tt>Bestimme&nbsp;eine&nbsp;sinnvolle&nbsp;Schrittgroesse&nbsp;auf&nbsp;Basis&nbsp;der&nbsp;uebergebenen&nbsp;spanne.<br>
 Ermittle&nbsp;auf&nbsp;Basis&nbsp;einer&nbsp;zu&nbsp;ermittelnden&nbsp;Schrittgroesse&nbsp;naechste/vorherige&nbsp;Zahl&nbsp;(Vielfaches&nbsp;der<br>
 Schrittgroesse&nbsp;von&nbsp;wert&nbsp;aus&nbsp;gesehen,&nbsp;abhaengig&nbsp;von&nbsp;austeigend)&nbsp;und&nbsp;gebe&nbsp;sie&nbsp;zurueck.</tt></dd></dl>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-rohdatenverarbeitung.py   v0.1 (2020-09)
+rohdatenverarbeitung.py   v0.2 (2020-12)
 """
 
 # Copyright 2020 Dominik Zobel.
@@ -61,7 +61,7 @@ def _RohdatensatzGruppePruefen(daten, vorlage, position):
       #
       if (not WertInZulaessigemBereich(name=bezeichnung, liste=temp_daten[idx_start_gruppe:],
          minmax=grenzen)):
-         print('# Abbruch: Wert ' + bezeichnung+ ' aus Gruppe ' + position[-1] + ' nicht in gueltigen Grenzen');
+         print('# Fehler: Wert ' + bezeichnung+ ' aus Gruppe ' + position[-1] + ' nicht in gueltigen Grenzen');
          return False;
       #
       if (idx_start_gruppe > 0):
@@ -103,9 +103,6 @@ def _RohdatensatzPruefen(daten, vorlage, position):
    if ((isinstance(cur_vorlage, Datenstruktur)) or (isinstance(cur_vorlage, dict))):
       for bezeichnung in cur_vorlage.keys():
          if (bezeichnung.startswith('[')):
-            if (bezeichnung == '[Checks]'):
-               continue;
-            #
             if (not _RohdatensatzGruppePruefen(daten=daten, vorlage=vorlage, position=position + [bezeichnung])):
                return False;
          else:
@@ -136,7 +133,7 @@ def _RohdatensatzPruefen(daten, vorlage, position):
          zulaessig = WertInZulaessigemBereich(name=position[-1], liste=cur_list[idx_start:],
             minmax=cur_vorlage[1]);
          if (not zulaessig):
-            print('# Abbruch: Wert ' + position[-1] + ' nicht in gueltigen Grenzen');
+            print('# Fehler: Wert ' + position[-1] + ' nicht in gueltigen Grenzen');
             return False;
          #
          if (idx_start > 0):  
@@ -146,7 +143,7 @@ def _RohdatensatzPruefen(daten, vorlage, position):
          #
          return True;
    else:
-      print('Abbruch: Unbekannter Typ in Dict');
+      print('Fehler: Unbekannter Typ in Dict');
       return False;
 #
 
@@ -170,39 +167,99 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
    Gibt eine Datenstruktur mit den Versuchsdaten zurueck.
    """
    from .datenstruktur import Datenstruktur
-   from .dateneinlesen import _JSONDateiEinlesen
    from .rohdaten import LeseGDSDaten
    from .kennwerte import _KennwerteTriax
-   from .konstanten import basispfad
    from .vorlagen import VorlagenstrukturZuDatenstruktur
    #
    if (not isinstance(dateiname, list)):
       dateiname = [dateiname];
    #
-   vorlage = _JSONDateiEinlesen(dateiname=basispfad + 'Triax-D/Triax-D_01.json',
-      bezeichnung='Vorlage Triax-D');
-   if (vorlage is None):
+   if (len(dateiname) > 3):
+      print('# Warnung: Nur drei Dateien beim Einlesen der Rohdaten (Triax) erlaubt - ignoriere Rest');
+      dateiname = dateiname[:3];
+   #
+   if ((lagerungsdichte != 'locker') and (lagerungsdichte != 'dicht')):
+      print('# Fehler: Lagerungsdichte muss locker oder dicht sein.');
       return None;
    #
-   vorlage = vorlage['Triax-D_01'];
-   triax = VorlagenstrukturZuDatenstruktur(vorlage=vorlage);
-   #
-   # Entferne Eintraege, die nicht in den gds-Daten zu finden sein werden
-   del triax['Dichte-dichteste-Lagerung [g/cm^3]'];
-   del triax['Dichte-lockerste-Lagerung [g/cm^3]'];
-   del triax['Porenzahl-max [-]'];
-   del triax['Porenzahl-min [-]'];
-   del triax['2-Saettigung']['Drucksteigerung [kN/m^2/min]'];
+   triaxvorlage = {
+      'Tabelle': {
+         'Projektname': ['B4'],
+         'Datum': ['B3'],
+         'Bodenname': ['B6'],
+         'Korndichte [g/cm^3]': ['B8', [0.2, 10.0]],
+         '1-Probenherstellung': {
+            'Hoehe [mm]': ['B16:D16', [5.0, 500.0]],
+            'Durchmesser [mm]': ['B17:D17', [5.0, 500.0]],
+            'Trockenmasse [g]': ['B18:D18', [10.0, 1000.0]]
+         },
+         '2-Saettigung': {
+            'Zelldruck [kN/m^2]': ['B23:D23', [5.0, 5000.0]],
+            'Saettigungsdruck [kN/m^2]': ['B24:D24', [5.0, 5000.0]],
+            'Dauer [h]': ['B26:D26', [0.0, 340.0]],
+            'Backvolume-Start [mm^3]': ['B27:D27', [-200000.0, 200000.0]],
+            'Backvolume-Ende [mm^3]': ['B28:D28', [-200000.0, 200000.0]]
+         },
+         '3-Konsolidation': {
+            'Backvolume-Ende [mm^3]': ['B33:D33', [-200000.0, 200000.0]]
+         },
+         '5-Abscheren': {
+            'Backvolume-Ende [mm^3]': ['B38:D38', [-200000.0, 200000.0]]
+         }
+      },
+      'Versuch01': {
+         'Versuch 1': {
+            '[Einzelversuch1]': {
+               'Zeit [s]': ['A5:A-1', [0.0, 1.21e6]],
+               'Radialdruck [kN/m^2]': ['B5:B-1', [5.0, 5000.0]],
+               'Radialvolumen [mm^3]': ['C5:C-1', [-200000.0, 200000.0]],
+               'Porenwasserdruck [kN/m^2]': ['D5:D-1', [5.0, 5000.0]],
+               'Porenwasservolumen [mm^3]': ['E5:E-1', [-200000.0, 200000.0]],
+               'Axialkraft [kN]': ['F5:F-1', [0.0, 100.0], 'min_schnitt'],
+               'Porendruck [kN/m^2]': ['G5:G-1', [5.0, 5000.0]],
+               'Stauchung [mm]': ['H5:H-1', [0.0, 500.0], 'min_schnitt']
+            }
+         }
+      },
+      'Versuch02': {
+         'Versuch 2': {
+            '[Einzelversuch2]': {
+               'Zeit [s]': ['A5:A-1', [0.0, 1.21e6]],
+               'Radialdruck [kN/m^2]': ['B5:B-1', [5.0, 5000.0]],
+               'Radialvolumen [mm^3]': ['C5:C-1', [-200000.0, 200000.0]],
+               'Porenwasserdruck [kN/m^2]': ['D5:D-1', [5.0, 5000.0]],
+               'Porenwasservolumen [mm^3]': ['E5:E-1', [-200000.0, 200000.0]],
+               'Axialkraft [kN]': ['F5:F-1', [0.0, 100.0], 'min_schnitt'],
+               'Porendruck [kN/m^2]': ['G5:G-1', [5.0, 5000.0]],
+               'Stauchung [mm]': ['H5:H-1', [0.0, 500.0], 'min_schnitt']
+            }
+         }
+      },
+      'Versuch03': {
+         'Versuch 3': {
+            '[Einzelversuch3]': {
+               'Zeit [s]': ['A5:A-1', [0.0, 1.21e6]],
+               'Radialdruck [kN/m^2]': ['B5:B-1', [5.0, 5000.0]],
+               'Radialvolumen [mm^3]': ['C5:C-1', [-200000.0, 200000.0]],
+               'Porenwasserdruck [kN/m^2]': ['D5:D-1', [5.0, 5000.0]],
+               'Porenwasservolumen [mm^3]': ['E5:E-1', [-200000.0, 200000.0]],
+               'Axialkraft [kN]': ['F5:F-1', [0.0, 100.0], 'min_schnitt'],
+               'Porendruck [kN/m^2]': ['G5:G-1', [5.0, 5000.0]],
+               'Stauchung [mm]': ['H5:H-1', [0.0, 500.0], 'min_schnitt']
+            }
+         }
+      }
+   };
+   triax = VorlagenstrukturZuDatenstruktur(vorlage=triaxvorlage);
    #
    for idx_datei, einzeldateiname in enumerate(dateiname):
-      gds = LeseGDSDaten(dateiname=einzeldateiname);
-      gds = gds['Triax'];
+      tempgds = LeseGDSDaten(dateiname=einzeldateiname);
+      gds = tempgds['Triax'];
       #
       if (idx_datei == 0):
          triax.update([('Projektname', 'GDS-Rohdaten')]);
          triax.update([('Bodenname', gds['Description of Sample:'])]);
          triax.update([('Datum', gds['Date of Test'])]);
-         #triax.update([('Dateiname', gds['Dateiname'])]);
          zusatz = '';
          if (len(dateiname) > 1):
             zusatz = ' (+' + str(len(dateiname)-1) + ')';
@@ -214,11 +271,14 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
       #
       trockenmasse = gds['Initial dry mass (g):'];
       if (trockenmasse == ''):
-         # FIXME: Immer am Institut eine gueltige Annahme?
          trockenmasse = gds['Initial mass (g):'];
-      else:
-         trockenmasse = float(trockenmasse);
+         if (trockenmasse == ''):
+            print('# Fehler: Keine Anfangs(trocken)masse angegeben');
+            return None;
+         #
+         print('# Warnung: Keine Anfangstrockenmasse eingetragen, nehme Anfangsmasse');
       #
+      trockenmasse = float(trockenmasse);
       _DatenErgaenzen(daten=triax['1-Probenherstellung'], schluessel='Trockenmasse [g]', zusatzwerte=trockenmasse);
       #
       stage_number = gds['Daten']['Stage Number'];
@@ -228,7 +288,7 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
          idx_phase3 = stage_number.index(3.0);
          idx_phase4 = stage_number.index(4.0);
       except:
-         print('# Abbruch: Stages in ' + einzeldateiname + ' sind nicht wie erwartet von 1 bis 4');
+         print('# Fehler: Stages in ' + einzeldateiname + ' sind nicht wie erwartet von 1 bis 4');
          return None;
       #
       dauer = gds['Daten']['Time since start of stage (s)'];
@@ -254,7 +314,6 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
       #
       stauchung = gds['Daten']['Axial Displacement (mm)'][idx_phase4:];
       triax[versuch].update([('Stauchung [mm]', [x-stauchung[0] for x in stauchung])]);
-      print([stauchung[0], idx_phase4]);
    #
    if (len(dateiname) < 3):
       del triax['Versuch 3'];
@@ -263,7 +322,7 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
          del triax['Versuch 2'];
    #
    # Pruefe zulaessige Werte, gueltigen Bereich und min_schnitt anhand der Triax-D-Vorlage
-   if (_RohdatensatzPruefen(daten=triax, vorlage=vorlage, position=[])):
+   if (_RohdatensatzPruefen(daten=triax, vorlage=triaxvorlage, position=[])):
       triax.update([('Status', 'Einlesen erfolgreich')]);
       #
       _KennwerteTriax(daten=triax);

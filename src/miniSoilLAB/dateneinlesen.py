@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-dateneinlesen.py   v0.4 (2019-10)
+dateneinlesen.py   v0.5 (2020-12)
 """
 
 # Copyright 2020 Dominik Zobel.
@@ -87,11 +87,12 @@ def BodenmusterdateiEinlesen(dateiname):
 
 
 # -------------------------------------------------------------------------------------------------
-def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, rohdaten=False):
+def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, ignoriere=['rohdaten', '.dta',
+   '.eax', '.gds', '.tvc']):
    """Lese alle Dateien der Boeden ein, die in muster hinterlegt sind (falls schluessel=None),
    oder nur diejenigen, die als Liste an schluessel uebergeben worden sind. Die Werte der Schluessel
-   in muster entsprechen dem dateimuster und dem zielordner fuer den jeweiligen Bodennamen.
-   Standardmaessig werden rohdaten ignoriert, koennen aber bei Bedarf beruecksichtigt werden.
+   in muster entsprechen dem dateimuster und dem zielordner fuer den jeweiligen Bodennamen. Es
+   werden alle Dateien ignoriert, in deren Namen sich ein in ignoriere definierter Begriff befindet.
    """
    from .datenstruktur import Datenstruktur
    #
@@ -107,7 +108,7 @@ def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, rohdaten=F
          continue;
       #
       tempboden = BodendatenEinlesen(bodenname=bodenname, dateimuster=dateimuster,
-         zielordner=zielordner, rohdaten=rohdaten);
+         zielordner=zielordner, ignoriere=ignoriere);
       if (tempboden is None):
          print('# Warnung: Boden ' + bodenname + ' ungueltig (Pfad/Muster korrekt?)');
          continue;
@@ -119,15 +120,17 @@ def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, rohdaten=F
 
 
 # -------------------------------------------------------------------------------------------------
-def BodendatenEinlesen(bodenname, dateimuster, zielordner, rohdaten=False):
-   """Lese alle Dateien aus dem zielordner ein, die dateimuster enthalten. Speichere die eingelesenen
-   Datein in einer Struktur mit dem Schluessel bodenname und gib diese zurueck. Standardmaessig
-   werden rohdaten ignoriert, koennen aber bei Bedarf beruecksichtigt werden.
+def BodendatenEinlesen(bodenname, dateimuster, zielordner, ignoriere=['rohdaten', '.dta', '.eax',
+   '.gds', '.tvc']):
+   """Lese alle Dateien aus dem zielordner ein, die dateimuster enthalten. Speichere die
+   eingelesenen Datein in einer Struktur mit dem Schluessel bodenname und gib diese zurueck.
+   Es werden alle Dateien ignoriert, in deren Namen sich ein in ignoriere definierter Begriff
+   befindet.
    """
+   import os
    from .datenstruktur import Datenstruktur
    #
-   # FIXME: Besser mit os.sep?
-   if (zielordner[-1] == '/'):
+   if (zielordner[-1] == os.sep):
       zielordner = zielordner[:-1];
    #
    zieldateiliste = ZieldateienFinden(zielordner=zielordner, dateimuster=dateimuster);
@@ -137,15 +140,9 @@ def BodendatenEinlesen(bodenname, dateimuster, zielordner, rohdaten=False):
    print('# --- Lese Dateien zu: ' + bodenname);
    bodendaten = Datenstruktur();
    for dateiname in zieldateiliste:
-      if (not rohdaten):
-         # Rohdaten stillschweigend ignorieren
-         if ((dateiname[-3:].lower() == 'dta') or (dateiname[-3:].lower() == 'eax') or
-            (dateiname[-3:].lower() == 'gds') or (dateiname[-3:].lower() == 'tvc')):
+      for bezeichnung in ignoriere:
+         if (bezeichnung in dateiname.lower()):
             continue;
-      #
-      # FIXME: Ignoriere aktuell alle (Excel-Tabellen) mit Rohdaten im Namen
-      if ('rohdaten' in dateiname.lower()):
-         continue;
       #
       eingelesen = DateiEinlesen(dateiname=dateiname)
       if (eingelesen is not None):

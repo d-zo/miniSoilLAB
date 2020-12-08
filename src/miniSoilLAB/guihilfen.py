@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-guihilfen.py   v0.2 (2020-11)
+guihilfen.py   v0.3 (2020-12)
 """
 
 # Copyright 2020 Dominik Zobel.
@@ -23,6 +23,9 @@ guihilfen.py   v0.2 (2020-11)
 
 # -------------------------------------------------------------------------------------------------
 def FensterZentrieren(hauptfenster, fenster):
+   """Bestimme die Groessen von hauptfenster und fenster und zentriere das fenster mittig in
+   Relation zum hauptfenster.
+   """
    hauptfenster.update_idletasks();
    haupt_x = hauptfenster.winfo_x();
    haupt_y = hauptfenster.winfo_y();

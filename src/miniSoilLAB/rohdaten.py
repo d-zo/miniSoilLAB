@@ -439,14 +439,6 @@ def LeseKVSDaten(dateiname):
                temp_block.update([('Araeometerdaten', temp_araeometer)]);
                #
                if (siebung):
-                  # FIXME: Stimmt das so wirklich? In jedem Fall muss das noch richtig verrechnet werden, fuer alle Durchmesser > 0.032
-                  #refsieb = 0.063;
-                  ##refsieb = 0.09;
-                  #idx_ref, faktor_ref = LinearInterpoliertenIndexUndFaktor(vergleichswert=refsieb, vergleichswertliste=schlaemmdurchmesser);
-                  ##ref_masseprozent = masseprozent[idx_ref] + faktor_ref*(masseprozent[idx_ref+1]-masseprozent[idx_ref]);
-                  #schlaemmdurchmesser = schlaemmdurchmesser[:idx_ref+1];
-                  #masseprozent = masseprozent[:idx_ref+1];
-                  ##sum_masseprozent = [sum_masseprozent[0]/ref_masseprozent*temp_masse for temp_masse in masseprozent] + sum_masseprozent;
                   while (schlaemmdurchmesser[-1] > siebdurchmesser[0]):
                      schlaemmdurchmesser = schlaemmdurchmesser[:-1];
                      masseprozent = masseprozent[:-1];

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-gui.py   v0.7 (2020-11)
+gui.py   v0.9 (2020-12)
 """
 
 # Copyright 2020 Dominik Zobel.
@@ -39,10 +39,10 @@ def _Autoscrollfunktion(event):
 def _Radscrollfunktion(event, canvas, scrollbar):
    # Windows/Linux Scroll events
    delta = 0;
-   if ((event.num == 4) or (event.delta == -120)):
+   if ((event.num == 4) or (event.delta == 120)):
       delta = -1;
    #
-   if ((event.num == 5) or (event.delta == 120)):
+   if ((event.num == 5) or (event.delta == -120)):
       delta = 1;
    if (len(scrollbar.state()) == 0):
       # oder Zustand mit != 'disabled' pruefen
@@ -92,7 +92,7 @@ class GUIbasis(object):
       self.erwhypoparam = [];
       self.viskohypoparam = [];
       #
-      self.rohdaten = False;
+      self.ignoriertedaten = ['rohdaten', '.dta', '.eax', '.gds', '.tvc'];
       #
       self.farben = GUIFarben();
    #
@@ -107,7 +107,10 @@ class GUIbasis(object):
       DebugAnAus();
    #
    def _Rohdaten(self):
-      self.rohdaten = not self.rohdaten;
+      if (len(self.ignoriertedaten) == 0):
+         self.ignoriertedaten = ['rohdaten', '.dta', '.eax', '.gds', '.tvc'];
+      else:
+         self.ignoriertedaten = [];
    #
    def _PlotBefehlEintragen(self, event):
       self.plotcmdidx = len(self.plotcmdliste)-1;
@@ -161,7 +164,7 @@ class GUIbasis(object):
       else:
          VordefiniertePlots(boden=self.boden[self.bodenname.get()], plotname=plotbefehl, figure=self.figure);
       #
-      # FIXME: Keine schoene Loesung
+      # FIXME: Keine schoene Loesung, um die Auswahl temporaer aufzuheben
       if (self.tabs['KVS'].master.currenthighlight is not None):
          self.tabs['KVS'].master.currenthighlight.master.master.Unhighlight();
          self.tabs['KVS'].master.currenthighlight = None;
@@ -735,7 +738,7 @@ class GUIbasis(object):
             return;
       #
       daten = BodendatenEinlesen(bodenname=bodenname, dateimuster=dateimaske, zielordner=zielordner,
-         rohdaten=self.rohdaten);
+         ignoriere=self.ignoriertedaten);
       if (daten is None):
          messagebox.showwarning(parent=unterfenster, title='Daten Einlesen',
             message='Dateiname oder Dateimuster ungültig');
@@ -902,7 +905,7 @@ class GUIbasis(object):
       for einzelboden in musterdaten.keys():
          einzelpaar = dict([(einzelboden, musterdaten[einzelboden])]);
          bodendaten = BodendatenMitSchluesselAusMusterEinlesen(muster=einzelpaar,
-            rohdaten=self.rohdaten);
+            ignoriere=self.ignoriertedaten);
          if (bodendaten is None):
             continue;
          #
