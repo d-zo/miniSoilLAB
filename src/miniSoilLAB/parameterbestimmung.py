@@ -3,7 +3,7 @@
 parameterbestimmung.py   v0.5 (2019-11)
 """
 
-# Copyright 2020 Dominik Zobel.
+# Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the SimpleScriptGenerator package.

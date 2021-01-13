@@ -3,7 +3,7 @@
 plotausgabe.py   v0.3 (2020-02)
 """
 
-# Copyright 2020 Dominik Zobel.
+# Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the SimpleScriptGenerator package.

@@ -9,12 +9,12 @@
 | || | | | || | |_.´  .    | |. '.|   --./  .--.  `|      /
 |_||_|_|_|_||_|_|___.´ \__,|_| \_,`_____'__/    `__.___.-'
 
-                                          D.Zobel 2019-2020
+                                          D.Zobel 2019-2021
 
 Programm zur Aufbereitung von geotechnischen Laborversuchen
 """
 
-# Copyright 2020 Dominik Zobel.
+# Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the SimpleScriptGenerator package.

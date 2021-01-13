@@ -3,7 +3,7 @@
 kennwerte.py   v0.2 (2019-12)
 """
 
-# Copyright 2020 Dominik Zobel.
+# Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the SimpleScriptGenerator package.
