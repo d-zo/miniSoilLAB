@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-                                                    v0.5.5
+                                                    v0.5.6
         _      _    __      _  _  .--.       ..    .----.
        (_)    (_).´ __|    (_)| | |  |      /  `   |     `
  _ _ _  _ _ _  _ . (    __  _ | | |  |     '    '  |  ()  |
@@ -45,5 +45,5 @@ from .gleichungsloeser import *
 from .konstanten import *
 
 __author__ = 'Dominik Zobel';
-__version__ = '0.5.5';
+__version__ = '0.5.6';
 __package__ = 'miniSoilLAB';

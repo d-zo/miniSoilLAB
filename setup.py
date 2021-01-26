@@ -24,7 +24,7 @@ from setuptools import setup
 
 setup(
    name='miniSoilLAB',
-   version='0.5.5',
+   version='0.5.6',
    author='Dominik Zobel',
    author_email='dominik.zobel@tuhh.de',
    description='Viewing and managing results of selected geotechnical experiments for soil identification',

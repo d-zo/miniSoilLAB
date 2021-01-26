@@ -1,5 +1,5 @@
 
-miniSoilLAB 0.5.5
+miniSoilLAB 0.5.6
 =================
 
 [miniSoilLAB](https://github.com/d-zo/miniSoilLAB) is a graphical frontend for viewing and managing

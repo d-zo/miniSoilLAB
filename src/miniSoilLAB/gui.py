@@ -1076,7 +1076,7 @@ class GUIbasis(object):
       unterfenster.tk.call('wm', 'iconphoto', unterfenster._w, tkinter.PhotoImage(data=self.icondata));
       unterfenster.title('miniSoilLAB Infos');
       #
-      infolabel1 = CustomLabel(unterfenster, text='miniSoilLAB v0.5.5', font=('Helvetica', '-18', 'bold'));
+      infolabel1 = CustomLabel(unterfenster, text='miniSoilLAB v0.5.6', font=('Helvetica', '-18', 'bold'));
       infolabel1.grid(row=0, column=0, padx=30, pady=15);
       #
       infolabel2 = CustomLabel(unterfenster, text='2019-2021 Dominik Zobel');
