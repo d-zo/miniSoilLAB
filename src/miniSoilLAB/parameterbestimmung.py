@@ -6,19 +6,19 @@ parameterbestimmung.py   v0.5 (2019-11)
 # Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
-# This file is part of the SimpleScriptGenerator package.
-# SimpleScriptGenerator is free software: you can redistribute it and/or modify
+# This file is part of the miniSoilLAB package.
+# miniSoilLAB is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# SimpleScriptGenerator is distributed in the hope that it will be useful,
+# miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SimpleScriptGenerator. If not, see <http://www.gnu.org/licenses/>.
+# along with miniSoilLAB. If not, see <http://www.gnu.org/licenses/>.
 
 
 # -------------------------------------------------------------------------------------------------

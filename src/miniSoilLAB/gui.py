@@ -6,19 +6,19 @@ gui.py   v0.9 (2020-12)
 # Copyright 2020-2021 Dominik Zobel.
 # All rights reserved.
 #
-# This file is part of the SimpleScriptGenerator package.
-# SimpleScriptGenerator is free software: you can redistribute it and/or modify
+# This file is part of the miniSoilLAB package.
+# miniSoilLAB is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# SimpleScriptGenerator is distributed in the hope that it will be useful,
+# miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SimpleScriptGenerator. If not, see <http://www.gnu.org/licenses/>.
+# along with miniSoilLAB. If not, see <http://www.gnu.org/licenses/>.
 
 
 import tkinter
@@ -465,7 +465,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         if (oedo_crs['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_crs['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          for oedo_lagerung in ['locker', 'dicht']:
@@ -483,7 +488,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         if (oedo_crsvisko['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_crsvisko['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Porenzahl Oedo-CRS-Visko',
@@ -497,7 +507,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         if (oedo_crl['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_crl['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-CRL Wurzelmassstab',
@@ -517,7 +532,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         if (oedo_dicht['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_dicht['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-dicht',
@@ -531,7 +551,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         if (oedo_locker['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_locker['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-locker',
@@ -545,7 +570,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         if (triaxd_dicht['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = triaxd_dicht['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-dicht',
@@ -579,7 +609,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         if (triaxd_locker['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = triaxd_locker['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-locker',
@@ -603,7 +638,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         if (triax_cu['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = triax_cu['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-CU',
@@ -627,7 +667,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Auswertung'].NeuerEintrag(text=dateiname);
-         if (auswertung['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = auswertung['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Auswertung'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          refunten = tkinter.StringVar();
@@ -650,7 +695,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         if (triax_pq['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = triax_pq['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          self.tabs['Triax'].NeuerEintrag(text='Plot Spannungen Triax-p-q',
@@ -695,7 +745,12 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Auswertung'].NeuerEintrag(text=dateiname);
-         if (oedo_crsvisko['Status'] != 'Einlesen erfolgreich'):
+         try:
+            status = oedo_crsvisko['Status'];
+         except:
+            status = '---fehlt---';
+         #
+         if (status != 'Einlesen erfolgreich'):
             self.tabs['Auswertung'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
          #
          intervalllokalext = tkinter.StringVar();
