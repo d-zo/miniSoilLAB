@@ -14,7 +14,7 @@ plotausgabe.py   v0.3 (2020-02)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -154,6 +154,15 @@ def PlotdatenOedoCRL(boden, variante, kurve=0):
       yparam = 'Porenzahl [-]';
       yflip = False;
    #
+   try:
+      log_zu_sqrt = boden['Oedo-CRL']['Einstellungen']['Verhaeltnis Log/sqrt'];
+      zwischenpunkte = boden['Oedo-CRL']['Einstellungen']['Zwischenpunkte'];
+      glaettungswert = boden['Oedo-CRL']['Einstellungen']['Glaettungswert'];
+      linearbereich = boden['Oedo-CRL']['Einstellungen']['Linearer Bereich'];
+   except:
+      print('# Warnung: Benoetigte Einstllungen zur Bestimmung der Tangentenpunkte nicht gefunden');
+      return None;
+   #
    for idx_var in range(1, 9):
       if ((kurve != 0) and (kurve != idx_var)):
          continue;
@@ -183,7 +192,7 @@ def PlotdatenOedoCRL(boden, variante, kurve=0):
             return None;
          #
          xporp = xdaten[-1][int(0.5*len(xdaten[-1]))];
-         yporp = ydaten[-1][-1] - c_alpha*(log10(xporp)-log10(xdaten[-1][-1]));
+         yporp = ydaten[-1][-1] + c_alpha*(log10(xporp)-log10(xdaten[-1][-1]));
          xdaten += [[xporp, xdaten[-1][-1]]];
          ydaten += [[yporp, ydaten[-1][-1]]];
          legendeneintraege += [None];
@@ -195,10 +204,6 @@ def PlotdatenOedoCRL(boden, variante, kurve=0):
          try:
             zeit = boden['Oedo-CRL'][einzelversuch]['Zeit [h]'];
             spez_setzung = boden['Oedo-CRL'][einzelversuch]['Setzung-spez [%]'];
-            log_zu_sqrt = boden['Oedo-CRL'][einzelversuch]['Einstellungen']['Verhaeltnis Log/sqrt'];
-            zwischenpunkte = boden['Oedo-CRL'][einzelversuch]['Einstellungen']['Zwischenpunkte'];
-            glaettungswert = boden['Oedo-CRL'][einzelversuch]['Einstellungen']['Glaettungswert'];
-            linearbereich = boden['Oedo-CRL'][einzelversuch]['Einstellungen']['Linearer Bereich'];
          except:
             print('# Warnung: Benoetigte Eintraege zur Bestimmung der Tangentenpunkte nicht in boden gefunden');
             return None;
@@ -288,14 +293,30 @@ def PlotdatenOedo(boden, varianten):
    stylelist = [];
    schritte = ['Erstbelastung', 'Entlastung', 'Wiederbelastung'];
    for idx_var, einzelvariante in enumerate(varianten):
+      if (einzelvariante == 'Oedo-CRL'):
+         if (einzelvariante not in boden):
+            continue;
+         #
+         oedodaten = boden[einzelvariante]; 
+      else:
+         if ('Oedo' not in boden):
+            continue;
+         #
+         if ((einzelvariante == 'Oedo-locker') and (einzelvariante not in boden['Oedo'])):
+            continue;
+         elif ((einzelvariante == 'Oedo-dicht') and (einzelvariante not in boden['Oedo'])):
+            continue;
+         #
+         oedodaten = boden['Oedo'][einzelvariante]; 
+      #
       x_all = [];
       y_all = [];
       y_fitall = [];
       for einzelschritt in schritte:
          try:
-            x_temp = boden[einzelvariante][einzelschritt][xparam];
-            y_temp = boden[einzelvariante][einzelschritt][yparam];
-            a, b, c = boden[einzelvariante][einzelschritt]['Ausgleichs-Koeffizienten'];
+            x_temp = oedodaten[einzelschritt][xparam];
+            y_temp = oedodaten[einzelschritt][yparam];
+            a, b, c = oedodaten[einzelschritt]['Ausgleichs-Koeffizienten'];
          except:
             continue;
          #
@@ -354,7 +375,7 @@ def PlotdatenTriaxPQ(boden, xparam, yparam):
             ydaten += [boden['Triax-p-q'][pqvariante][yparam]];
             legendeneintraege += [boden['Triax-p-q'][pqvariante]['Spannungspfad']];
          except:
-            print('# Warnung: \'' + xparam + '\', \'' + yparam + '\'  oder/und \'Spannungspfad\' nicht in boden gefunden');
+            print('# Warnung: \'' + xparam + '\', \'' + yparam + '\' oder/und \'Spannungspfad\' nicht in boden gefunden');
             return None;
          #
       #
@@ -375,7 +396,7 @@ def PlotdatenTriaxPQ(boden, xparam, yparam):
       versatz = [];
       E_max = [];
       try:
-         hoehe = boden['Triax-p-q']['4-Nach Konsolidation']['Hoehe [mm]'][-1];
+         hoehe = boden['Triax-p-q']['3-Konsolidation']['Hoehe [mm]'][-1];
       except:
          print('# Warnung: Benoetigter Eintrag \'Hoehe [mm]\' nicht in boden gefunden');
          return None;
@@ -468,20 +489,33 @@ def PlotdatenTriaxMC(boden, varianten, kreise=True, kohaesion=False):
    legendeneintraege = [];
    stylelist = [];
    for idx_var, einzelvariante in enumerate(varianten):
-      if (einzelvariante not in boden):
-         continue;
+      if (einzelvariante == 'Triax-CU'):
+         if (einzelvariante not in boden):
+            continue;
+         #
+         triaxdaten = boden[einzelvariante]; 
+      else:
+         if ('Triax-D' not in boden):
+            continue;
+         #
+         if ((einzelvariante == 'Triax-D-locker') and (einzelvariante not in boden['Triax-D'])):
+            continue;
+         elif ((einzelvariante == 'Triax-D-dicht') and (einzelvariante not in boden['Triax-D'])):
+            continue;
+         #
+         triaxdaten = boden['Triax-D'][einzelvariante]; 
       #
       punkte = [];
       for idx_triax in range(3):
          versuchsname = 'Versuch ' + str(idx_triax + 1);
-         if (versuchsname not in boden[einzelvariante]):
+         if (versuchsname not in triaxdaten):
             print('# Hinweis: Versuch ' + str(idx_triax) + ' nicht gefunden');
             break;
          #
          try:
-            sigma1p = boden[einzelvariante][versuchsname]['Peakzustand']['Sigma_1_prime [kN/m^2]'];
-            sigma3p = boden[einzelvariante][versuchsname]['Peakzustand']['Sigma_3_prime [kN/m^2]'];
-            sigma3 = boden[einzelvariante][versuchsname]['Radialdruck [kN/m^2]'];
+            sigma1p = triaxdaten[versuchsname]['Peakzustand']['Sigma_1_prime [kN/m^2]'];
+            sigma3p = triaxdaten[versuchsname]['Peakzustand']['Sigma_3_prime [kN/m^2]'];
+            sigma3 = triaxdaten[versuchsname]['Radialdruck [kN/m^2]'];
          except:
             print('# Warnung: Benoetigte Eintraege zum Peakzustand oder \'Radialdruck [kN/m^2]\' nicht in boden gefunden');
             return None;
@@ -495,8 +529,8 @@ def PlotdatenTriaxMC(boden, varianten, kreise=True, kohaesion=False):
             stylelist += [[triax['farbskala ' + str(idx_var)][idx_triax], '-', 'None']];
          else:
             try:
-               xwerte = boden[einzelvariante][versuchsname][xparam];
-               ywerte = boden[einzelvariante][versuchsname][yparam];
+               xwerte = triaxdaten[versuchsname][xparam];
+               ywerte = triaxdaten[versuchsname][yparam];
             except:
                print('# Warnung: \'' + xparam + '\' oder/und \'' + yparam + '\' nicht in boden gefunden');
                return None;
@@ -511,8 +545,8 @@ def PlotdatenTriaxMC(boden, varianten, kreise=True, kohaesion=False):
       #
       if (kohaesion):
          try:
-            offset = boden[einzelvariante]['Mohr-Coulomb']['Mit Kohaesion']['Kohaesion [kN/m^2]'];
-            reibungswinkel = boden[einzelvariante]['Mohr-Coulomb']['Mit Kohaesion']['Reibungswinkel-eff [Grad]'];
+            offset = triaxdaten['Mohr-Coulomb']['Mit Kohaesion']['Kohaesion [kN/m^2]'];
+            reibungswinkel = triaxdaten['Mohr-Coulomb']['Mit Kohaesion']['Reibungswinkel-eff [Grad]'];
          except:
             print('# Warnung: Benoetigte Eintraege zu Mohr-Coulomb nicht in boden gefunden');
             return None;
@@ -522,7 +556,7 @@ def PlotdatenTriaxMC(boden, varianten, kreise=True, kohaesion=False):
       else:
          offset = 0.0;
          try:
-            reibungswinkel = boden[einzelvariante]['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
+            reibungswinkel = triaxdaten['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
          except:
             print('# Warnung: Benoetigte Eintraege zu Mohr-Coulomb nicht in boden gefunden');
             return None;
@@ -585,20 +619,22 @@ def PlotdatenTriaxD(boden, varianten, yparam='delta V/V_0 [%]'):
    extra_style = [];
    extra_text = [];
    for idx_var, einzelvariante in enumerate(varianten):
-      if (einzelvariante not in boden):
+      if (einzelvariante not in boden['Triax-D']):
          continue;
+      #
+      triaxdaten = boden['Triax-D'][einzelvariante]; 
       #
       for idx_triax in range(3):
          versuchsname = 'Versuch ' + str(idx_triax + 1);
-         if (versuchsname not in boden[einzelvariante]):
+         if (versuchsname not in triaxdaten):
             print('# Hinweis: Versuch ' + str(idx_triax + 1) + ' nicht gefunden');
             break;
          #
          try:
-            x_temp = boden[einzelvariante][versuchsname][xparam];
-            y_temp = boden[einzelvariante][versuchsname][yparam];
+            x_temp = triaxdaten[versuchsname][xparam];
+            y_temp = triaxdaten[versuchsname][yparam];
          except:
-            print('# Warnung: \'' + xparam + '\' oder/und \'' + yparam + '\' nicht in boden gefunden');
+            print('# Warnung: \'' + xparam + '\' oder/und \'' + yparam + '\' nicht in boden[\'Triax-D\'] gefunden');
             return None;
          #
          #
@@ -607,11 +643,11 @@ def PlotdatenTriaxD(boden, varianten, yparam='delta V/V_0 [%]'):
          #
          if (yparam == 'delta V/V_0 [%]'):
             try:
-               idx_peak = boden[einzelvariante][versuchsname]['Peakzustand']['Index'];
-               geradenwinkel = boden[einzelvariante][versuchsname]['Peakzustand']['Geradenwinkel [Grad]'];
-               dilatanzwinkel = boden[einzelvariante][versuchsname]['Peakzustand']['Dilatanzwinkel [Grad]'];
+               idx_peak = triaxdaten[versuchsname]['Peakzustand']['Index'];
+               geradenwinkel = triaxdaten[versuchsname]['Peakzustand']['Geradenwinkel [Grad]'];
+               dilatanzwinkel = triaxdaten[versuchsname]['Peakzustand']['Dilatanzwinkel [Grad]'];
             except:
-               print('# Warnung: Benoetigte Eintraege zum Peakzustand nicht in boden gefunden');
+               print('# Warnung: Benoetigte Eintraege zum Peakzustand nicht in boden[\'Triax-D\'] gefunden');
                return None;
             #
             if ('dicht' in einzelvariante):
@@ -626,9 +662,9 @@ def PlotdatenTriaxD(boden, varianten, yparam='delta V/V_0 [%]'):
             extra_style += [[triax['dunkelskala'][idx_triax], '-', 'None'], [triax['dunkelskala'][idx_triax], '', 'x']];
          elif (yparam == '(sig_1 - sig_3)/2.0 [kN/m^2]'):
             try:
-               idx_peak = boden[einzelvariante][versuchsname]['Peakzustand']['Index'];
+               idx_peak = triaxdaten[versuchsname]['Peakzustand']['Index'];
             except:
-               print('# Warnung: Benoetigte Eintraege zum Peakzustand nicht in boden gefunden');
+               print('# Warnung: Benoetigte Eintraege zum Peakzustand nicht in boden[\'Triax-D\'] gefunden');
                return None;
             #
             extra_xwerte += [xdaten[-1][idx_peak]];
@@ -643,9 +679,9 @@ def PlotdatenTriaxD(boden, varianten, yparam='delta V/V_0 [%]'):
             return None;
          #
          try:
-            sigma3 = boden[einzelvariante][versuchsname]['Radialdruck [kN/m^2]'];
+            sigma3 = triaxdaten[versuchsname]['Radialdruck [kN/m^2]'];
          except:
-            print('# Warnung: Benoetigter Eintrag \'Radialdruck [kN/m^2]\' nicht in boden gefunden');
+            print('# Warnung: Benoetigter Eintrag \'Radialdruck [kN/m^2]\' nicht in boden[\'Triax-D\'] gefunden');
             return None;
          #
          sigma3_gerundet = int(round(sum(sigma3)/len(sigma3)/5.0)*5.0);
@@ -758,7 +794,7 @@ def PlotdatenKVS(boden):
    in boden extrahiert und gespeichert. Es werden die Datensaetze aus bis zu acht Schluesseln in
    boden fuer die Erstellung der Plotdaten verwendet. Gibt die fertigen Plotdaten zurueck.
    """
-   if ('Kornverteilung' not in boden):
+   if ('KVS' not in boden):
       return None;
    #
    kvs = PlotvorlageVorbereiten(typ='KVS');
@@ -772,13 +808,13 @@ def PlotdatenKVS(boden):
    #
    for idx_kvs in range(8):
       kvsname = 'Sieblinie ' + str(idx_kvs + 1);
-      if (kvsname not in boden['Kornverteilung']):
+      if (kvsname not in boden['KVS']):
          break;
       #
       try:
-         x_temp = boden['Kornverteilung'][kvsname]['Interpolation']['Siebdurchmesser [mm]'];
-         y_temp = boden['Kornverteilung'][kvsname]['Interpolation']['Summierte Masseanteile Gesamtmenge [%]'];
-         temp_zwischenpunkte = boden['Kornverteilung'][kvsname]['Interpolation']['Interpolationspunkte [-]'];
+         x_temp = boden['KVS'][kvsname]['Interpolation']['Siebdurchmesser [mm]'];
+         y_temp = boden['KVS'][kvsname]['Interpolation']['Summierte Masseanteile Gesamtmenge [%]'];
+         temp_zwischenpunkte = boden['KVS'][kvsname]['Interpolationspunkte [-]'];
       except:
          print('# Warnung: \'' + xparam + '\', \'' + yparam + '\' oder/und zur Interpolationsdaten nicht in boden gefunden');
          return None;
@@ -788,17 +824,21 @@ def PlotdatenKVS(boden):
       stylelist += [[kvs['dunkelskala'][0], '-', 'None']];
       zwischenpunkte += [temp_zwischenpunkte];
       #
-      tiefe = boden['Kornverteilung'][kvsname]['Tiefe'];
+      try:
+         tiefe = boden['KVS'][kvsname]['Tiefe'];
+      except:
+         tiefe = '';
+      #
       if (tiefe == '') or (tiefe == '-'):
          tiefe = '';
       else:
          tiefe = ' ' + tiefe;
       #
-      if ('Ungleichfoermigkeitszahl [-]' in boden['Kornverteilung'][kvsname]['Interpolation']):
+      if ('Ungleichfoermigkeitszahl [-]' in boden['KVS'][kvsname]['Interpolation']):
          try:
-            temp_legendeneintrag = boden['Kornverteilung'][kvsname]['Entnahmestelle'] + tiefe + ': U=' \
-            + str(boden['Kornverteilung'][kvsname]['Interpolation']['Ungleichfoermigkeitszahl [-]']) \
-            + ', Cc=' + str(boden['Kornverteilung'][kvsname]['Interpolation']['Kruemmungszahl [-]']);
+            temp_legendeneintrag = boden['KVS'][kvsname]['Entnahmestelle'] + tiefe + ': U=' \
+            + str(boden['KVS'][kvsname]['Interpolation']['Ungleichfoermigkeitszahl [-]']) \
+            + ', Cc=' + str(boden['KVS'][kvsname]['Interpolation']['Kruemmungszahl [-]']);
          except:
             print('# Warnung: Benoetigte Eintraege zur Interpolation nicht in boden gefunden');
             return None;
@@ -806,14 +846,14 @@ def PlotdatenKVS(boden):
          legendeneintraege += [temp_legendeneintrag];
       else:
          try:
-            temp_legendeneintrag = boden['Kornverteilung'][kvsname]['Entnahmestelle'] + tiefe;
+            temp_legendeneintrag = boden['KVS'][kvsname]['Entnahmestelle'] + tiefe;
          except:
             print('# Warnung: Benoetigter Eintrag \'Entnahmestelle\' nicht in boden gefunden');
             return None;
             
          legendeneintraege += [temp_legendeneintrag];
    #
-   if ( 'Sieblinie ' + str(idx_kvs + 2) in boden['Kornverteilung']):
+   if ( 'Sieblinie ' + str(idx_kvs + 2) in boden['KVS']):
       print('# Konnte nicht alle Sieblinien zeichnen');
    #
    kvs.update([('xdaten', xdaten)]);

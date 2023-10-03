@@ -1,41 +1,170 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module miniSoilLAB.dateneinlesen</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head><body bgcolor="#f0f0f8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.dateneinlesen</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
 
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
-<tr bgcolor="#7799ee">
-<td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.dateneinlesen</strong></big></big></font></td
-><td align=right valign=bottom
-></td></tr></table>
-    <p><tt>dateneinlesen.py&nbsp;&nbsp;&nbsp;v0.5&nbsp;(2020-12)</tt></p>
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.dateneinlesen</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/dateneinlesen.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/dateneinlesen.py</a></td></tr></table>
+    <p><span class="code">dateneinlesen.py&nbsp;&nbsp;&nbsp;v0.6&nbsp;(2021-11)</span></p>
 <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-BodendatenEinlesen"><strong>BodendatenEinlesen</strong></a>(bodenname, dateimuster, zielordner, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'])</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dem&nbsp;zielordner&nbsp;ein,&nbsp;die&nbsp;dateimuster&nbsp;enthalten.&nbsp;Speichere&nbsp;die<br>
-eingelesenen&nbsp;Datein&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.<br>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-BasispfadErmitteln"><strong>BasispfadErmitteln</strong></a>(dateiliste)</dt><dd><span class="code">Finde&nbsp;den&nbsp;laengsten&nbsp;gemeinsamen&nbsp;Pfad&nbsp;aller&nbsp;Dateien&nbsp;in&nbsp;dateiliste&nbsp;und<br>
+gebe&nbsp;ihn&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-BodendatenDateilisteEinlesen"><strong>BodendatenDateilisteEinlesen</strong></a>(bodenname, dateiliste, verarbeitet=True)</dt><dd><span class="code">Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dateiliste&nbsp;ein,&nbsp;speichere&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit<br>
+dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-BodendatenEinlesen"><strong>BodendatenEinlesen</strong></a>(bodenname, dateimuster, zielordner, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'], verarbeitet=True)</dt><dd><span class="code">Lese&nbsp;alle&nbsp;Dateien&nbsp;aus&nbsp;dem&nbsp;zielordner&nbsp;ein,&nbsp;die&nbsp;dateimuster&nbsp;enthalten.&nbsp;Speichere&nbsp;die<br>
+eingelesenen&nbsp;Dateien&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;bodenname&nbsp;und&nbsp;gib&nbsp;diese&nbsp;zurueck.<br>
 Es&nbsp;werden&nbsp;alle&nbsp;Dateien&nbsp;ignoriert,&nbsp;in&nbsp;deren&nbsp;Namen&nbsp;sich&nbsp;ein&nbsp;in&nbsp;ignoriere&nbsp;definierter&nbsp;Begriff<br>
-befindet.</tt></dd></dl>
- <dl><dt><a name="-BodendatenMitSchluesselAusMusterEinlesen"><strong>BodendatenMitSchluesselAusMusterEinlesen</strong></a>(muster, schluessel=None, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'])</dt><dd><tt>Lese&nbsp;alle&nbsp;Dateien&nbsp;der&nbsp;Boeden&nbsp;ein,&nbsp;die&nbsp;in&nbsp;muster&nbsp;hinterlegt&nbsp;sind&nbsp;(falls&nbsp;schluessel=None),<br>
+befindet.&nbsp;Gibt&nbsp;None&nbsp;zurueck,&nbsp;falls&nbsp;keine&nbsp;Daten&nbsp;eingelesen&nbsp;werden&nbsp;koennen.</span></dd></dl>
+ <dl><dt><a name="-BodendatenListeEinlesen"><strong>BodendatenListeEinlesen</strong></a>(dateiname, verarbeitet=True)</dt><dd><span class="code">Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Listendatei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;eine&nbsp;Dateiliste&nbsp;fuer&nbsp;einen&nbsp;oder<br>
+mehrere&nbsp;Boeden&nbsp;enthaelt.&nbsp;Die&nbsp;erste&nbsp;Zeile&nbsp;einer&nbsp;Liste&nbsp;enthaelt&nbsp;den&nbsp;Namen&nbsp;des&nbsp;Bodens&nbsp;mit&nbsp;einem<br>
+abschliessenden&nbsp;Doppelpunkt&nbsp;und&nbsp;danach&nbsp;folgt&nbsp;eine&nbsp;Liste&nbsp;an&nbsp;Dateinamen&nbsp;(die&nbsp;nicht&nbsp;auf&nbsp;einem<br>
+Doppelpunkt&nbsp;enden&nbsp;duerfen).&nbsp;Jede&nbsp;Zeile&nbsp;muss&nbsp;genau&nbsp;einem&nbsp;Dateinamen&nbsp;entsprechen,&nbsp;leer&nbsp;sein&nbsp;oder<br>
+eine&nbsp;Kommentarzeile&nbsp;sein&nbsp;(Raute&nbsp;#&nbsp;als&nbsp;erstes&nbsp;Zeichen).<br>
+Fuer&nbsp;alle&nbsp;Boeden&nbsp;werden&nbsp;alle&nbsp;Dateien&nbsp;eingelesen&nbsp;und&nbsp;in&nbsp;einer&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;jeweiligen<br>
+Bodennamen&nbsp;als&nbsp;Schluessel&nbsp;gespeichert.&nbsp;Diese&nbsp;Struktur&nbsp;wird&nbsp;zurueckgegeben.</span></dd></dl>
+ <dl><dt><a name="-BodendatenMitSchluesselAusMusterEinlesen"><strong>BodendatenMitSchluesselAusMusterEinlesen</strong></a>(muster, schluessel=None, ignoriere=['rohdaten', '.dta', '.eax', '.gds', '.tvc'], verarbeitet=True)</dt><dd><span class="code">Lese&nbsp;alle&nbsp;Dateien&nbsp;der&nbsp;Boeden&nbsp;ein,&nbsp;die&nbsp;in&nbsp;muster&nbsp;hinterlegt&nbsp;sind&nbsp;(falls&nbsp;schluessel=None),<br>
 oder&nbsp;nur&nbsp;diejenigen,&nbsp;die&nbsp;als&nbsp;Liste&nbsp;an&nbsp;schluessel&nbsp;uebergeben&nbsp;worden&nbsp;sind.&nbsp;Die&nbsp;Werte&nbsp;der&nbsp;Schluessel<br>
 in&nbsp;muster&nbsp;entsprechen&nbsp;dem&nbsp;dateimuster&nbsp;und&nbsp;dem&nbsp;zielordner&nbsp;fuer&nbsp;den&nbsp;jeweiligen&nbsp;Bodennamen.&nbsp;Es<br>
-werden&nbsp;alle&nbsp;Dateien&nbsp;ignoriert,&nbsp;in&nbsp;deren&nbsp;Namen&nbsp;sich&nbsp;ein&nbsp;in&nbsp;ignoriere&nbsp;definierter&nbsp;Begriff&nbsp;befindet.</tt></dd></dl>
- <dl><dt><a name="-BodenmusterdateiEinlesen"><strong>BodenmusterdateiEinlesen</strong></a>(dateiname)</dt><dd><tt>Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Bodenmuster-Datei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;in&nbsp;jeder&nbsp;Zeile&nbsp;durch&nbsp;Semikolons<br>
+werden&nbsp;alle&nbsp;Dateien&nbsp;ignoriert,&nbsp;in&nbsp;deren&nbsp;Namen&nbsp;sich&nbsp;ein&nbsp;in&nbsp;ignoriere&nbsp;definierter&nbsp;Begriff&nbsp;befindet.</span></dd></dl>
+ <dl><dt><a name="-BodenmusterdateiEinlesen"><strong>BodenmusterdateiEinlesen</strong></a>(dateiname)</dt><dd><span class="code">Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Bodenmuster-Datei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;in&nbsp;jeder&nbsp;Zeile&nbsp;durch&nbsp;Semikolons<br>
 getrennt&nbsp;die&nbsp;drei&nbsp;Eintraege&nbsp;Bodenname,&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.<br>
 Gibt&nbsp;ein&nbsp;dict&nbsp;mit&nbsp;den&nbsp;Bodennamen&nbsp;als&nbsp;Schluessel&nbsp;zurueck,&nbsp;das&nbsp;fuer&nbsp;jeden&nbsp;Bodennamen&nbsp;die<br>
-Eintraege&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.</tt></dd></dl>
- <dl><dt><a name="-DateiEinlesen"><strong>DateiEinlesen</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;die&nbsp;Datei&nbsp;namens&nbsp;dateiname&nbsp;ein,&nbsp;sofern&nbsp;es&nbsp;sich&nbsp;um&nbsp;einen&nbsp;unterstuetzten&nbsp;Dateityp/-namen<br>
-handelt.</tt></dd></dl>
- <dl><dt><a name="-DatensatzEinlesen"><strong>DatensatzEinlesen</strong></a>(dateiname)</dt><dd><tt>Lade&nbsp;eine&nbsp;JSON-formatierte&nbsp;Datei,&nbsp;die&nbsp;mit&nbsp;Datensatz_Speichern&nbsp;erstellt&nbsp;worden&nbsp;ist.&nbsp;Gib&nbsp;die<br>
-eingelesene&nbsp;Struktur&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-DatensatzSpeichern"><strong>DatensatzSpeichern</strong></a>(datensatz, dateiname)</dt><dd><tt>Speichere&nbsp;die&nbsp;Stuktur&nbsp;datensatz&nbsp;als&nbsp;JSON-formatierte&nbsp;Datei&nbsp;namens&nbsp;dateiname.</tt></dd></dl>
- <dl><dt><a name="-ExistiertDatei"><strong>ExistiertDatei</strong></a>(dateiname)</dt><dd><tt>Pruefe&nbsp;die&nbsp;Existenz&nbsp;einer&nbsp;Datei.&nbsp;Gibt&nbsp;True&nbsp;zurueck,&nbsp;falls&nbsp;die&nbsp;Datei&nbsp;vorhanden&nbsp;ist.</tt></dd></dl>
- <dl><dt><a name="-ZieldateienFinden"><strong>ZieldateienFinden</strong></a>(zielordner, dateimuster, ignoriereOrdnernamen=['alt'])</dt><dd><tt>Ermittle&nbsp;im&nbsp;zielordner&nbsp;und&nbsp;allen&nbsp;Unterordnern&nbsp;alle&nbsp;Dateien,&nbsp;deren&nbsp;Namen&nbsp;dateimuster&nbsp;enthaelt.<br>
+Eintraege&nbsp;Dateimuster&nbsp;und&nbsp;Zielordner&nbsp;enthaelt.</span></dd></dl>
+ <dl><dt><a name="-DateiEinlesen"><strong>DateiEinlesen</strong></a>(dateiname, verarbeitet=True)</dt><dd><span class="code">Lese&nbsp;die&nbsp;Datei&nbsp;namens&nbsp;dateiname&nbsp;ein,&nbsp;sofern&nbsp;es&nbsp;sich&nbsp;um&nbsp;einen&nbsp;unterstuetzten&nbsp;Dateityp/-namen<br>
+handelt.</span></dd></dl>
+ <dl><dt><a name="-DatensatzEinlesen"><strong>DatensatzEinlesen</strong></a>(dateiname)</dt><dd><span class="code">Lade&nbsp;eine&nbsp;JSON-formatierte&nbsp;Datei,&nbsp;die&nbsp;mit&nbsp;Datensatz_Speichern&nbsp;erstellt&nbsp;worden&nbsp;ist.&nbsp;Gib&nbsp;die<br>
+eingelesene&nbsp;Struktur&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-DatensatzSpeichern"><strong>DatensatzSpeichern</strong></a>(datensatz, dateiname, refspeichern=True)</dt><dd><span class="code">Speichere&nbsp;die&nbsp;Stuktur&nbsp;datensatz&nbsp;als&nbsp;JSON-formatierte&nbsp;Datei&nbsp;namens&nbsp;dateiname.&nbsp;Mit<br>
+respeichern=False&nbsp;werden&nbsp;die&nbsp;Rohdaten&nbsp;und&nbsp;Verweise&nbsp;darauf&nbsp;nicht&nbsp;der&nbsp;Datei&nbsp;gespeichert.</span></dd></dl>
+ <dl><dt><a name="-ExistiertDatei"><strong>ExistiertDatei</strong></a>(dateiname)</dt><dd><span class="code">Pruefe&nbsp;die&nbsp;Existenz&nbsp;einer&nbsp;Datei.&nbsp;Gibt&nbsp;True&nbsp;zurueck,&nbsp;falls&nbsp;die&nbsp;Datei&nbsp;vorhanden&nbsp;ist.</span></dd></dl>
+ <dl><dt><a name="-ListendateiEinlesen"><strong>ListendateiEinlesen</strong></a>(dateiname)</dt><dd><span class="code">Liest&nbsp;den&nbsp;Inhalt&nbsp;einer&nbsp;Listendatei&nbsp;(dateiname)&nbsp;ein,&nbsp;die&nbsp;eine&nbsp;Dateiliste&nbsp;fuer&nbsp;einen&nbsp;oder<br>
+mehrere&nbsp;Boeden&nbsp;enthaelt.&nbsp;Die&nbsp;erste&nbsp;Zeile&nbsp;einer&nbsp;Liste&nbsp;enthaelt&nbsp;den&nbsp;Namen&nbsp;des&nbsp;Bodens&nbsp;mit&nbsp;einem<br>
+abschliessenden&nbsp;Doppelpunkt&nbsp;und&nbsp;danach&nbsp;folgt&nbsp;eine&nbsp;Liste&nbsp;an&nbsp;Dateinamen&nbsp;(die&nbsp;nicht&nbsp;auf&nbsp;einem<br>
+Doppelpunkt&nbsp;enden&nbsp;duerfen).&nbsp;Jede&nbsp;Zeile&nbsp;muss&nbsp;genau&nbsp;einem&nbsp;Dateinamen&nbsp;entsprechen,&nbsp;leer&nbsp;sein&nbsp;oder<br>
+eine&nbsp;Kommentarzeile&nbsp;sein&nbsp;(Raute&nbsp;#&nbsp;als&nbsp;erstes&nbsp;Zeichen).<br>
+Gibt&nbsp;ein&nbsp;dict&nbsp;mit&nbsp;den&nbsp;Bodennamen&nbsp;als&nbsp;Schluessel&nbsp;zurueck,&nbsp;das&nbsp;fuer&nbsp;jeden&nbsp;Bodennamen&nbsp;die<br>
+Liste&nbsp;der&nbsp;dazugehoerigen&nbsp;Dateinamen&nbsp;enthaelt.</span></dd></dl>
+ <dl><dt><a name="-StrukturZuSchluesselInBasisstrukturHinzufuegen"><strong>StrukturZuSchluesselInBasisstrukturHinzufuegen</strong></a>(basisstruktur, schluessel, struktur)</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;basisstruktur&nbsp;und&nbsp;eine&nbsp;weitere&nbsp;struktur.&nbsp;Pruefe,&nbsp;ob&nbsp;schluessel&nbsp;in&nbsp;basisstruktur<br>
+existiert&nbsp;(ggfs.&nbsp;erzeugen)&nbsp;und&nbsp;fuege&nbsp;die&nbsp;struktur&nbsp;dort&nbsp;mit&nbsp;der&nbsp;Bezeichnung&nbsp;"_Ref_"&nbsp;und&nbsp;der<br>
+kleinsten,&nbsp;nicht&nbsp;vergebenen&nbsp;dreistelligen&nbsp;Nummer&nbsp;ab&nbsp;001&nbsp;hinzu.&nbsp;Aendert&nbsp;basisstruktur&nbsp;und<br>
+gibt&nbsp;die&nbsp;tatsaechlich&nbsp;gewaehlte&nbsp;Bezeichnung&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-ZieldateienFinden"><strong>ZieldateienFinden</strong></a>(zielordner, dateimuster, ignoriereOrdnernamen=['alt'])</dt><dd><span class="code">Ermittle&nbsp;im&nbsp;zielordner&nbsp;und&nbsp;allen&nbsp;Unterordnern&nbsp;alle&nbsp;Dateien,&nbsp;deren&nbsp;Namen&nbsp;dateimuster&nbsp;enthaelt.<br>
 Falls&nbsp;ignoriereOrdnernamen&nbsp;keine&nbsp;leere&nbsp;Liste&nbsp;ist,&nbsp;werden&nbsp;alle&nbsp;Unterordner&nbsp;in&nbsp;der&nbsp;Liste&nbsp;ignoriert<br>
 (deren&nbsp;Name&nbsp;einem&nbsp;der&nbsp;Eintraege&nbsp;entspricht).<br>
 Gibt&nbsp;eine&nbsp;Liste&nbsp;aller&nbsp;Dateinamen&nbsp;der&nbsp;so&nbsp;ausgewaehlten&nbsp;Dateien&nbsp;zurueck.<br>
@@ -43,6 +172,6 @@ Gibt&nbsp;eine&nbsp;Liste&nbsp;aller&nbsp;Dateinamen&nbsp;der&nbsp;so&nbsp;ausge
 Kann&nbsp;auch&nbsp;zum&nbsp;Testen&nbsp;von&nbsp;Bodenmusterdatei-Eintraegen&nbsp;verwendet&nbsp;werden.&nbsp;Wenn&nbsp;Pfad&nbsp;und&nbsp;regulaerer<br>
 Ausdruck&nbsp;richtig&nbsp;gewaehlt&nbsp;sind,&nbsp;sollten&nbsp;exakt&nbsp;die&nbsp;gewuenschten&nbsp;Dateien&nbsp;aufgelistet/eingelesen<br>
 werden.&nbsp;Fuer&nbsp;die&nbsp;Wahl&nbsp;von&nbsp;sinnvollen&nbsp;regulaeren&nbsp;Ausdrucken&nbsp;sei&nbsp;auf&nbsp;das&nbsp;Python-Modul&nbsp;re&nbsp;und<br>
-die&nbsp;offizielle&nbsp;Dokumentation&nbsp;verwiesen&nbsp;(Standard&nbsp;Library&nbsp;Reference&nbsp;unter&nbsp;https://docs.python.org)</tt></dd></dl>
+die&nbsp;offizielle&nbsp;Dokumentation&nbsp;verwiesen&nbsp;(Standard&nbsp;Library&nbsp;Reference&nbsp;unter&nbsp;<a href="https://docs.python.org">https://docs.python.org</a>)</span></dd></dl>
 </td></tr></table>
 </body></html>

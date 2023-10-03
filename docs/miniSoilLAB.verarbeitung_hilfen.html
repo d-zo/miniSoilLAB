@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.verarbeitung_hilfen</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.verarbeitung_hilfen</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_hilfen.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_hilfen.py</a></td></tr></table>
+    <p><span class="code">verarbeitung_hilfen.py&nbsp;&nbsp;&nbsp;v0.2&nbsp;(2021-11)</span></p>
+<p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-GespeicherterWertOderUebergabe"><strong>GespeicherterWertOderUebergabe</strong></a>(daten, bezeichnung, uebergabe)</dt><dd><span class="code">Ueberpruefe,&nbsp;ob&nbsp;daten[bezeichnung]&nbsp;existiert,&nbsp;ansonsten&nbsp;erstelle&nbsp;es&nbsp;und&nbsp;speichere&nbsp;den&nbsp;Wert<br>
+aus&nbsp;uebergabe&nbsp;dort&nbsp;(daten&nbsp;kann&nbsp;somit&nbsp;modifiziert&nbsp;werden).&nbsp;Gibt&nbsp;den&nbsp;(ggfs.&nbsp;erstellten)&nbsp;Wert<br>
+von&nbsp;daten[bezeichnung]&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-ImportiertesDatumFormatieren"><strong>ImportiertesDatumFormatieren</strong></a>(datum, ausgabeformat='%d.%m.%Y', formatliste=['%d.%m.%Y', '%d/%m/%Y', '%Y-%m-%d', '%Y%m%d'])</dt><dd><span class="code">Erwartet&nbsp;einen&nbsp;String&nbsp;datum,&nbsp;der&nbsp;entweder&nbsp;eine&nbsp;Gleitkommazahl&nbsp;repraesentiert&nbsp;(Rohdatum&nbsp;aus<br>
+Excel)&nbsp;oder&nbsp;bereits&nbsp;ein&nbsp;gueltiges&nbsp;Datum&nbsp;in&nbsp;einem&nbsp;Format&nbsp;aus&nbsp;formatliste&nbsp;erhaelt.&nbsp;Gibt&nbsp;das<br>
+extrahierte&nbsp;Datum&nbsp;im&nbsp;ausgabeformat&nbsp;zurueck&nbsp;oder&nbsp;den&nbsp;uebergebenen&nbsp;String,&nbsp;falls&nbsp;es&nbsp;nicht<br>
+erfolgreich&nbsp;extrahiert&nbsp;werden&nbsp;kann.</span></dd></dl>
+ <dl><dt><a name="-PraefixUmrechnungsfaktor"><strong>PraefixUmrechnungsfaktor</strong></a>(von, zu)</dt><dd><span class="code">Extrahiert&nbsp;die&nbsp;Einheiten&nbsp;aus&nbsp;den&nbsp;beiden&nbsp;uebergebenen&nbsp;Strings&nbsp;von&nbsp;und&nbsp;zu.&nbsp;Es&nbsp;wird&nbsp;erwartet,<br>
+dass&nbsp;beide&nbsp;Strings&nbsp;dem&nbsp;Muster&nbsp;"Bezeichnung&nbsp;[Einheit]"&nbsp;folgen,&nbsp;wobei&nbsp;Bezeichnung&nbsp;identisch&nbsp;ist.<br>
+Bei&nbsp;vielen&nbsp;fuer&nbsp;geotechnische&nbsp;Laborversuche&nbsp;gebraeuchlichen&nbsp;Einheiten&nbsp;kann&nbsp;ein&nbsp;Umrechnungsfaktor<br>
+zwischen&nbsp;den&nbsp;beiden&nbsp;Einheiten&nbsp;ermittelt&nbsp;werden.&nbsp;Falls&nbsp;ein&nbsp;Faktor&nbsp;ermittelt&nbsp;werden&nbsp;kann,<br>
+wird&nbsp;dieser&nbsp;zurueckgegeben,&nbsp;sonst&nbsp;None.</span></dd></dl>
+ <dl><dt><a name="-SekundenAusDatumsangabenExtrahieren"><strong>SekundenAusDatumsangabenExtrahieren</strong></a>(daten, formatliste=[])</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;Liste&nbsp;an&nbsp;Datum-String&nbsp;daten,&nbsp;deren&nbsp;Eintraege&nbsp;entweder&nbsp;eine&nbsp;Gleitkommazahl<br>
+repraesentieren&nbsp;(typischerweise&nbsp;Rohdatum&nbsp;aus&nbsp;Excel)&nbsp;oder&nbsp;bereits&nbsp;ein&nbsp;gueltiges&nbsp;Datum&nbsp;in<br>
+einem&nbsp;der&nbsp;angegebenen&nbsp;datumformate&nbsp;erhaelt.&nbsp;Aus&nbsp;allen&nbsp;Eintraegen&nbsp;werden&nbsp;die&nbsp;vergangenen&nbsp;Sekunden<br>
+relativ&nbsp;zum&nbsp;ersten&nbsp;Eintrag&nbsp;extrahiert.&nbsp;Gibt&nbsp;eine&nbsp;Liste&nbsp;der&nbsp;Differenzen&nbsp;in&nbsp;Sekunden&nbsp;bei<br>
+erfolgreicher&nbsp;Verarbeitung&nbsp;zurueck,&nbsp;sonst&nbsp;None.</span></dd></dl>
+ <dl><dt><a name="-SekundenOhneOffsetBereitstellen"><strong>SekundenOhneOffsetBereitstellen</strong></a>(daten, formatliste=[])</dt><dd><span class="code">Falls&nbsp;ein&nbsp;"Zeit&nbsp;[s]"-Eintrag&nbsp;in&nbsp;daten&nbsp;existiert,&nbsp;wird&nbsp;das&nbsp;Offset&nbsp;von&nbsp;den&nbsp;Werten&nbsp;abgezogen.<br>
+Andernfalls&nbsp;werden&nbsp;die&nbsp;Eintraege&nbsp;"Datum"&nbsp;und&nbsp;"Uhrzeit"&nbsp;erwartet.<br>
+Aus&nbsp;diesen&nbsp;Eintraegen&nbsp;wird&nbsp;"Zeit&nbsp;[s]"&nbsp;beginnend&nbsp;von&nbsp;0&nbsp;berechnet&nbsp;und&nbsp;in&nbsp;daten&nbsp;gespeichert.<br>
+Als&nbsp;Unterstuetzung&nbsp;kann&nbsp;das&nbsp;Format&nbsp;der&nbsp;aktuellen&nbsp;Daten&nbsp;in&nbsp;formatliste&nbsp;angegeben&nbsp;werden,&nbsp;damit<br>
+die&nbsp;Eintraege&nbsp;korrekt&nbsp;interpretiert&nbsp;werden&nbsp;koennen.&nbsp;Gibt&nbsp;True&nbsp;zurueck,&nbsp;falls&nbsp;"Zeit&nbsp;[s]"<br>
+erfolgreich&nbsp;angelegt/modifiziert&nbsp;werden&nbsp;konnte,&nbsp;sonst&nbsp;False.</span></dd></dl>
+ <dl><dt><a name="-ZusatzdatenKopieren"><strong>ZusatzdatenKopieren</strong></a>(quelle, ziel, zusatzdaten=['Datum', 'Dateiname', 'Bodenart', 'Bodenname', 'Projektnummer', 'Projektname', 'Entnahmestelle', 'Entnahmetiefe', 'Tiefe'])</dt><dd><span class="code">Jeder&nbsp;Eintrag&nbsp;aus&nbsp;zusatzdaten,&nbsp;der&nbsp;(nur)&nbsp;in&nbsp;der&nbsp;uebergebenen&nbsp;Struktur&nbsp;quelle&nbsp;enthalten&nbsp;ist,<br>
+wird&nbsp;mit&nbsp;seinem&nbsp;Wert&nbsp;in&nbsp;die&nbsp;Struktur&nbsp;ziel&nbsp;kopiert&nbsp;(ziel&nbsp;wird&nbsp;modifiziert).</span></dd></dl>
+</td></tr></table>
+</body></html>

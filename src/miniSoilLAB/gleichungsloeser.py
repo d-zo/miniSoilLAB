@@ -14,7 +14,7 @@ gleichungsloeser.py   v0.5 (2019-12)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -257,6 +257,11 @@ def _LoeseGleichungAlnxpbpc(x, y, freier_param):
    from math import log
    #
    b = freier_param;
+   a_teilnenner = [(b + x[(ref+1)%len(x)]) for ref in range(len(x))];
+   if (any([(x == 0.0) for x in a_teilnenner])):
+      # FIXME: Sinnvollen Rueckgabewert pruefen
+      return [[0.0, b, 0.0], 1000000.0];
+   #
    a_nenner = [log((b + x[ref])/(b + x[(ref+1)%len(x)])) for ref in range(len(x))];
    if (any([(x == 0.0) for x in a_nenner])):
       # FIXME: Sinnvollen Rueckgabewert pruefen
@@ -290,7 +295,7 @@ def LoeseGleichung(gleichung, x, y, intervall, max_it=500, puffergroesse=0.5, to
       print('# Fehler: Gleichung nicht unterstuetzt');
       return [];
    #
-   # Erstmal grob den Loesungsbereich zu finden
+   # Erstmal grob den Loesungsbereich finden
    param, initialabweichung = Gleichungsfunktion(x=x, y=y, freier_param=intervall[0]);
    #
    min_idx = 0;
@@ -352,7 +357,7 @@ def AbleitungDyNachDx(x, y):
    tol = 1e-10;
    xneu = [(x[idx+1] + x[idx])/2.0 for idx in range(len(x)-1)];
    nenner = [x[idx+1] - x[idx] for idx in range(len(x)-1)];
-   if (any([(wert == 0)  for wert in nenner])):
+   if (any([(wert == 0) for wert in nenner])):
       print('# Fehler: Muesste beim Ableiten durch Null teilen');
       idx = nenner.index(0);
       print('           Wert an Stelle ' + str(idx) + ' und Folgewert identisch');
@@ -392,7 +397,7 @@ def LokalerExtremwert(werte, intervall, maximum=True, multiminanfang=True, multi
    num_werte = len(werte);
    #
    if (intervall > num_werte):
-      print('Intervall fuer FindLocalMin zu gross gewaehlt');
+      print('# Warnung: Intervall fuer FindLocalMin zu gross gewaehlt');
       return [];
    #
    for idx_wert, wert in enumerate(werte):

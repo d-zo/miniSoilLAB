@@ -1,61 +1,167 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module miniSoilLAB.rohdaten</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head><body bgcolor="#f0f0f8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.rohdaten</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
 
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
-<tr bgcolor="#7799ee">
-<td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.rohdaten</strong></big></big></font></td
-><td align=right valign=bottom
-></td></tr></table>
-    <p><tt>rohdaten.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2019-09)</tt></p>
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.rohdaten</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/rohdaten.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/rohdaten.py</a></td></tr></table>
+    <p><span class="code">rohdaten.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2019-09)</span></p>
 <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-Interpolationsblock_Aus_KVSdaten"><strong>Interpolationsblock_Aus_KVSdaten</strong></a>(korndurchmesser, sum_masseprozent, nursiebung=True)</dt><dd><tt>Ermittle&nbsp;anhand&nbsp;von&nbsp;der&nbsp;uebergebenen&nbsp;Werte&nbsp;korndurchmesser&nbsp;und&nbsp;sum_masseprozent&nbsp;eine&nbsp;geeignete<br>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-Interpolationsblock_Aus_KVSdaten"><strong>Interpolationsblock_Aus_KVSdaten</strong></a>(korndurchmesser, sum_masseprozent, interpolationspunkte=24, nursiebung=True)</dt><dd><span class="code">Ermittle&nbsp;anhand&nbsp;von&nbsp;der&nbsp;uebergebenen&nbsp;Werte&nbsp;korndurchmesser&nbsp;und&nbsp;sum_masseprozent&nbsp;eine&nbsp;geeignete<br>
 Interpolation&nbsp;der&nbsp;Daten.&nbsp;Bestimme&nbsp;zusaetzlich&nbsp;die&nbsp;Ungleichfoermigkeitszahl&nbsp;und&nbsp;Kruemmungszahl,<br>
-falls&nbsp;nursiebung=True.&nbsp;Gibt&nbsp;eine&nbsp;Struktur&nbsp;mit&nbsp;den&nbsp;interpolierten&nbsp;und&nbsp;berechneten&nbsp;Werten&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LeseDTADaten"><strong>LeseDTADaten</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;und&nbsp;interpretiere&nbsp;dta-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
+falls&nbsp;nursiebung=True.&nbsp;Gibt&nbsp;eine&nbsp;Struktur&nbsp;mit&nbsp;den&nbsp;interpolierten&nbsp;und&nbsp;berechneten&nbsp;Werten&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-LeseDTADaten"><strong>LeseDTADaten</strong></a>(dateiname)</dt><dd><span class="code">Lese&nbsp;und&nbsp;interpretiere&nbsp;dta-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
 Die&nbsp;Datei&nbsp;ist&nbsp;in&nbsp;die&nbsp;beiden&nbsp;Abschnitte&nbsp;[Versuchsdaten]&nbsp;und&nbsp;[Daten]&nbsp;unterteilt.&nbsp;Alle&nbsp;Felder&nbsp;im<br>
 ersten&nbsp;Abschnitt&nbsp;folgen&nbsp;dem&nbsp;Muster&nbsp;schluessel=wert&nbsp;und&nbsp;werden&nbsp;entsprechend&nbsp;eingelesen&nbsp;und<br>
 gespeichert&nbsp;(ausgewaehlte&nbsp;Felder&nbsp;als&nbsp;float,&nbsp;der&nbsp;Rest&nbsp;als&nbsp;Strings).<br>
 Der&nbsp;zweite&nbsp;Abschnitt&nbsp;startet&nbsp;nach&nbsp;[Daten]&nbsp;mit&nbsp;einer&nbsp;Kopfzeile.&nbsp;Anschliessend&nbsp;folgen&nbsp;mehrere<br>
 Zeilen&nbsp;an&nbsp;Messdaten,&nbsp;wobei&nbsp;die&nbsp;einzelnen&nbsp;Felder&nbsp;jeweils&nbsp;durch&nbsp;Tabulatoren&nbsp;getrennt&nbsp;sind.<br>
-Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Einax&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LeseEAXDaten"><strong>LeseEAXDaten</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;und&nbsp;interpretiere&nbsp;eax-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
+Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Einax&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-LeseEAXDaten"><strong>LeseEAXDaten</strong></a>(dateiname)</dt><dd><span class="code">Lese&nbsp;und&nbsp;interpretiere&nbsp;eax-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
 Die&nbsp;Datei&nbsp;ist&nbsp;in&nbsp;die&nbsp;beiden&nbsp;Abschnitte&nbsp;[Eingaben]&nbsp;und&nbsp;[Daten]&nbsp;unterteilt.&nbsp;Alle&nbsp;Felder&nbsp;im<br>
 ersten&nbsp;Abschnitt&nbsp;folgen&nbsp;dem&nbsp;Muster&nbsp;schluessel=wert&nbsp;und&nbsp;werden&nbsp;entsprechend&nbsp;eingelesen&nbsp;und<br>
 gespeichert&nbsp;(ausgewaehlte&nbsp;Felder&nbsp;als&nbsp;float,&nbsp;der&nbsp;Rest&nbsp;als&nbsp;Strings).<br>
 Der&nbsp;zweite&nbsp;Abschnitt&nbsp;startet&nbsp;nach&nbsp;[Daten]&nbsp;mit&nbsp;einer&nbsp;Kopfzeile.&nbsp;Anschliessend&nbsp;folgen&nbsp;mehrere<br>
 Zeilen&nbsp;an&nbsp;Messdaten,&nbsp;wobei&nbsp;die&nbsp;einzelnen&nbsp;Felder&nbsp;jeweils&nbsp;durch&nbsp;Semikolons&nbsp;getrennt&nbsp;sind.<br>
-Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Einax&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LeseGDSDaten"><strong>LeseGDSDaten</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;und&nbsp;interpretiere&nbsp;gds-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
+Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Einax&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-LeseGDSDaten"><strong>LeseGDSDaten</strong></a>(dateiname)</dt><dd><span class="code">Lese&nbsp;und&nbsp;interpretiere&nbsp;gds-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
 Alle&nbsp;Eintraege&nbsp;sind&nbsp;in&nbsp;doppelten&nbsp;Anfuehrungszeichen&nbsp;und&nbsp;mit&nbsp;Kommata&nbsp;voneinander&nbsp;getrennt.&nbsp;Im<br>
 Header&nbsp;der&nbsp;Datei&nbsp;steht&nbsp;immer&nbsp;ein&nbsp;Wert&nbsp;und&nbsp;ein&nbsp;Schluessel,&nbsp;die&nbsp;alle&nbsp;eingelesen&nbsp;werden<br>
 (ausgewaehlte&nbsp;Felder&nbsp;als&nbsp;float,&nbsp;der&nbsp;Rest&nbsp;als&nbsp;Strings).<br>
 Der&nbsp;Header&nbsp;wird&nbsp;vom&nbsp;Rest&nbsp;durch&nbsp;eine&nbsp;Zeile&nbsp;getrennt,&nbsp;die&nbsp;mehr&nbsp;als&nbsp;zwei&nbsp;Eintraege&nbsp;enthaelt&nbsp;(die<br>
 Bezeichnungen&nbsp;fuer&nbsp;die&nbsp;folgenden&nbsp;Messdaten).&nbsp;Anschliessend&nbsp;folgen&nbsp;Zeilen&nbsp;an&nbsp;Messdaten,<br>
 die&nbsp;wiederum&nbsp;in&nbsp;Anfuehrungszeichen&nbsp;stehen&nbsp;und&nbsp;durch&nbsp;Kommata&nbsp;voneinander&nbsp;getrennt&nbsp;sind.<br>
-Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Triax&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LeseKVSDaten"><strong>LeseKVSDaten</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;und&nbsp;interpretiere&nbsp;kvs-Dateien,&nbsp;die&nbsp;mit&nbsp;der&nbsp;Software&nbsp;GGU&nbsp;Sieve&nbsp;erstellt&nbsp;worden&nbsp;sind.<br>
+Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Triax&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-LeseKVSDaten"><strong>LeseKVSDaten</strong></a>(dateiname)</dt><dd><span class="code">Lese&nbsp;und&nbsp;interpretiere&nbsp;kvs-Dateien,&nbsp;die&nbsp;mit&nbsp;der&nbsp;Software&nbsp;GGU&nbsp;Sieve&nbsp;erstellt&nbsp;worden&nbsp;sind.<br>
 In&nbsp;diesen&nbsp;Dateien&nbsp;befinden&nbsp;sich&nbsp;fuer&nbsp;jede&nbsp;Koernungslinie&nbsp;Bloecke&nbsp;mit&nbsp;allgemeinen&nbsp;Informationen<br>
 zum&nbsp;Boden&nbsp;(Name,&nbsp;Bezeichnung,&nbsp;Trockendichte)&nbsp;sowie&nbsp;ggfs.&nbsp;verwendeten&nbsp;Werten&nbsp;(Araeometerdaten)<br>
 und&nbsp;Messdaten&nbsp;der&nbsp;Siebung&nbsp;und&nbsp;Schlaemmung.<br>
 Die&nbsp;Datenpunkte&nbsp;werden&nbsp;zuerst&nbsp;in&nbsp;die&nbsp;prozentualen&nbsp;Masseanteile&nbsp;an&nbsp;der&nbsp;Gesamtmenge&nbsp;umgerechnet<br>
 und&nbsp;dann&nbsp;(mit&nbsp;kubischen&nbsp;Splines)&nbsp;an&nbsp;mehreren&nbsp;Stuetzstellen&nbsp;interpoliert.&nbsp;Anschliessend&nbsp;werden<br>
 charakteristische&nbsp;Werte&nbsp;fuer&nbsp;jede&nbsp;Koernungslinie&nbsp;bestimmt.&nbsp;Gibt&nbsp;die&nbsp;eingelesenen&nbsp;und&nbsp;berechneten<br>
-Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Kornverteilung&nbsp;zurueck.</tt></dd></dl>
- <dl><dt><a name="-LeseTVCDaten"><strong>LeseTVCDaten</strong></a>(dateiname)</dt><dd><tt>Lese&nbsp;und&nbsp;interpretiere&nbsp;tvc-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
+Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Kornverteilung&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-LeseTVCDaten"><strong>LeseTVCDaten</strong></a>(dateiname)</dt><dd><span class="code">Lese&nbsp;und&nbsp;interpretiere&nbsp;tvc-Dateien,&nbsp;die&nbsp;nach&nbsp;folgendem&nbsp;Schema&nbsp;aufgebaut&nbsp;sind:<br>
 Im&nbsp;Header&nbsp;der&nbsp;Datei&nbsp;steht&nbsp;immer&nbsp;ein&nbsp;Wert&nbsp;und&nbsp;ein&nbsp;Schluessel&nbsp;durch&nbsp;ein&nbsp;Gleichheitszeichen<br>
 getrennt,&nbsp;die&nbsp;alle&nbsp;eingelesen&nbsp;werden&nbsp;(ausgewaehlte&nbsp;Felder&nbsp;als&nbsp;float,&nbsp;der&nbsp;Rest&nbsp;als&nbsp;Strings).<br>
 Der&nbsp;Header&nbsp;wird&nbsp;vom&nbsp;Rest&nbsp;durch&nbsp;eine&nbsp;Ende-Zeile&nbsp;getrennt,&nbsp;und&nbsp;anschliessend&nbsp;folgen&nbsp;betitelte<br>
 Abschnitte&nbsp;mit&nbsp;Messdaten&nbsp;(ohne&nbsp;Header).&nbsp;Die&nbsp;Messdaten&nbsp;aus&nbsp;allen&nbsp;Abschnitten&nbsp;werden<br>
 zusammengefuegt,&nbsp;aber&nbsp;die&nbsp;Indizes&nbsp;zum&nbsp;Start&nbsp;jedes&nbsp;(neuen)&nbsp;Abschnitts&nbsp;werden&nbsp;ebenfalls<br>
-gespeichert.&nbsp;Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Triax&nbsp;zurueck.</tt></dd></dl>
+gespeichert.&nbsp;Gibt&nbsp;die&nbsp;eingelesenen&nbsp;Daten&nbsp;als&nbsp;Struktur&nbsp;mit&nbsp;dem&nbsp;Schluessel&nbsp;Triax&nbsp;zurueck.</span></dd></dl>
 </td></tr></table>
 </body></html>

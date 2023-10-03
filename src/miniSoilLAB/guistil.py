@@ -14,7 +14,7 @@ guistil.py   v0.2 (2020-11)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -151,6 +151,31 @@ class CustomLabel(tkinter.Label):
             modkeywords.update([(eintrag, styleinformation[eintrag])]);
       #
       super().__init__(refelem, *args, modkeywords);
+#
+
+
+# -------------------------------------------------------------------------------------------------
+class CustomLabelListe(tkinter.Text):
+   def __init__(self, refelem, labeltext, *args, **kwargs):
+      farben = GUIFarben();
+      styleinformation = {'background':         farben.farbe_bg_subitem,
+                          'foreground':         farben.farbe_fg,
+                          'font':               ('Helvetica', '-12'),
+                          'borderwidth':        0,
+                          'highlightthickness': 0,
+                          'relief':             'flat',
+                          'takefocus':          0,
+                          'spacing1':           0,   # FIXME: Funktionieren die spacings (so) ueberhaupt?
+                          'spacing2':           10,
+                          'spacing3':           0};
+      modkeywords = kwargs;
+      for eintrag in styleinformation.keys():
+         if (eintrag not in modkeywords):
+            modkeywords.update([(eintrag, styleinformation[eintrag])]);
+      #
+      super().__init__(refelem, *args, modkeywords);
+      #
+      self.insert(tkinter.END, labeltext);
 #
 
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-__main__.py   v0.3 (2020-02)
+__main__.py   v0.4 (2023-02)
 """
 
-# Copyright 2020-2021 Dominik Zobel.
+# Copyright 2020-2023 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the miniSoilLAB package.
@@ -14,7 +14,7 @@ __main__.py   v0.3 (2020-02)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -34,13 +34,13 @@ def main(argument):
    from .konstanten import Standardpfad
    from .gui import GUIbasis
    #
-   print('Running miniSoilLAB');
+   print('Starte miniSoilLAB');
    #
    if (len(argument) > 1):
       print('# Abbruch: Aufruf ohne Argument oder mit Pfad als Argument erwartet');
       return;
    #
-   pfad = 'Vorlagen' + os.sep;
+   pfad = '.' + os.sep;
    if (len(argument) == 1):
       pfad = argument[0] + os.sep;
    #

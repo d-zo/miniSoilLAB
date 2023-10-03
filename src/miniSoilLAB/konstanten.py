@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-konstanten.py   v0.4 (2019-11)
+konstanten.py   v0.5 (2021-06)
 """
 
 # Copyright 2020-2021 Dominik Zobel.
@@ -14,22 +14,22 @@ konstanten.py   v0.4 (2019-11)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with miniSoilLAB. If not, see <http://www.gnu.org/licenses/>.
 
 
-pi = 3.1415926535897932;
-grad2rad = pi/180.0;
+from math import pi
+
 g = 9.81; # [m/s^2]
-korndichte = 2.65; # [g/cm^3]
-oedo_gewichtsplatten = [0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0]; # [kg]
-oedo_gewichte_kopfplatte = [0.36324, 0.4649, 1.1]; # [kg]
-oedo_hebel = 10.0;
-gueltige_vorlagen = ['Atterberg', 'Auswertung-Hypoplastisch', 'LoDi', 'Oedo', 'Oedo-CRL', 'Oedo-CRS',
-   'Oedo-CRS-Visko', 'Triax-CU', 'Triax-D', 'Triax-p-q'];
+grad2rad = pi/180.0;
+# Die Liste der gueltigen Vorlagen ist sortiert, so dass keine Abhaengigkeiten einer Vorlage
+# selbst aufgelistet sind. Umgekehrt werden aber nicht alle Eintraege vor einer Vorlage fuer
+# die Berechnung von Kennwerten der Vorlage benoetigt
+gueltige_vorlagen = ['KVS', 'Korndichte', 'Atterberg', 'Auswertung-Hypoplastisch', 'LoDi',
+   'Oedo', 'Oedo-CRL', 'Oedo-CRS', 'Oedo-CRS-Visko', 'Triax-CU', 'Triax-D', 'Triax-p-q'];
 debugmodus = False;
 basispfad = './Vorlagen';
 
@@ -45,15 +45,16 @@ def DebugAnAus():
 
 
 # -------------------------------------------------------------------------------------------------
-def Standardpfad(pfad='./Vorlagen'):
-   """Setze den Pfad zum Hauptverzeichnis von miniSoilLAB, um bspw. Vorlagen korrekt einladen zu
-   koennen.
+def Standardpfad(pfad='.'):
+   """Setze den Pfad zum Hauptverzeichnis von miniSoilLAB, in dem ein Ordner namens Vorlagen
+   erwartet wird (in dem die Vorlagen aller relevanten Strukturen gespeichert sind).
    """
    import os
    #
    global basispfad;
-   basispfad = pfad;
    #
-   if ((not pfad.endswith(os.sep)) and (not pfad.endswith('/'))):
-      basispfad += os.sep;
+   if (pfad.endswith(os.sep)):
+      pfad = pfad[:-1];
+   #
+   basispfad = pfad + os.sep + 'Vorlagen' + os.sep;
 #

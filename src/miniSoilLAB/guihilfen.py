@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-guihilfen.py   v0.3 (2020-12)
+guihilfen.py   v0.4 (2021-06)
 """
 
 # Copyright 2020-2021 Dominik Zobel.
@@ -14,7 +14,7 @@ guihilfen.py   v0.3 (2020-12)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -37,3 +37,25 @@ def FensterZentrieren(hauptfenster, fenster):
    posy = int(haupt_y + (haupt_hoehe - fenster_hoehe)/2.0);
    fenster.geometry('+{}+{}'.format(posx, posy));
 # 
+
+
+# -------------------------------------------------------------------------------------------------
+def _Autoscrollfunktion(event):
+   event.widget.master.configure(scrollregion=event.widget.master.bbox('all'),
+      width=event.widget.breite, height=event.widget.hoehe);
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def _Radscrollfunktion(event, canvas, scrollbar):
+   # Windows/Linux Scroll events
+   delta = 0;
+   if ((event.num == 4) or (event.delta == 120)):
+      delta = -1;
+   #
+   if ((event.num == 5) or (event.delta == -120)):
+      delta = 1;
+   if (len(scrollbar.state()) == 0):
+      # oder Zustand mit != 'disabled' pruefen
+      canvas.yview_scroll(delta, 'units');
+#

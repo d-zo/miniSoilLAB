@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Python: module miniSoilLAB.kennwerte</title>
+<title>Python: module miniSoilLAB.verarbeitung_oedocrs</title>
 <style type="text/css">
 body {
     background-color: #f0f0f8;
@@ -114,19 +114,20 @@ td.singlecolumn {
 
 <table class="heading">
 <tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.kennwerte</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/kennwerte.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/kennwerte.py</a></td></tr></table>
-    <p><span class="code">kennwerte.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2021-06)</span></p>
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.verarbeitung_oedocrs</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_oedocrs.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_oedocrs.py</a></td></tr></table>
+    <p><span class="code">verarbeitung_oedocrs.py&nbsp;&nbsp;&nbsp;v0.3&nbsp;(2023-02)</span></p>
 <p>
 <table class="section">
 <tr class="decor functions-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
 
 <tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl><dt><a name="-Kennwertberechnungen"><strong>Kennwertberechnungen</strong></a>(daten, vorlage=None)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;Kennwerte&nbsp;zu&nbsp;einer&nbsp;eingelesenen&nbsp;Dateistruktur&nbsp;nach&nbsp;der&nbsp;uebergebenen&nbsp;vorlage&nbsp;und<br>
-speichere&nbsp;sie&nbsp;in&nbsp;der&nbsp;uebergebenen&nbsp;Struktur&nbsp;daten,&nbsp;sofern&nbsp;diese&nbsp;den&nbsp;gueltigen&nbsp;Vorgaben&nbsp;entspricht.<br>
-Falls&nbsp;keine&nbsp;vorlage&nbsp;uebergeben&nbsp;wird,&nbsp;werden&nbsp;die&nbsp;Kennwerte&nbsp;aller&nbsp;Unterstrukturen&nbsp;ermittelt.</span></dd></dl>
- <dl><dt><a name="-Vorbereitung"><strong>Vorbereitung</strong></a>(daten, vorlage)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;Kennwerte&nbsp;zu&nbsp;einer&nbsp;eingelesenen&nbsp;Dateistruktur&nbsp;nach&nbsp;der&nbsp;uebergebenen&nbsp;vorlage&nbsp;und<br>
-speichere&nbsp;sie&nbsp;in&nbsp;der&nbsp;uebergebenen&nbsp;Struktur&nbsp;daten,&nbsp;sofern&nbsp;diese&nbsp;den&nbsp;gueltigen&nbsp;Vorgaben&nbsp;entspricht.</span></dd></dl>
+<td class="singlecolumn"><dl><dt><a name="-KennwerteOedoCRS"><strong>KennwerteOedoCRS</strong></a>(daten, refwerte)</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;JSON-Struktur&nbsp;daten,&nbsp;in&nbsp;der&nbsp;die&nbsp;Daten&nbsp;zu&nbsp;Oedo-CRS-Versuchen&nbsp;gespeichert&nbsp;sind<br>
+und&nbsp;aktualisiert/berechnet&nbsp;die&nbsp;entsprechenden&nbsp;Kennwerte.</span></dd></dl>
+ <dl><dt><a name="-OedoCRSStruktur"><strong>OedoCRSStruktur</strong></a>()</dt><dd><span class="code">#&nbsp;-------------------------------------------------------------------------------------------------</span></dd></dl>
+ <dl><dt><a name="-VorbereitungOedoCRS"><strong>VorbereitungOedoCRS</strong></a>(daten)</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;eingelesene&nbsp;JSON-Struktur&nbsp;daten,&nbsp;in&nbsp;der&nbsp;die&nbsp;Daten&nbsp;zu&nbsp;Oedo-CRS-Versuchen<br>
+gespeichert&nbsp;sind.&nbsp;Die&nbsp;uebergebene&nbsp;Struktur&nbsp;wird&nbsp;modifiziert,&nbsp;um&nbsp;eine&nbsp;einheitliche&nbsp;Struktur&nbsp;fuer<br>
+eine&nbsp;spaetere&nbsp;Weiterverarbeitung&nbsp;zu&nbsp;haben.</span></dd></dl>
 </td></tr></table>
 </body></html>

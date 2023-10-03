@@ -14,7 +14,7 @@ xlshilfen.py   v0.3 (2019-11)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -25,7 +25,7 @@ _mustervorlagen = None;
 
 
 # -------------------------------------------------------------------------------------------------
-def LeseXLSDaten(dateiname, ignoriere=['rohdaten']):
+def LeseXLSDaten(dateiname, verarbeitet=True, ignoriere=['rohdaten']):
    """Lese eine Excel-Tabelle namens dateiname ein. Abhaengig von den verfuegbaren Vorlagen wird
    unterschieden, welche Art von Versuchsdaten in der Datei gespeichert sind und versucht, ebenjene
    einzulesen. Gibt bei Erfolg eine Datenstruktur mit den eingelesenen Daten unter dem Schluessel
@@ -35,11 +35,12 @@ def LeseXLSDaten(dateiname, ignoriere=['rohdaten']):
    zurueckgegeben (eine Datei wird ignoriert, wenn der Name (mindestens) ein Element aus der Liste
    ignoriere enthaelt).
    """
+   import copy
    from os import path as os_path
    from .datenstruktur import Datenstruktur
    from .vorlagen import VorlagenMuster
    from .konstanten import basispfad
-   from .kennwerte import Kennwertberechnungen
+   from .kennwerte import Vorbereitung, Kennwertberechnungen
    #
    bodendaten = Datenstruktur();
    global _mustervorlagen;
@@ -67,43 +68,18 @@ def LeseXLSDaten(dateiname, ignoriere=['rohdaten']):
    tabellenseiten = _mustervorlagen.Datenfelder(schluessel=zielvorlage);
    for tabellenname in tabellenseiten.keys():
       ParseXLSDaten(daten=musterdaten, workbook=workbook, tabellentyp=tabellentyp,
-         tabellenname=tabellenname, vorlage=tabellenseiten[tabellenname]);
+         tabellenname=tabellenname, vorlage=tabellenseiten[tabellenname], verarbeitet=verarbeitet);
    #
-   if (Kennwertberechnungen(daten=musterdaten, vorlage=refvorlage)):
-      musterdaten.update([('Status', 'Einlesen erfolgreich')]);
-   else:
-      musterdaten.update([('Status', 'Einlesen nicht erfolgreich (Daten unvollstaendig/ungueltig)')]);
+   Vorbereitung(daten=musterdaten, vorlage=refvorlage);
    #
    musterdaten.update([('Dateiname', dateiname)]);
-   refname = refvorlage;
-   if ((refvorlage == 'Triax-D') or (refvorlage == 'Oedo')):
-      lagerung = '';
-      if ('dicht' in datei):
-         lagerung = '-dicht';
-      elif ('locker' in datei):
-         lagerung = '-locker';
-      elif ((('-di' in datei) or ('_di' in datei)) and ('-lo' not in datei) and ('_lo' not in datei)):
-         lagerung = '-dicht';
-      elif ((('-lo' in datei) or ('_lo' in datei)) and ('-di' not in datei) and ('_di' not in datei)):
-         lagerung = '-locker';
-      else:
-         try:
-            bodenart = musterdaten['Bodenart'];
-         except:
-            bodenart = '';
-         #
-         if ('locker' in bodenart.lower()):
-            lagerung = '-locker';
-         elif ('dicht' in bodenart.lower()):
-            lagerung = '-dicht';
-         #
-         if (lagerung == ''):
-            print('# Warnung: Konnte Lagerung (locker/dicht) weder aus Dateinamen noch Bodenart bestimmen. Nehme dicht an.');
-            lagerung = '-dicht';
-      #
-      refname = refvorlage + lagerung;
    #
-   bodendaten.update([(refname, musterdaten)]);
+   if (verarbeitet):
+      daten = copy.deepcopy(musterdaten);
+      if (Kennwertberechnungen(daten=daten, vorlage=refvorlage)):
+         musterdaten = daten;
+   #
+   bodendaten.update([(refvorlage, musterdaten)]);
    return bodendaten;
 #
 
@@ -466,7 +442,7 @@ def ZeileUndSpalteAusZellenbezeichnung(zellenname):
 
 
 # -------------------------------------------------------------------------------------------------
-def ParseXLSDaten(daten, workbook, tabellentyp, tabellenname, vorlage):
+def ParseXLSDaten(daten, workbook, tabellentyp, tabellenname, vorlage, verarbeitet):
    """Ein (ggfs. verschachteltes) dict wird als vorlage uebergeben und abgearbeitet. Fuer jeden
    der Eintraege wird eine Struktur in daten angelegt und mit Werten aus der Tabelle tabellenname
    eines workbook des Typs tabellentyp aufgefuellt.
@@ -475,7 +451,7 @@ def ParseXLSDaten(daten, workbook, tabellentyp, tabellenname, vorlage):
    Schluessel mit der gleichen Struktur in daten angelegt. In den Werten eines Schluessels wird
    ein Bereich an Zellen in einer Liste erwartet, die fuer diesen Schluessel eingelesen werden sollen
    (bspw. ["G14"] oder ["A7:A20"]). Falls die Zellen nicht als Text, sondern als Zahlenwerte
-   eingelesen werden sollen, muss in einer Liste  Zellenbereich und Wertbereich angegeben werden,
+   eingelesen werden sollen, muss in einer Liste Zellenbereich und Wertbereich angegeben werden,
    (bspw. ([["G14"], [0.0, 100.0]]).
    
    Wenn ein Schluessel in vorlage in eckigen Klammern steht, werden alle Eintraege in den Werten
@@ -490,11 +466,12 @@ def ParseXLSDaten(daten, workbook, tabellentyp, tabellenname, vorlage):
       if (isinstance(vorlage[eintrag], dict)):
          if (eintrag[0] == '['):
             _GruppeEinlesen(daten=daten, workbook=workbook, tabellentyp=tabellentyp,
-               tabellenname=tabellenname, vorlage=vorlage[eintrag], gruppe=eintrag);
+               tabellenname=tabellenname, vorlage=vorlage[eintrag], gruppe=eintrag,
+               verarbeitet=verarbeitet);
          else:
             unterstruktur = Datenstruktur();
             ParseXLSDaten(daten=unterstruktur, workbook=workbook, tabellentyp=tabellentyp,
-               tabellenname=tabellenname, vorlage=vorlage[eintrag]);
+               tabellenname=tabellenname, vorlage=vorlage[eintrag], verarbeitet=verarbeitet);
             if (eintrag in daten):
                daten[eintrag].update(unterstruktur);
             else:
@@ -502,12 +479,12 @@ def ParseXLSDaten(daten, workbook, tabellentyp, tabellenname, vorlage):
       #
       else:
          _EinzelreiheEinlesen(daten=daten, workbook=workbook, tabellentyp=tabellentyp,
-            tabellenname=tabellenname, vorlage=vorlage, eintrag=eintrag);
+            tabellenname=tabellenname, vorlage=vorlage, eintrag=eintrag, verarbeitet=verarbeitet);
 #
 
 
 # -------------------------------------------------------------------------------------------------
-def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe):
+def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe, verarbeitet):
    """Liest alle Eintraege in den Werten von vorlage mit dem Namen gruppe als Gruppe aus der
    Tabelle namens tabellenname des workbook vom Typ tabellentyp in die Datenstruktur daten ein. Alle
    Elemente aus vorlage ein gleich grosses Werteintervall haben. Wenn das erfuellt ist, werden fuer
@@ -515,6 +492,7 @@ def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe)
    ein Gruppenmitglied kein gueltiger Wert existiert). Die eingelesenen Daten sind gleich lang und
    werden direkt in daten gespeichert (gruppe wird nicht angelegt).
    """
+   from .konstanten import debugmodus
    from .gleichungsloeser import LetzterIndexMitWertKleinerAls
    #
    eintraege = sorted(vorlage.keys());
@@ -546,7 +524,11 @@ def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe)
          grenzen += [None];
       elif ((len(vorlage[eintrag]) == 2) or (len(vorlage[eintrag]) == 3)):
          inhalte += ['zahl'];
-         grenzen += [vorlage[eintrag][1]];
+         if (verarbeitet):
+            grenzen += [vorlage[eintrag][1]];
+         else:
+            grenzen += [None];
+      #
       else:
          print('# Warnung: Ungueltige Laenge von ' + eintrag + ' - ignoriere ' + gruppe);
          return;
@@ -597,8 +579,8 @@ def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe)
    # Wenn ein Wert aus der Gruppe eine Schnittgrenze hat, Startindex pruefen. Falls Startindex
    # groesser als null, alle Gruppenmitglieder erst ab diesem Startwert beginnen lassen
    idx_schnitt = 0;
-   for idx_eintrag, eintrag in enumerate(eintraege):
-      if (len(vorlage[eintrag]) == 3):
+   if ((verarbeitet) and (len(vorlage[eintrag]) == 3)):
+      for idx_eintrag, eintrag in enumerate(eintraege):
          # Nur fuer inhalt == 'zahl' mit vorhandenen grenzen zulaessig
          temp_idx = LetzterIndexMitWertKleinerAls(liste=wertliste[idx_eintrag],
             grenzwert=grenzen[idx_eintrag][0]);
@@ -613,7 +595,7 @@ def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe)
       for idx_liste in range(len(wertliste)):
          wertliste[idx_liste] = wertliste[idx_liste][idx_schnitt:];
    #
-   if ((idx_start + idx_schnitt > 0) or (idx_ende < intervallgroesse)):
+   if (debugmodus and ((idx_start + idx_schnitt > 0) or (idx_ende < intervallgroesse))):
       print('# Hinweis: Begrenze Werte in ' + gruppe + ' auf das Intervall [' \
          + str(idx_start + idx_schnitt) + ', ' + str(idx_ende) + ']');
    #
@@ -624,18 +606,20 @@ def _GruppeEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, gruppe)
 
 
 # -------------------------------------------------------------------------------------------------
-def _EinzelreiheEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, eintrag):
+def _EinzelreiheEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, eintrag, verarbeitet):
    """Lese den eintrag aus vorlage aus der Tabelle namens tabellenname des workbook vom Typ
    tabellentyp in die Datenstruktur daten ein (sofern Bereich und ggfs. Werteintervall gueltig ist).
    """
+   from .konstanten import debugmodus
    from .gleichungsloeser import LetzterIndexMitWertKleinerAls
    #
+   grenzen = None;
    if (len(vorlage[eintrag]) == 1):
       inhalt = 'text';
-      grenzen = None;
    elif ((len(vorlage[eintrag]) == 2) or (len(vorlage[eintrag]) == 3)):
       inhalt = 'zahl';
-      grenzen = vorlage[eintrag][1];
+      if (verarbeitet):
+         grenzen = vorlage[eintrag][1];
    else:
       print('# Warnung: Ungueltige Laenge von ' + eintrag);
       return;
@@ -673,7 +657,7 @@ def _EinzelreiheEinlesen(daten, workbook, tabellentyp, tabellenname, vorlage, ei
                temp_idx += 1;
                idx_start = temp_idx;
          #
-         if (idx_start > 0):
+         if (debugmodus and (idx_start > 0)):
             print('# Hinweis: Schneide ungueltige Werte fuer ' + eintrag + ' bis nach Index ' \
                + str(idx_start) + ' ab');
          GelesenenEintragHinzufuegen(datenbank=daten, name=eintrag, daten=werte[idx_start:],

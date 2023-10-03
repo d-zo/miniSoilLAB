@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-gui.py   v0.9 (2020-12)
+gui.py   v1.0 (2021-06)
 """
 
 # Copyright 2020-2021 Dominik Zobel.
@@ -14,7 +14,7 @@ gui.py   v0.9 (2020-12)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -27,27 +27,7 @@ from tkinter import ttk, messagebox, filedialog
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-# -------------------------------------------------------------------------------------------------
-def _Autoscrollfunktion(event):
-   event.widget.master.configure(scrollregion=event.widget.master.bbox('all'),
-      width=event.widget.breite, height=event.widget.hoehe);
-#
-
-
-# -------------------------------------------------------------------------------------------------
-def _Radscrollfunktion(event, canvas, scrollbar):
-   # Windows/Linux Scroll events
-   delta = 0;
-   if ((event.num == 4) or (event.delta == 120)):
-      delta = -1;
-   #
-   if ((event.num == 5) or (event.delta == -120)):
-      delta = 1;
-   if (len(scrollbar.state()) == 0):
-      # oder Zustand mit != 'disabled' pruefen
-      canvas.yview_scroll(delta, 'units');
-#
+from matplotlib import pyplot
 
 
 # -------------------------------------------------------------------------------------------------
@@ -86,6 +66,7 @@ class GUIbasis(object):
       #
       self.zwischenspeicher_dateieinlesen = ['Material', '', '.'];
       self.zwischenspeicher_bodenmustereinlesen = ['.'];
+      self.zwischenspeicher_listendateieinlesen = ['.'];
       self.zwischenspeicher_datensatz = ['.', '.'];
       #
       self.hypoparam = [];
@@ -227,6 +208,7 @@ class GUIbasis(object):
    def _HypoplastischeParameterBerechnen(self, refelem, refunten, refoben):
       from .konstanten import grad2rad
       from .parameterbestimmung import HypoplastischeParameterFuerBoden
+      from .guistil import CustomLabelListe
       #
       for kindelem in refelem.winfo_children():
          kindelem.destroy();
@@ -241,9 +223,6 @@ class GUIbasis(object):
       #
       # Pruefe, ob alle relevanten Dateien eingelesen worden sind
       boden = self.boden[self.bodenname.get()];
-      # Erst in HypoplastischeParameterFuerBoden bewerten, ob alles vorhanden ist -> Anzeige?
-      #if (not (('Auswertung-Hypoplastisch' in boden) and ('LoDi' in boden) and ('Oedo-CRS' in boden)
-      #   and ('Triax-D-locker' in boden) and ('Triax-D-dicht' in boden))):
       if ('Auswertung-Hypoplastisch' not in boden):
          tkinter.Label(refelem, text='Notwendige Dateien fehlen', font=self.font_param,
             foreground='#aa0000', background=self.farben.farbe_bg_subitem).grid(row=0, column=0);
@@ -259,21 +238,22 @@ class GUIbasis(object):
          return;
       #
       self.hypoparam[0] = self.hypoparam[0]/grad2rad;
-      boden['Auswertung-Hypoplastisch']['Parameter'].update([('Parameter-miniSoilLAB', self.hypoparam)]);
       paramnames = ['phi_c [Grad]', 'h_s [MPa]', 'n [-]', 'e_d [-]', 'e_c [-]', 'e_i [-]', 'alpha [-]', 'beta [-]'];
       runden =     [1e1,            1e0,         1e3,     1e3,       1e3,       1e3,       1e3,         1e3];
-      for idx in range(len(self.hypoparam)):
-         tkinter.Label(refelem, text=paramnames[idx] + ':', background=self.farben.farbe_bg_subitem,
-            font=self.font_param, foreground=self.farben.farbe_fg, width=15,
-            anchor='e').grid(row=idx, column=0, padx=(30, 0));
-         tkinter.Label(refelem, text=str(round(runden[idx]*self.hypoparam[idx])/runden[idx]),
-            background=self.farben.farbe_bg_subitem, foreground=self.farben.farbe_fg,
-            font=self.font_param, width=10, anchor='w').grid(row=idx, column=1, padx=5);
+      #
+      paramlabel = CustomLabelListe(refelem, labeltext='\n'.join([x + ':' for x in paramnames]), width=12, height=8);
+      paramlabel.grid(row=0, column=0, padx=(30, 0));
+      paramlabel.tag_configure('alignment', justify='right');
+      paramlabel.tag_add('alignment', '1.0', 'end');
+      #
+      labeltext = '\n'.join([str(round(runden[idx]*self.hypoparam[idx])/runden[idx]) for idx in range(len(self.hypoparam))]);
+      CustomLabelListe(refelem, labeltext=labeltext, width=8, height=8).grid(row=0, column=1, padx=5);
       #
       self.tkroot.update_idletasks();
    #
    def _ErwHypoplastischeParameterBerechnen(self, refelem, offset, glaettungswert, refspanne):
       from .parameterbestimmung import ErweiterteHypoplastischeParameterFuerBoden
+      from .guistil import CustomLabelListe
       #
       for kindelem in refelem.winfo_children():
          kindelem.destroy();
@@ -304,16 +284,16 @@ class GUIbasis(object):
          self.tkroot.update_idletasks();
          return;
       #
-      boden['Triax-p-q']['Parameter'].update([('Parameter-miniSoilLAB', self.erwhypoparam)]);
       paramnames = ['m_T [-]', 'm_R [-]', 'R_max [-]', 'beta_r [-]', 'chi [-]'];
       runden =     [1e2,       1e2,       1e6,         1e2,          1e2];
-      for idx in range(len(self.erwhypoparam)):
-         tkinter.Label(refelem, text=paramnames[idx] + ':', background=self.farben.farbe_bg_subitem,
-            font=self.font_param, foreground=self.farben.farbe_fg, width=15,
-            anchor='e').grid(row=idx, column=0, padx=(30, 0));
-         tkinter.Label(refelem, text=str(round(runden[idx]*self.erwhypoparam[idx])/runden[idx]),
-            background=self.farben.farbe_bg_subitem, foreground=self.farben.farbe_fg,
-            font=self.font_param, width=10, anchor='w').grid(row=idx, column=1, padx=5);
+      #
+      paramlabel = CustomLabelListe(refelem, labeltext='\n'.join([x + ':' for x in paramnames]), width=12, height=8);
+      paramlabel.grid(row=0, column=0, padx=(30, 0));
+      paramlabel.tag_configure('alignment', justify='right');
+      paramlabel.tag_add('alignment', '1.0', 'end');
+      #
+      labeltext = '\n'.join([str(round(runden[idx]*self.erwhypoparam[idx])/runden[idx]) for idx in range(len(self.erwhypoparam))]);
+      CustomLabelListe(refelem, labeltext=labeltext, width=8, height=8).grid(row=0, column=1, padx=5);
       #
       self.tkroot.update_idletasks();
    #
@@ -321,6 +301,7 @@ class GUIbasis(object):
       p5logverhaeltnis, interpzwischenpunkte):
       from .konstanten import grad2rad
       from .parameterbestimmung import ViskohypoplastischeParameterFuerBoden
+      from .guistil import CustomLabelListe
       #
       for kindelem in refelem.winfo_children():
          kindelem.destroy();
@@ -353,16 +334,16 @@ class GUIbasis(object):
          self.tkroot.update_idletasks();
          return;
       #
-      boden['Oedo-CRS-Visko']['Parameter'].update([('Parameter-miniSoilLAB', self.viskohypoparam)]);
       paramnames = ['e100 [-]', 'lambda [-]', 'kappa [-]', 'beta_x [-]', 'I_v [-]', 'D_r [-]', 'OCR [-]'];
       runden =     [1e3,         1e3,         1e3,         1e3,          1e3,       1e8,       1e2];
-      for idx in range(len(self.viskohypoparam)):
-         tkinter.Label(refelem, text=paramnames[idx] + ':', background=self.farben.farbe_bg_subitem,
-            font=self.font_param, foreground=self.farben.farbe_fg, width=15,
-            anchor='e').grid(row=idx, column=0, padx=(30, 0));
-         tkinter.Label(refelem, text=str(round(runden[idx]*self.viskohypoparam[idx])/runden[idx]),
-            background=self.farben.farbe_bg_subitem, foreground=self.farben.farbe_fg,
-            font=self.font_param, width=10, anchor='w').grid(row=idx, column=1, padx=5);
+      #
+      paramlabel = CustomLabelListe(refelem, labeltext='\n'.join([x + ':' for x in paramnames]), width=12, height=8);
+      paramlabel.grid(row=0, column=0, padx=(30, 0));
+      paramlabel.tag_configure('alignment', justify='right');
+      paramlabel.tag_add('alignment', '1.0', 'end');
+      #
+      labeltext = '\n'.join([str(round(runden[idx]*self.viskohypoparam[idx])/runden[idx]) for idx in range(len(self.viskohypoparam))]);
+      CustomLabelListe(refelem, labeltext=labeltext, width=8, height=8).grid(row=0, column=1, padx=5);
       #
       self.tkroot.update_idletasks();
    #
@@ -385,13 +366,14 @@ class GUIbasis(object):
       except:
          refordner = '';
       #
-      num_refzeichen = len(refordner) + 1;
+      num_refzeichen = len(refordner);
       if (num_refzeichen == 1):
+         # Unter Linux koennte '/' als kleinster gemeinsamer Pfad erkannt werden
          num_refzeichen = 0;
       #
-      if ('Kornverteilung' in self.boden[bodenname]):
+      if ('KVS' in self.boden[bodenname]):
          try:
-            dateiname = self.boden[bodenname]['Kornverteilung']['Dateiname'][num_refzeichen:];
+            dateiname = self.boden[bodenname]['KVS']['Dateiname'][num_refzeichen:];
          except:
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
@@ -399,19 +381,22 @@ class GUIbasis(object):
             self.tabs['KVS'].NeuerEintrag(text=dateiname);
             for idx_sieb in range(8):
                siebname = 'Sieblinie ' + str(idx_sieb);
-               if (siebname not in self.boden[bodenname]['Kornverteilung'].keys()):
+               if (siebname not in self.boden[bodenname]['KVS'].keys()):
                   break;
                #
-               refsiebung = self.boden[bodenname]['Kornverteilung'][siebname];
+               refsiebung = self.boden[bodenname]['KVS'][siebname];
                self.tabs['KVS'].NeuerEintrag(text=siebname);
-               self.tabs['KVS'].NeuerEintrag(text='Bodenart: ' + refsiebung['Bodenart']);
-               self.tabs['KVS'].NeuerEintrag(text='Entnahmestelle: ' + refsiebung['Entnahmestelle']);
+               #self.tabs['KVS'].NeuerEintrag(text='Bodenart: ' + refsiebung['Bodenart']);
+               try:
+                  self.tabs['KVS'].NeuerEintrag(text='Entnahmestelle: ' + refsiebung['Entnahmestelle']);
+               except:
+                  pass;
             #
             self.tabs['KVS'].NeuerEintrag(text='Plot KVS', command=lambda: self._PlotbefehlInterpretieren('Sieblinie'));
          except:
             self.tabs['KVS'].AlleEintraegeEntfernen();
             self.tabs['KVS'].NeuerEintrag(text=dateiname);
-            self.tabs['KVS'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege');
+            self.tabs['KVS'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege (siehe Log)');
       #
       if ('LoDi' in self.boden[bodenname]):
          lodi = self.boden[bodenname]['LoDi'];
@@ -420,21 +405,26 @@ class GUIbasis(object):
          except:
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
+         self.tabs['LoDi'].NeuerEintrag(text=dateiname);
          try:
-            self.tabs['LoDi'].NeuerEintrag(text=dateiname);
-            if (lodi['Status'] != 'Einlesen erfolgreich'):
-               self.tabs['LoDi'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-            #
             self.tabs['LoDi'].NeuerEintrag(text='Bodenart: ' + lodi['Bodenart']);
+         except:
+            pass;
+         #
+         try:
             self.tabs['LoDi'].NeuerEintrag(text='Entnahmestelle: ' + lodi['Bodenname']);
-            self.tabs['LoDi'].NeuerEintrag(text='Trockendichte-min [g/cm^3]: ' + str(round(1e3*lodi['Lockerste-Lagerung']['Trockendichte-min [g/cm^3]'])/1e3));
-            self.tabs['LoDi'].NeuerEintrag(text='Trockendichte-max [g/cm^3]: ' + str(round(1e3*lodi['Dichteste-Lagerung']['Trockendichte-max [g/cm^3]'])/1e3));
-            self.tabs['LoDi'].NeuerEintrag(text='Porenzahl-min [-]: ' + str(round(1e3*lodi['Dichteste-Lagerung']['Porenzahl-min [-]'])/1e3));
-            self.tabs['LoDi'].NeuerEintrag(text='Porenzahl-max [-]: ' + str(round(1e3*lodi['Lockerste-Lagerung']['Porenzahl-max [-]'])/1e3));
+         except:
+            pass;
+         #
+         try:
+            self.tabs['LoDi'].NeuerEintrag(text='Trockendichte-min [g/cm^3]: ' + str(round(1e3*lodi['Trockendichte-min [g/cm^3]'])/1e3));
+            self.tabs['LoDi'].NeuerEintrag(text='Trockendichte-max [g/cm^3]: ' + str(round(1e3*lodi['Trockendichte-max [g/cm^3]'])/1e3));
+            self.tabs['LoDi'].NeuerEintrag(text='Porenzahl-min [-]: ' + str(round(1e3*lodi['Porenzahl-min [-]'])/1e3));
+            self.tabs['LoDi'].NeuerEintrag(text='Porenzahl-max [-]: ' + str(round(1e3*lodi['Porenzahl-max [-]'])/1e3));
          except:
             self.tabs['LoDi'].AlleEintraegeEntfernen();
             self.tabs['LoDi'].NeuerEintrag(text=dateiname);
-            self.tabs['LoDi'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege');
+            self.tabs['LoDi'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege (siehe Log)');
       #
       if ('Atterberg' in self.boden[bodenname]):
          atterberg = self.boden[bodenname]['Atterberg'];
@@ -445,9 +435,6 @@ class GUIbasis(object):
          #
          try:
             self.tabs['LoDi'].NeuerEintrag(text=dateiname);
-            if (atterberg['Status'] != 'Einlesen erfolgreich'):
-               self.tabs['LoDi'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-            #
             self.tabs['LoDi'].NeuerEintrag(text='Fließgrenze [%]: ' + str(round(1e2*atterberg['Fliessgrenze [%]'])/1e2));
             self.tabs['LoDi'].NeuerEintrag(text='Ausrollgrenze [%]: ' + str(round(1e2*atterberg['Ausrollgrenze [%]'])/1e2));
             self.tabs['LoDi'].NeuerEintrag(text='Plastizitätszahl [%]: ' + str(round(1e2*atterberg['Plastizitaetszahl [%]'])/1e2));
@@ -455,7 +442,7 @@ class GUIbasis(object):
          except:
             self.tabs['LoDi'].AlleEintraegeEntfernen();
             self.tabs['LoDi'].NeuerEintrag(text=dateiname);
-            self.tabs['LoDi'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege');
+            self.tabs['LoDi'].NeuerEintrag(text='Fehlerhafte/Ungueltige Eintraege (siehe Log)');
       #
       if ('Oedo-CRS' in self.boden[bodenname]):
          oedo_crs = self.boden[bodenname]['Oedo-CRS'];
@@ -465,14 +452,6 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_crs['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
          for oedo_lagerung in ['locker', 'dicht']:
             if ('Oedo-' + oedo_lagerung in oedo_crs):
                self.tabs['Oedo'].NeuerEintrag(text='Plot Stauchung Oedo-CRS ' + oedo_lagerung,
@@ -488,14 +467,6 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_crsvisko['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Porenzahl Oedo-CRS-Visko',
             command=lambda: self._PlotbefehlInterpretieren('Porenzahl Oedo-CRS-Visko'));
       #
@@ -507,14 +478,6 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_crl['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-CRL Wurzelmassstab',
             command=lambda: self._PlotbefehlInterpretieren('Oedo-CRL Wurzelmassstab Laststufe 1'));
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-CRL Logarithmisch',
@@ -524,111 +487,81 @@ class GUIbasis(object):
          self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-CRL Kurvenfit',
             command=lambda: self._PlotbefehlInterpretieren('Oedo-CRL Fit'));
       #
-      if ('Oedo-dicht' in self.boden[bodenname]):
-         oedo_dicht = self.boden[bodenname]['Oedo-dicht'];
-         try:
-            dateiname = oedo_dicht['Dateiname'][num_refzeichen:];
-         except:
-            dateiname = '--Dateiname fehlt/ungueltig--';
-         #
-         self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_dicht['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
-         self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('dichter Oedometerversuch'));
-      #
-      if ('Oedo-locker' in self.boden[bodenname]):
-         oedo_locker = self.boden[bodenname]['Oedo-locker'];
-         try:
-            dateiname = oedo_locker['Dateiname'][num_refzeichen:];
-         except:
-            dateiname = '--Dateiname fehlt/ungueltig--';
-         #
-         self.tabs['Oedo'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_locker['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Oedo'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
-         self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-locker',
-            command=lambda: self._PlotbefehlInterpretieren('lockerer Oedometerversuch'));
-      #
-      if ('Triax-D-dicht' in self.boden[bodenname]):
-         triaxd_dicht = self.boden[bodenname]['Triax-D-dicht'];
-         try:
-            dateiname = triaxd_dicht['Dateiname'][num_refzeichen:];
-         except:
-            dateiname = '--Dateiname fehlt/ungueltig--';
-         #
-         self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         try:
-            status = triaxd_dicht['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
-         self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Volumen dichter Triax-D'));
-         dilatanzwinkel = 'Dilatanzwinkel: ';
-         for idx_triaxversuche in range(3):
-            versuchsname = 'Versuch ' + str(idx_triaxversuche + 1);
+      if ('Oedo' in self.boden[bodenname]):
+         if ('Oedo-dicht' in self.boden[bodenname]['Oedo']):
+            oedo_dicht = self.boden[bodenname]['Oedo']['Oedo-dicht'];
             try:
-               tempwinkel = triaxd_dicht[versuchsname]['Peakzustand']['Dilatanzwinkel [Grad]'];
-               dilatanzwinkel += str(round(tempwinkel*10.0)/10.0) + ' Grad; ';
+               dateiname = oedo_dicht['Dateiname'][num_refzeichen:];
             except:
-               dilatanzwinkel += '-?-; ';
+               dateiname = '--Dateiname fehlt/ungueltig--';
+            #
+            self.tabs['Oedo'].NeuerEintrag(text=dateiname);
+            self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('dichter Oedometerversuch'));
          #
-         self.tabs['Triax'].NeuerEintrag(text=dilatanzwinkel);
-         self.tabs['Triax'].NeuerEintrag(text='Plot Porenzahl Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Porenzahl dichter Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Reibungswinkel Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Reibungswinkel dichter Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Mittelspannung dichter Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Spannungskreise Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Spannungskreise dichter Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Bruchgerade Triax-D-dicht',
-            command=lambda: self._PlotbefehlInterpretieren('Bruchgerade dichter Triax-D'));
+         if ('Oedo-locker' in self.boden[bodenname]['Oedo']):
+            oedo_locker = self.boden[bodenname]['Oedo']['Oedo-locker'];
+            try:
+               dateiname = oedo_locker['Dateiname'][num_refzeichen:];
+            except:
+               dateiname = '--Dateiname fehlt/ungueltig--';
+            #
+            self.tabs['Oedo'].NeuerEintrag(text=dateiname);
+            self.tabs['Oedo'].NeuerEintrag(text='Plot Oedo-locker',
+               command=lambda: self._PlotbefehlInterpretieren('lockerer Oedometerversuch'));
       #
-      if ('Triax-D-locker' in self.boden[bodenname]):
-         triaxd_locker = self.boden[bodenname]['Triax-D-locker'];
-         try:
-            dateiname = triaxd_locker['Dateiname'][num_refzeichen:];
-         except:
-            dateiname = '--Dateiname fehlt/ungueltig--';
+      if ('Triax-D' in self.boden[bodenname]):
+         if ('Triax-D-dicht' in self.boden[bodenname]['Triax-D']):
+            triaxd_dicht = self.boden[bodenname]['Triax-D']['Triax-D-dicht'];
+            try:
+               dateiname = triaxd_dicht['Dateiname'][num_refzeichen:];
+            except:
+               dateiname = '--Dateiname fehlt/ungueltig--';
+            #
+            self.tabs['Triax'].NeuerEintrag(text=dateiname);
+            self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Volumen dichter Triax-D'));
+            dilatanzwinkel = 'Dilatanzwinkel: ';
+            for idx_triaxversuche in range(3):
+               versuchsname = 'Versuch ' + str(idx_triaxversuche + 1);
+               try:
+                  tempwinkel = triaxd_dicht[versuchsname]['Peakzustand']['Dilatanzwinkel [Grad]'];
+                  dilatanzwinkel += str(round(tempwinkel*10.0)/10.0) + ' Grad; ';
+               except:
+                  dilatanzwinkel += '-?-; ';
+            #
+            self.tabs['Triax'].NeuerEintrag(text=dilatanzwinkel);
+            self.tabs['Triax'].NeuerEintrag(text='Plot Porenzahl Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Porenzahl dichter Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Reibungswinkel Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Reibungswinkel dichter Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Mittelspannung dichter Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Spannungskreise Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Spannungskreise dichter Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Bruchgerade Triax-D-dicht',
+               command=lambda: self._PlotbefehlInterpretieren('Bruchgerade dichter Triax-D'));
          #
-         self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         try:
-            status = triaxd_locker['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
-         self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Volumen lockerer Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Porenzahl Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Porenzahl lockerer Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Reibungswinkel Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Reibungswinkel lockerer Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Mittelspannung lockerer Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Spannungskreise Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Spannungskreise lockerer Triax-D'));
-         self.tabs['Triax'].NeuerEintrag(text='Plot Bruchgerade Triax-D-locker',
-            command=lambda: self._PlotbefehlInterpretieren('Bruchgerade lockerer Triax-D'));
+         if ('Triax-D-locker' in self.boden[bodenname]['Triax-D']):
+            triaxd_locker = self.boden[bodenname]['Triax-D']['Triax-D-locker'];
+            try:
+               dateiname = triaxd_locker['Dateiname'][num_refzeichen:];
+            except:
+               dateiname = '--Dateiname fehlt/ungueltig--';
+            #
+            self.tabs['Triax'].NeuerEintrag(text=dateiname);
+            self.tabs['Triax'].NeuerEintrag(text='Plot Volumen Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Volumen lockerer Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Porenzahl Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Porenzahl lockerer Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Reibungswinkel Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Reibungswinkel lockerer Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Mittelspannung lockerer Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Spannungskreise Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Spannungskreise lockerer Triax-D'));
+            self.tabs['Triax'].NeuerEintrag(text='Plot Bruchgerade Triax-D-locker',
+               command=lambda: self._PlotbefehlInterpretieren('Bruchgerade lockerer Triax-D'));
       #
       if ('Triax-CU' in self.boden[bodenname]):
          triax_cu = self.boden[bodenname]['Triax-CU'];
@@ -638,14 +571,6 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         try:
-            status = triax_cu['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
          self.tabs['Triax'].NeuerEintrag(text='Plot Mittelspannung Triax-CU',
             command=lambda: self._PlotbefehlInterpretieren('Mittelspannung Triax-CU'));
          self.tabs['Triax'].NeuerEintrag(text='Plot Hauptspannungsverhaeltnis Triax-CU',
@@ -667,21 +592,21 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Auswertung'].NeuerEintrag(text=dateiname);
-         try:
-            status = auswertung['Status'];
-         except:
-            status = '---fehlt---';
          #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Auswertung'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
+         try:
+            vorgabewerte = [str(x) for x in auswertung['Parameter']['Einstellungen']['Referenzspannungen']];
+         except:
+            vorgabewerte = ['30', '1500'];
          #
          refunten = tkinter.StringVar();
-         refunten.set('30');
+         refunten.set(vorgabewerte[0]);
          self.tabs['Auswertung'].NeuerEintrag(text='Ref.-Spannung-min [kN/m^2]', variable=refunten);
          refoben = tkinter.StringVar();
-         refoben.set('1500');
+         refoben.set(vorgabewerte[1]);
          self.tabs['Auswertung'].NeuerEintrag(text='Ref.-Spannung-max [kN/m^2]', variable=refoben);
          #
+         # Da der Reibungswinkel aus dem Schuettkegelversuch z.Z. nur in Auswertung-Hypoplastisch
+         # gespeichert ist, wird zumindest dafuer eine solche Datei benoetigt
          hypoparamrahmen = self.tabs['Auswertung'].NeuerFrameEintrag();
          self.tabs['Auswertung'].NeuerBefehl(text='Hypoplastische Parameter berechnen',
             command=lambda: self._HypoplastischeParameterBerechnen(hypoparamrahmen, refunten.get(), refoben.get()));
@@ -695,14 +620,6 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Triax'].NeuerEintrag(text=dateiname);
-         try:
-            status = triax_pq['Status'];
-         except:
-            status = '---fehlt---';
-         #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Triax'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
-         #
          self.tabs['Triax'].NeuerEintrag(text='Plot Spannungen Triax-p-q',
             command=lambda: self._PlotbefehlInterpretieren('Spannungen Triax-p-q'));
          self.tabs['Triax'].NeuerEintrag(text='Plot Stauchungen Triax-p-q',
@@ -715,17 +632,31 @@ class GUIbasis(object):
          from .parameterbestimmung import ErweiterteHypoplastischeParameterFuerBoden
          #
          self.tabs['Auswertung'].NeuerEintrag(text=dateiname);
-         if (triax_pq['Status'] != 'Einlesen erfolgreich'):
-            self.tabs['Auswertung'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
+         try:
+            vorgabewert = str(triax_pq['Parameter']['Einstellungen']['Offset']);
+         except:
+            vorgabewert = '0';
          #
          offset = tkinter.StringVar();
-         offset.set('0');
+         offset.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='Startoffset', variable=offset);
+         #
+         try:
+            vorgabewert = str(triax_pq['Parameter']['Einstellungen']['Glaettungswert']);
+         except:
+            vorgabewert = '10';
+         #
          glaettungswert = tkinter.StringVar();
-         glaettungswert.set('10');
+         glaettungswert.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='Glättungswert', variable=glaettungswert);
+         #
+         try:
+            vorgabewert = str(triax_pq['Parameter']['Einstellungen']['Referenzspanne']);
+         except:
+            vorgabewert = '3';
+         #
          refspanne = tkinter.StringVar();
-         refspanne.set('3');
+         refspanne.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='Ref.Wertspanne', variable=refspanne);
          #
          erwhypoparamrahmen = self.tabs['Auswertung'].NeuerFrameEintrag();
@@ -745,25 +676,41 @@ class GUIbasis(object):
             dateiname = '--Dateiname fehlt/ungueltig--';
          #
          self.tabs['Auswertung'].NeuerEintrag(text=dateiname);
-         try:
-            status = oedo_crsvisko['Status'];
-         except:
-            status = '---fehlt---';
          #
-         if (status != 'Einlesen erfolgreich'):
-            self.tabs['Auswertung'].NeuerEintrag(text='! Fehler beim Einlesen (siehe Log) !');
+         try:
+            vorgabewert = str(oedo_crsvisko['Parameter']['Einstellungen']['Intervallgroesse']);
+         except:
+            vorgabewert = '25';
          #
          intervalllokalext = tkinter.StringVar();
-         intervalllokalext.set('25');
+         intervalllokalext.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='Intervall lok. Extremwert', variable=intervalllokalext);
+         #
+         try:
+            vorgabewert = str(oedo_crsvisko['Parameter']['Einstellungen']['P1 Logverhaeltnis']);
+         except:
+            vorgabewert = '0.5';
+         #
          p1logverhaeltnis = tkinter.StringVar();
-         p1logverhaeltnis.set('0.5');
+         p1logverhaeltnis.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='P1 Logverhältnis', variable=p1logverhaeltnis);
+         #
+         try:
+            vorgabewert = str(oedo_crsvisko['Parameter']['Einstellungen']['P5 Logverhaeltnis']);
+         except:
+            vorgabewert = '0.5';
+         #
          p5logverhaeltnis = tkinter.StringVar();
-         p5logverhaeltnis.set('0.5');
+         p5logverhaeltnis.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='P5 Logverhältnis', variable=p5logverhaeltnis);
+         #
+         try:
+            vorgabewert = str(oedo_crsvisko['Parameter']['Einstellungen']['Zwischenpunkte']);
+         except:
+            vorgabewert = '5';
+         #
          interpzwischenpunkte = tkinter.StringVar();
-         interpzwischenpunkte.set('5');
+         interpzwischenpunkte.set(vorgabewert);
          self.tabs['Auswertung'].NeuerEintrag(text='Interp. Zwischenpunkte', variable=interpzwischenpunkte);
          #
          viskohypoparamrahmen = self.tabs['Auswertung'].NeuerFrameEintrag();
@@ -774,6 +721,15 @@ class GUIbasis(object):
             p1logverhaeltnis.get(), p5logverhaeltnis.get(), interpzwischenpunkte.get());
       #
       self.tkroot.update_idletasks();
+   #
+   def _KennwerteNeuBerechnen(self):
+      from .kennwerte import Kennwertberechnungen
+      #
+      if (self.boden is not None):
+         bodenname = self.bodenname.get();
+         if (bodenname in self.boden):
+            print('# --- Neuberechnung der Kennwerte fuer ' + bodenname);
+            Kennwertberechnungen(daten=self.boden[bodenname]);
    #
    def _DatenEinlesen(self, unterfenster, bodenname, dateimaske, zielordner):
       from .dateneinlesen import BodendatenEinlesen
@@ -929,15 +885,20 @@ class GUIbasis(object):
       schluessel.sort();
       auswahlframe = CustomAuswahlliste(unterfenster, schluessel=schluessel);
       auswahlframe.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='ns');
+      # Falls nur ein Schluessel vorhanden ist, diesen direkt auswaehlen
+      if (len(schluessel) == 1):
+         auswahlframe.children['!listbox'].selection_set(first=0);
       #
-      button = CustomButton(unterfenster, text="Laden",
-         command=lambda: self._BodenmusterLaden(unterfenster, bodenmuster,
-         auswahlframe.children['!listbox'], loadall.get()));
+      befehl = lambda: self._BodenmusterLaden(unterfenster, bodenmuster,
+         auswahlframe.children['!listbox'], loadall.get());
+      button = CustomButton(unterfenster, text="Laden", command=befehl);
       button.grid(row=3, column=0, padx=10, pady=10, sticky='e');
       #
       button = CustomButton(unterfenster, text="Schließen", command=unterfenster.destroy);
       button.grid(row=3, column=1, padx=10, pady=10, sticky='w');
       #
+      unterfenster.bind('<Return>', lambda event: befehl());
+      unterfenster.bind('<Escape>', lambda event: unterfenster.destroy());
       FensterZentrieren(self.tkroot, unterfenster);
    #
    def _BodenmusterLaden(self, unterfenster, bodenmuster, auswahlbox, loadall):
@@ -971,6 +932,29 @@ class GUIbasis(object):
          self._BodenlisteAktualisieren();
       #
       unterfenster.destroy();
+   #
+   def _FensterListendateiEinlesen(self):
+      from os import path as os_path
+      from .dateneinlesen import BodendatenListeEinlesen
+      #
+      listendatei = filedialog.askopenfilename(title='Datei auswählen',
+         initialdir=self.zwischenspeicher_listendateieinlesen[0]);
+      if ((listendatei == '') or (not listendatei)):
+         return;
+      #
+      eingelesen = BodendatenListeEinlesen(dateiname=listendatei);
+      if (eingelesen is None):
+         messagebox.showwarning(parent=self.tkroot, title='Listendatei öffnen',
+            message='Fehler beim Einlesen der Listendatei ' + listendatei);
+         return;
+      #
+      self.zwischenspeicher_listendateieinlesen[0] = os_path.dirname(listendatei);
+      if (self.boden is None):
+         self.boden = eingelesen;
+      else:
+         self.boden.update(eingelesen);
+      #
+      self._BodenlisteAktualisieren();
    #
    def _FensterDateiEinlesen(self):
       from .guihilfen import FensterZentrieren
@@ -1009,13 +993,15 @@ class GUIbasis(object):
       eingabe_zielordner = CustomEntry(unterfenster, textvariable=zielordner);
       eingabe_zielordner.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky='nsew');
       #
-      button = CustomButton(unterfenster, text="Einlesen",
-         command=lambda: self._DatenEinlesen(unterfenster, bodenname.get(), dateimaske.get(), zielordner.get()));
+      befehl = lambda: self._DatenEinlesen(unterfenster, bodenname.get(), dateimaske.get(), zielordner.get());
+      button = CustomButton(unterfenster, text="Einlesen", command=befehl);
       button.grid(row=4, column=0, padx=10, pady=10, sticky='e');
       #
       button = CustomButton(unterfenster, text="Schließen", command=unterfenster.destroy);
       button.grid(row=4, column=1, padx=10, pady=10, sticky='w');
       #
+      unterfenster.bind('<Return>', lambda event: befehl());
+      unterfenster.bind('<Escape>', lambda event: unterfenster.destroy());
       FensterZentrieren(self.tkroot, unterfenster);
    #
    def _FensterDatensatzOeffnen(self):
@@ -1066,6 +1052,9 @@ class GUIbasis(object):
       schluessel.sort();
       auswahlframe = CustomAuswahlliste(unterfenster, schluessel=schluessel);
       auswahlframe.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky='ns');
+      # Falls nur ein Schluessel vorhanden ist, diesen direkt auswaehlen
+      if (len(schluessel) == 1):
+         auswahlframe.children['!listbox'].selection_set(first=0);
       #
       text_dateiname = CustomLabel(unterfenster, text='Dateiname');
       text_dateiname.grid(row=2, column=0, padx=10, pady=10);
@@ -1079,13 +1068,16 @@ class GUIbasis(object):
       eingabe_dateiname = CustomEntry(unterfenster, textvariable=dateiname, width=34);
       eingabe_dateiname.grid(row=3, column=0, columnspan=2, padx=10, pady=10);
       #
-      button = CustomButton(unterfenster, text="Speichern",
-         command=lambda: self._DatensatzSpeichern(unterfenster, dateiname.get(), auswahlframe.children['!listbox'], saveall.get()));
+      befehl = lambda: self._DatensatzSpeichern(unterfenster, dateiname.get(),
+         auswahlframe.children['!listbox'], saveall.get());
+      button = CustomButton(unterfenster, text="Speichern", command=befehl);
       button.grid(row=4, column=0, padx=20, pady=10);
       #
       button = CustomButton(unterfenster, text="Schließen", command=unterfenster.destroy);
       button.grid(row=4, column=1, padx=20, pady=10);
       #
+      unterfenster.bind('<Return>', lambda event: befehl());
+      unterfenster.bind('<Escape>', lambda event: unterfenster.destroy());
       FensterZentrieren(self.tkroot, unterfenster);
    #
    def _FensterDatensatzEntfernen(self):
@@ -1112,15 +1104,20 @@ class GUIbasis(object):
       schluessel.sort();
       auswahlframe = CustomAuswahlliste(unterfenster, schluessel=schluessel);
       auswahlframe.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky='ns');
+      # Falls nur ein Schluessel vorhanden ist, diesen direkt auswaehlen
+      if (len(schluessel) == 1):
+         auswahlframe.children['!listbox'].selection_set(first=0);
       #
-      button = CustomButton(unterfenster, text="Datensatz entfernen",
-         command=lambda: self._DatensatzEntfernen(unterfenster, auswahlframe.children['!listbox'],
-         closeall.get()));
+      befehl = lambda: self._DatensatzEntfernen(unterfenster,
+         auswahlframe.children['!listbox'], closeall.get());
+      button = CustomButton(unterfenster, text="Datensatz entfernen", command=befehl);
       button.grid(row=2, column=0, padx=20, pady=10);
       #
       button = CustomButton(unterfenster, text="Schließen", command=unterfenster.destroy);
       button.grid(row=2, column=1, padx=20, pady=10);
       #
+      unterfenster.bind('<Return>', lambda event: befehl());
+      unterfenster.bind('<Escape>', lambda event: unterfenster.destroy());
       FensterZentrieren(self.tkroot, unterfenster);
    #
    def _Infofenster(self):
@@ -1131,7 +1128,7 @@ class GUIbasis(object):
       unterfenster.tk.call('wm', 'iconphoto', unterfenster._w, tkinter.PhotoImage(data=self.icondata));
       unterfenster.title('miniSoilLAB Infos');
       #
-      infolabel1 = CustomLabel(unterfenster, text='miniSoilLAB v0.5.6', font=('Helvetica', '-18', 'bold'));
+      infolabel1 = CustomLabel(unterfenster, text='miniSoilLAB v0.6.0', font=('Helvetica', '-18', 'bold'));
       infolabel1.grid(row=0, column=0, padx=30, pady=15);
       #
       infolabel2 = CustomLabel(unterfenster, text='2019-2021 Dominik Zobel');
@@ -1140,24 +1137,32 @@ class GUIbasis(object):
       button = CustomButton(unterfenster, text="Schließen", command=unterfenster.destroy);
       button.grid(row=2, column=0, padx=10, pady=15);
       #
+      unterfenster.bind('<Return>', lambda event: unterfenster.destroy());
+      unterfenster.bind('<Escape>', lambda event: unterfenster.destroy());
       FensterZentrieren(self.tkroot, unterfenster);
    #
    def Vorbereiten(self):
       import datetime
       from .guistil import CustomLabelMenu, CustomOptionMenu, CustomScrollbar
+      from .guihilfen import _Autoscrollfunktion, _Radscrollfunktion
       #
       menubar = tkinter.Menu(self.tkroot, tearoff=0, borderwidth=0, relief=tkinter.FLAT);
       menu_datei = tkinter.Menu(menubar, tearoff=0);
       #
       menubar.add_cascade(label="Datei", menu=menu_datei);
       menu_datei.add_command(label="Bodenmusterdatei einlesen", command=self._FensterDatensaetzeAusBodenmusterdateiEinlesen);
+      menu_datei.add_command(label="Listendatei einlesen", command=self._FensterListendateiEinlesen);
       menu_datei.add_command(label="Dateien einlesen", command=self._FensterDateiEinlesen);
       menu_datei.add_command(label="Datensatz öffnen", command=self._FensterDatensatzOeffnen);
       menu_datei.add_command(label="Datensatz speichern", command=self._FensterDatensatzSpeichern);
       menu_datei.add_command(label="Datensatz entfernen", command=self._FensterDatensatzEntfernen);
       menu_datei.add_separator();
       menu_datei.add_command(label="Beenden", command=self.tkroot.destroy);
-
+      #
+      menu_einstellungen = tkinter.Menu(menubar, tearoff=0);
+      menubar.add_cascade(label='Einstellungen', menu=menu_einstellungen);
+      menu_einstellungen.add_command(label='Kennwerte neuberechnen', command=self._KennwerteNeuBerechnen);
+      #
       menu_plot = tkinter.Menu(menubar, tearoff=0);
       menubar.add_cascade(label='Plot', menu=menu_plot);
       menu_plot.add_command(label='Als pdf speichern', command=self._PlotAlsPdfSpeichern);
@@ -1240,7 +1245,7 @@ class GUIbasis(object):
       menurahmen.grid_columnconfigure(0, weight=1);
       # ----------------------------------------------------------------
       dpi = 150;
-      self.figure = matplotlib.figure.Figure(figsize=(self.plotbreite/dpi, self.hoehe/dpi), dpi=dpi);
+      self.figure = pyplot.Figure(figsize=(self.plotbreite/dpi, self.hoehe/dpi), dpi=dpi);
       #
       zeichnungsrahmen = tkinter.Frame(self.tkroot); #, width=plotbreite, height=plothoehe);
       zeichnungsrahmen.grid(row=0, column=1, sticky='nsew');

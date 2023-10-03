@@ -1,23 +1,129 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module miniSoilLAB.parameterbestimmung</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head><body bgcolor="#f0f0f8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.parameterbestimmung</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
 
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
-<tr bgcolor="#7799ee">
-<td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.parameterbestimmung</strong></big></big></font></td
-><td align=right valign=bottom
-></td></tr></table>
-    <p><tt>parameterbestimmung.py&nbsp;&nbsp;&nbsp;v0.5&nbsp;(2019-11)</tt></p>
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.parameterbestimmung</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/parameterbestimmung.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/parameterbestimmung.py</a></td></tr></table>
+    <p><span class="code">parameterbestimmung.py&nbsp;&nbsp;&nbsp;v0.6&nbsp;(2021-06)</span></p>
 <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-ErweiterteHypoplastischeParameterBestimmen"><strong>ErweiterteHypoplastischeParameterBestimmen</strong></a>(stauchungen, hoehen, hauptspannungsdifferenzen, offset=0, glaettungswert=10, refspanne=3)</dt><dd><tt>Bestimme&nbsp;die&nbsp;erweiterten&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;von<br>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-ErweiterteHypoplastischeParameterBestimmen"><strong>ErweiterteHypoplastischeParameterBestimmen</strong></a>(stauchungen, hoehen, hauptspannungsdifferenzen, offset=0, glaettungswert=10, refspanne=3)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;erweiterten&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;von<br>
 Triaxialversuchen&nbsp;mit&nbsp;speziellem&nbsp;Spannungspfaden&nbsp;(Triax-p-q).&nbsp;Es&nbsp;werden&nbsp;benoetigt:<br>
 &nbsp;<br>
 -&nbsp;stauchungen&nbsp;von&nbsp;Triaxialversuchen&nbsp;(Triax-p-q)&nbsp;mit&nbsp;einer&nbsp;Lastaenderung&nbsp;von&nbsp;0,&nbsp;90&nbsp;und&nbsp;180&nbsp;Grad<br>
@@ -27,15 +133,15 @@ Triaxialversuchen&nbsp;mit&nbsp;speziellem&nbsp;Spannungspfaden&nbsp;(Triax-p-q)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;und&nbsp;180&nbsp;Grad<br>
 -&nbsp;offset&nbsp;[frei&nbsp;waehlbarer&nbsp;Startpunkt&nbsp;nach&nbsp;Beginn&nbsp;der&nbsp;letzten&nbsp;Stage]<br>
 -&nbsp;glaettungswert&nbsp;[frei&nbsp;waehlbarer&nbsp;Glaettungsparameter,&nbsp;wobei&nbsp;0&nbsp;keiner&nbsp;Glaettung&nbsp;entspricht]<br>
--&nbsp;refspanne&nbsp;[frei&nbsp;waehlbare&nbsp;Spanne&nbsp;an&nbsp;Punkten,&nbsp;die&nbsp;um&nbsp;den&nbsp;Peak&nbsp;zur&nbsp;Bestimmung&nbsp;von&nbsp;E_max&nbsp;genutzt&nbsp;wird]</tt></dd></dl>
- <dl><dt><a name="-ErweiterteHypoplastischeParameterFuerBoden"><strong>ErweiterteHypoplastischeParameterFuerBoden</strong></a>(boden, offset=0, glaettungswert=10, refspanne=3)</dt><dd><tt>Bestimme&nbsp;die&nbsp;erweiterten&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten<br>
+-&nbsp;refspanne&nbsp;[frei&nbsp;waehlbare&nbsp;Spanne&nbsp;an&nbsp;Punkten,&nbsp;die&nbsp;um&nbsp;den&nbsp;Peak&nbsp;zur&nbsp;Bestimmung&nbsp;von&nbsp;E_max&nbsp;genutzt&nbsp;wird]</span></dd></dl>
+ <dl><dt><a name="-ErweiterteHypoplastischeParameterFuerBoden"><strong>ErweiterteHypoplastischeParameterFuerBoden</strong></a>(boden, offset=0, glaettungswert=10, refspanne=3)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;erweiterten&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten<br>
 des&nbsp;Referenzbodens&nbsp;(Triax-p-q).&nbsp;Aufgrund&nbsp;der&nbsp;typischen&nbsp;Schwankungen&nbsp;der&nbsp;Aufzeichnungswerte&nbsp;<br>
 empfiehlt&nbsp;sich&nbsp;eine&nbsp;Glaettung&nbsp;von&nbsp;Funktionswerten&nbsp;und&nbsp;Ableitung&nbsp;(E-Modul-Entwicklung).&nbsp;Der<br>
 Einflussbereich&nbsp;der&nbsp;Glaettung&nbsp;kann&nbsp;mit&nbsp;glaettungswert&nbsp;gesteuert&nbsp;werden,&nbsp;wobei&nbsp;0&nbsp;keiner&nbsp;Glaettung<br>
 entspricht.&nbsp;Der&nbsp;erste&nbsp;zu&nbsp;betrachtende&nbsp;Wert&nbsp;ist&nbsp;offset&nbsp;Stellen&nbsp;nach&nbsp;beginn&nbsp;der&nbsp;letzten&nbsp;Stage&nbsp;des<br>
 Versuchs.&nbsp;Fuer&nbsp;die&nbsp;Bestimmung&nbsp;von&nbsp;R_max&nbsp;werden&nbsp;refspanne&nbsp;Punkte&nbsp;(vor&nbsp;und)&nbsp;nach&nbsp;dem&nbsp;Peakwert<br>
-verwendet,&nbsp;um&nbsp;ein&nbsp;Peakplateau&nbsp;(E_max&nbsp;an&nbsp;der&nbsp;Position&nbsp;R_max)&nbsp;zu&nbsp;bestimmen.</tt></dd></dl>
- <dl><dt><a name="-HypoplastischeParameterBestimmen"><strong>HypoplastischeParameterBestimmen</strong></a>(reibungswinkel_krit, porenzahl_min, porenzahl_max, spannungen_oedo_locker, porenzahlen_oedo_locker, spannungen_oedo_dicht, porenzahlen_oedo_dicht, reibungswinkel_peak_locker, reibungswinkel_peak_dicht, dilatanzwinkel, spannung_peak_mittel, porenzahl_peak, referenzspannungen, einflussintervall=0.0625)</dt><dd><tt>Bestimme&nbsp;die&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;verschiedener<br>
+verwendet,&nbsp;um&nbsp;ein&nbsp;Peakplateau&nbsp;(E_max&nbsp;an&nbsp;der&nbsp;Position&nbsp;R_max)&nbsp;zu&nbsp;bestimmen.</span></dd></dl>
+ <dl><dt><a name="-HypoplastischeParameterBestimmen"><strong>HypoplastischeParameterBestimmen</strong></a>(reibungswinkel_krit, porenzahl_min, porenzahl_max, spannungen_oedo_locker, porenzahlen_oedo_locker, spannungen_oedo_dicht, porenzahlen_oedo_dicht, reibungswinkel_peak_locker, reibungswinkel_peak_dicht, dilatanzwinkel, spannung_peak_mittel, porenzahl_peak, referenzspannungen, einflussintervall=0.0625)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;verschiedener<br>
 Laborversuche.&nbsp;Es&nbsp;werden&nbsp;benoetigt:<br>
 &nbsp;<br>
 -&nbsp;reibungswinkel_krit&nbsp;(aus&nbsp;Schuettkegelversuch)<br>
@@ -50,13 +156,13 @@ Laborversuche.&nbsp;Es&nbsp;werden&nbsp;benoetigt:<br>
 Optional&nbsp;kann&nbsp;einflussintervall&nbsp;zur&nbsp;Bestimmung&nbsp;von&nbsp;Stuetzpunkten&nbsp;der&nbsp;referenzspannungen&nbsp;geaendert<br>
 werden.&nbsp;Gibt&nbsp;die&nbsp;hypoplastischen&nbsp;Parameter&nbsp;fuer&nbsp;diese&nbsp;Labordaten&nbsp;zurueck.<br>
 [phi_c,&nbsp;&nbsp;h_s,&nbsp;&nbsp;&nbsp;n,&nbsp;&nbsp;&nbsp;e_d,&nbsp;&nbsp;e_c,&nbsp;&nbsp;e_i,&nbsp;&nbsp;alpha,&nbsp;&nbsp;beta]<br>
-&nbsp;[rad]&nbsp;&nbsp;&nbsp;[MPa]&nbsp;&nbsp;[-]&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]</tt></dd></dl>
- <dl><dt><a name="-HypoplastischeParameterFuerBoden"><strong>HypoplastischeParameterFuerBoden</strong></a>(boden, referenzspannungen, einflussintervall=0.0625)</dt><dd><tt>Bestimme&nbsp;die&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten&nbsp;des<br>
+&nbsp;[rad]&nbsp;&nbsp;&nbsp;[MPa]&nbsp;&nbsp;[-]&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]</span></dd></dl>
+ <dl><dt><a name="-HypoplastischeParameterFuerBoden"><strong>HypoplastischeParameterFuerBoden</strong></a>(boden, referenzspannungen, einflussintervall=0.0625)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;hypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten&nbsp;des<br>
 Referenzbodens.&nbsp;Durch&nbsp;die&nbsp;Spannungsabhaengigkeit&nbsp;der&nbsp;hypoplastischen&nbsp;Parameter&nbsp;muessen&nbsp;die<br>
 beiden&nbsp;referenzspannungen&nbsp;(untere&nbsp;und&nbsp;obere)&nbsp;angegeben&nbsp;werden,&nbsp;fuer&nbsp;die&nbsp;die&nbsp;Parameter&nbsp;bestimmt<br>
 werden&nbsp;sollen.&nbsp;Fuer&nbsp;Details&nbsp;und&nbsp;Informationen&nbsp;zu&nbsp;den&nbsp;optionalen&nbsp;Parametern&nbsp;siehe&nbsp;auch<br>
-<a href="#-HypoplastischeParameterBestimmen">HypoplastischeParameterBestimmen</a>().</tt></dd></dl>
- <dl><dt><a name="-ViskohypoplastischeParameterBestimmen"><strong>ViskohypoplastischeParameterBestimmen</strong></a>(spannungen_crs, porenzahlen_crs, hoehe_crs, stauchungsrate_crs, reibungswinkel_krit, stunden_crl, porenzahlen_crl, laststufen_crl, intervallgroesse=25, p1logverhaeltnis=0.5, p5logverhaeltnis=0.5, zwischenpunkte=5)</dt><dd><tt>Bestimme&nbsp;die&nbsp;viskohypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;verschiedener<br>
+<a href="#-HypoplastischeParameterBestimmen">HypoplastischeParameterBestimmen</a>().</span></dd></dl>
+ <dl><dt><a name="-ViskohypoplastischeParameterBestimmen"><strong>ViskohypoplastischeParameterBestimmen</strong></a>(spannungen_crs, porenzahlen_crs, hoehe_crs, stauchungsrate_crs, reibungswinkel_krit, stunden_crl, porenzahlen_crl, laststufen_crl, intervallgroesse=25, p1logverhaeltnis=0.5, p5logverhaeltnis=0.5, zwischenpunkte=5)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;viskohypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;uebergebenen&nbsp;Parametern&nbsp;verschiedener<br>
 Laborversuche.&nbsp;Es&nbsp;werden&nbsp;benoetigt:<br>
 &nbsp;<br>
 -&nbsp;spannungen_crs&nbsp;(aus&nbsp;einem&nbsp;CRS-Oedometerversuch&nbsp;mit&nbsp;Belastung,&nbsp;Entlastung&nbsp;und&nbsp;Wiederbelastung)<br>
@@ -75,9 +181,9 @@ Fuer&nbsp;die&nbsp;Bestimmung&nbsp;von&nbsp;I_v&nbsp;wird&nbsp;zur&nbsp;Ermittlu
 interpoliert,&nbsp;was&nbsp;mit&nbsp;zwischenpunkte&nbsp;eingestellt&nbsp;werden&nbsp;kann.<br>
 Gibt&nbsp;die&nbsp;viskohypoplastischen&nbsp;Parameter&nbsp;fuer&nbsp;diese&nbsp;Labordaten&nbsp;zurueck.<br>
 [e100,&nbsp;&nbsp;lambda,&nbsp;&nbsp;kappa,&nbsp;&nbsp;beta_x,&nbsp;&nbsp;I_v,&nbsp;&nbsp;D_r,&nbsp;&nbsp;OCR]<br>
-&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]</tt></dd></dl>
- <dl><dt><a name="-ViskohypoplastischeParameterFuerBoden"><strong>ViskohypoplastischeParameterFuerBoden</strong></a>(boden, intervallgroesse=25, p1logverhaeltnis=0.5, p5logverhaeltnis=0.5, zwischenpunkte=5)</dt><dd><tt>Bestimme&nbsp;die&nbsp;viskohypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten&nbsp;des<br>
+&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]&nbsp;&nbsp;&nbsp;[-]</span></dd></dl>
+ <dl><dt><a name="-ViskohypoplastischeParameterFuerBoden"><strong>ViskohypoplastischeParameterFuerBoden</strong></a>(boden, intervallgroesse=25, p1logverhaeltnis=0.5, p5logverhaeltnis=0.5, zwischenpunkte=5)</dt><dd><span class="code">Bestimme&nbsp;die&nbsp;viskohypoplastischen&nbsp;Parameter&nbsp;aus&nbsp;den&nbsp;unter&nbsp;boden&nbsp;eingelesenen&nbsp;Labordaten&nbsp;des<br>
 Referenzbodens.&nbsp;Fuer&nbsp;Details&nbsp;und&nbsp;Informationen&nbsp;zu&nbsp;den&nbsp;optionalen&nbsp;Parametern&nbsp;siehe&nbsp;auch<br>
-<a href="#-ViskohypoplastischeParameterBestimmen">ViskohypoplastischeParameterBestimmen</a>().</tt></dd></dl>
+<a href="#-ViskohypoplastischeParameterBestimmen">ViskohypoplastischeParameterBestimmen</a>().</span></dd></dl>
 </td></tr></table>
 </body></html>

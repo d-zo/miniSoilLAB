@@ -1,0 +1,26 @@
+{
+   "Korndichte_01": {
+      "Tabelle": {
+         "[Checks]": {
+            "C1": "Bestimmung der Korndichte",
+            "A10": "Vorabmessung Pyknometer",
+            "A18": "Bestimmungsversuch",
+            "A22": "Wassertemperatur:"
+         },
+         "Trockenmasse mit Behaelter [g]": ["B20:D20", [0.0, 1000.0]],
+         "Feuchtmasse mit Behaelter [g]": ["B21:D21", [0.0, 1000.0]],
+         "Wassertemperatur [C]": ["B22:D22", [5.0, 30.0]],
+         "Pyknometer": {
+            "Nummer": ["B12:D12"],
+            "Trockenmasse [g]": ["B13:D13", [0.0, 1000.0]],
+            "Feuchtmasse [g]": ["B14:D14", [0.0, 1000.0]],
+            "Wassertemperatur [C]": ["B15:D15", [5.0, 30.0]]
+         },
+         "Projektnummer": ["B4"],
+         "Projektname": ["B5"],
+         "Bodenname": ["B6"],
+         "Bodenart": ["B7"],
+         "Datum": ["B3"]
+      }
+   }
+}

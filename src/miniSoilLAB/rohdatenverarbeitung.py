@@ -14,7 +14,7 @@ rohdatenverarbeitung.py   v0.2 (2020-12)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -27,6 +27,7 @@ def _RohdatensatzGruppePruefen(daten, vorlage, position):
    werden soll. Pruefe fuer alle Eintraege in der Gruppe, ob sie innerhalb der Grenzen der
    dazugehoerigen vorlage sind (und schneide sie ggfs. einheitlich ab).
    """
+   from .konstanten import debugmodus
    from .gleichungsloeser import WertInZulaessigemBereich, LetzterIndexMitWertKleinerAls
    #
    # Erwarte keine Unterstruktur, sondern nur normale Eintraege in der Gruppe
@@ -56,18 +57,19 @@ def _RohdatensatzGruppePruefen(daten, vorlage, position):
                idx_start_gruppe = idx_start;
    #
    for bezeichnung in cur_vorlage.keys():
-      grenzen = cur_vorlage[bezeichnung][1];
-      temp_daten = cur_daten[bezeichnung];
-      #
-      if (not WertInZulaessigemBereich(name=bezeichnung, liste=temp_daten[idx_start_gruppe:],
-         minmax=grenzen)):
-         print('# Fehler: Wert ' + bezeichnung+ ' aus Gruppe ' + position[-1] + ' nicht in gueltigen Grenzen');
-         return False;
+      if (len(cur_vorlage[bezeichnung]) > 1):
+         grenzen = cur_vorlage[bezeichnung][1];
+         temp_daten = cur_daten[bezeichnung];
+         #
+         if (not WertInZulaessigemBereich(name=bezeichnung, liste=temp_daten[idx_start_gruppe:],
+            minmax=grenzen)):
+            print('# Fehler: Wert ' + bezeichnung + ' aus Gruppe ' + position[-1] + ' nicht in gueltigen Grenzen');
+            return False;
       #
       if (idx_start_gruppe > 0):
          cur_daten[bezeichnung] = cur_daten[bezeichnung][idx_start_gruppe:];
    #
-   if (idx_start_gruppe > 0):  
+   if (debugmodus and (idx_start_gruppe > 0)):
       print('# Hinweis: Begrenze Werte in ' + position[-1] + ' auf das Intervall [' \
          + str(idx_start_gruppe) + ', :]');
    #
@@ -82,6 +84,7 @@ def _RohdatensatzPruefen(daten, vorlage, position):
    Struktur uebergeben, um nacheinander alle Eintraege abzuarbeiten.
    """
    from .datenstruktur import Datenstruktur
+   from .konstanten import debugmodus
    from .gleichungsloeser import WertInZulaessigemBereich, LetzterIndexMitWertKleinerAls
    #
    status = True;
@@ -136,7 +139,7 @@ def _RohdatensatzPruefen(daten, vorlage, position):
             print('# Fehler: Wert ' + position[-1] + ' nicht in gueltigen Grenzen');
             return False;
          #
-         if (idx_start > 0):  
+         if (debugmodus and (idx_start > 0)):
             print('# Hinweis: Schneide ungueltige Werte fuer ' + position[-1] + ' bis nach Index ' \
                + str(idx_start) + ' ab');
             cur_daten = cur_list[idx_start:];
@@ -159,29 +162,21 @@ def _DatenErgaenzen(daten, schluessel, zusatzwerte):
 
 
 # -------------------------------------------------------------------------------------------------
-def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
-   """Liest eine gds-Datei fuer einen drainierten Triaxialversuch (Triax-D) ein und erzeugt eine
-   interne Struktur der Daten. Dazu wird der dateiname der Rohdaten sowie eine Bezeichnung der
-   lagerungsdichte ("locker" oder "dicht") sowie die korndichte in [g/cm^3] erwartet.
-   Es kann entweder ein dateiname oder eine Liste mit drei dateinamen uebergeben werden.
+def VerarbeitungRohdatenGDSTriaxD(dateinamen, korndichte):
+   """Liest eine/mehrere gds-Datei fuer einen drainierten Triaxialversuch (Triax-D) ein und
+   erzeugt eine interne Struktur der Daten. Dazu werden die dateinamen der Rohdaten sowie die
+   korndichte (in [g/cm^3]) erwartet. dateinamen ist eine Liste mit bis zu drei Eintraegen.
    Gibt eine Datenstruktur mit den Versuchsdaten zurueck.
    """
-   from .datenstruktur import Datenstruktur
    from .rohdaten import LeseGDSDaten
-   from .kennwerte import _KennwerteTriax
+   from .kennwerte import Vorbereitung
    from .vorlagen import VorlagenstrukturZuDatenstruktur
    #
-   if (not isinstance(dateiname, list)):
-      dateiname = [dateiname];
-   #
-   if (len(dateiname) > 3):
+   if (len(dateinamen) > 3):
       print('# Warnung: Nur drei Dateien beim Einlesen der Rohdaten (Triax) erlaubt - ignoriere Rest');
-      dateiname = dateiname[:3];
+      dateinamen = dateinamen[:3];
    #
-   if ((lagerungsdichte != 'locker') and (lagerungsdichte != 'dicht')):
-      print('# Fehler: Lagerungsdichte muss locker oder dicht sein.');
-      return None;
-   #
+   # FIXME: Triax-D_01 als Vorlage verwenden?
    triaxvorlage = {
       'Tabelle': {
          'Projektname': ['B4'],
@@ -252,18 +247,18 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
    };
    triax = VorlagenstrukturZuDatenstruktur(vorlage=triaxvorlage);
    #
-   for idx_datei, einzeldateiname in enumerate(dateiname):
-      tempgds = LeseGDSDaten(dateiname=einzeldateiname);
-      gds = tempgds['Triax'];
+   for idx_datei, dateiname in enumerate(dateinamen):
+      tempgds = LeseGDSDaten(dateiname=dateiname);
+      gds = tempgds['GDS'];
       #
       if (idx_datei == 0):
          triax.update([('Projektname', 'GDS-Rohdaten')]);
          triax.update([('Bodenname', gds['Description of Sample:'])]);
          triax.update([('Datum', gds['Date of Test'])]);
          zusatz = '';
-         if (len(dateiname) > 1):
-            zusatz = ' (+' + str(len(dateiname)-1) + ')';
-         triax.update([('Dateiname', einzeldateiname + zusatz)]);
+         if (len(dateinamen) > 1):
+            zusatz = ' (+' + str(len(dateinamen)-1) + ')';
+         triax.update([('Dateiname', dateiname + zusatz)]);
          triax.update([('Korndichte [g/cm^3]', korndichte)]);
       #
       _DatenErgaenzen(daten=triax['1-Probenherstellung'], schluessel='Hoehe [mm]', zusatzwerte=gds['Initial Height (mm)']);
@@ -288,7 +283,7 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
          idx_phase3 = stage_number.index(3.0);
          idx_phase4 = stage_number.index(4.0);
       except:
-         print('# Fehler: Stages in ' + einzeldateiname + ' sind nicht wie erwartet von 1 bis 4');
+         print('# Fehler: Stages in ' + dateiname + ' sind nicht wie erwartet von 1 bis 4');
          return None;
       #
       dauer = gds['Daten']['Time since start of stage (s)'];
@@ -315,21 +310,90 @@ def VerarbeitungRohdatenGDSTriax(dateiname, lagerungsdichte, korndichte):
       stauchung = gds['Daten']['Axial Displacement (mm)'][idx_phase4:];
       triax[versuch].update([('Stauchung [mm]', [x-stauchung[0] for x in stauchung])]);
    #
-   if (len(dateiname) < 3):
+   if (len(dateinamen) < 3):
       del triax['Versuch 3'];
       #
-      if (len(dateiname) < 2):
+      if (len(dateinamen) < 2):
          del triax['Versuch 2'];
    #
    # Pruefe zulaessige Werte, gueltigen Bereich und min_schnitt anhand der Triax-D-Vorlage
    if (_RohdatensatzPruefen(daten=triax, vorlage=triaxvorlage, position=[])):
-      triax.update([('Status', 'Einlesen erfolgreich')]);
+      Vorbereitung(daten=triax, vorlage='Triax-D');
+      return triax;
+   else:
+      return None;
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def VerarbeitungRohdatenEAXOedoCRS(dateiname_l, dateiname_d):
+   """Liest eine EAX-Datei fuer einen Oedometerversuch ein und erzeugt eine interne Struktur
+   der Daten. Dazu werden (Dateinamen zu) Rohdaten für einen lockeren Oedometerversuch
+   (dateiname_l) und einen dichten Oedometerversuch (dateiname_d) erwartet.
+   Gibt eine Datenstruktur mit den Versuchsdaten zurueck.
+   """
+   from .rohdaten import LeseEAXDaten
+   from .kennwerte import Vorbereitung
+   from .vorlagen import VorlagenstrukturZuDatenstruktur
+   #
+   # FIXME: Oedo-CRS_01 als Vorlage verwenden?
+   oedovorlage = {
+      'Versuch': {
+         'Oedo-locker': {
+            '[Gruppe Dehnung-Kraft]': {
+               'Datum': ['B23:B-1'],
+               'Uhrzeit': ['C23:C-1'],
+               'Weg [mm]': ['D23:D-1', [0.0, 100.0], 'min_schnitt'],
+               'Kraft [kN]': ['E23:E-1', [0.0, 5000.0], 'min_schnitt']
+            },
+            'Hoehe [mm]': ['B12', [5.0, 500.0]],
+            'Durchmesser [mm]': ['B13', [5.0, 500.0]],
+            'Masse [g]': ['B14', [10.0, 1000.0]],
+            'Schergeschwindigkeit [mm/min]': ['B20', [1e-4, 60.0]]
+         },
+         'Oedo-dicht': {
+            '[Gruppe Dehnung-Kraft]': {
+               'Datum': ['B23:B-1'],
+               'Uhrzeit': ['C23:C-1'],
+               'Weg [mm]': ['D23:D-1', [0.0, 100.0], 'min_schnitt'],
+               'Kraft [kN]': ['E23:E-1', [0.0, 5000.0], 'min_schnitt']
+            },
+            'Hoehe [mm]': ['B12', [5.0, 500.0]],
+            'Durchmesser [mm]': ['B13', [5.0, 500.0]],
+            'Masse [g]': ['B14', [10.0, 1000.0]],
+            'Schergeschwindigkeit [mm/min]': ['B20', [1e-4, 60.0]]
+         }
+      }
+   };
+   oedo = VorlagenstrukturZuDatenstruktur(vorlage=oedovorlage);
+   for dateiname, lagerungsdichte in [(dateiname_l, 'Oedo-locker'), (dateiname_d, 'Oedo-dicht')]:
+      tempeax = LeseEAXDaten(dateiname=dateiname);
+      eax = tempeax['EAX'];
       #
-      _KennwerteTriax(daten=triax);
+      oedo[lagerungsdichte].update([('Projektname', 'EAX-Rohdaten')]);
+      oedo[lagerungsdichte].update([('Dateiname', dateiname)]);
+      oedo[lagerungsdichte].update([('Hoehe [mm]', eax['Probenhoehe'])]);
+      oedo[lagerungsdichte].update([('Durchmesser [mm]', eax['Probendurchmesser'])]);
+      oedo[lagerungsdichte].update([('Masse [g]', eax['Probenmasse'])]);
+      oedo[lagerungsdichte].update([('Schergeschwindigkeit [mm/min]', eax['Schergeschwindigkeit'])]);
       #
-      daten = Datenstruktur();
-      daten.update([('Triax-D-' + lagerungsdichte, triax)]);
-      return daten;
+      datum = [];
+      uhrzeit = [];
+      for elem in eax['Daten']['Datum/zeit']:
+         temp = elem.split();
+         datum += [temp[0]];
+         uhrzeit += [temp[1]];
+      #
+      oedo[lagerungsdichte].update([('Datum', datum)]);
+      oedo[lagerungsdichte].update([('Uhrzeit', uhrzeit)]);
+      oedo[lagerungsdichte].update([('Weg [mm]', eax['Daten']['Weg[mm]'])]);
+      oedo[lagerungsdichte].update([('Kraft [kN]', eax['Daten']['Kraft[kN]'])]);
+   #
+   oedo.update([('Dateiname', oedo['Oedo-dicht']['Dateiname'] + ' (+1)')]);
+   # Pruefe zulaessige Werte, gueltigen Bereich und min_schnitt anhand der Oedo-CRS-Vorlage
+   if (_RohdatensatzPruefen(daten=oedo, vorlage=oedovorlage, position=[])):
+      Vorbereitung(daten=oedo, vorlage='Oedo-CRS');
+      return oedo;
    else:
       return None;
 #

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-                                                    v0.5.6
+                                                    v0.6.0
         _      _    __      _  _  .--.       ..    .----.
        (_)    (_).´ __|    (_)| | |  |      /  `   |     `
  _ _ _  _ _ _  _ . (    __  _ | | |  |     '    '  |  ()  |
@@ -25,7 +25,7 @@ Programm zur Aufbereitung von geotechnischen Laborversuchen
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -45,5 +45,5 @@ from .gleichungsloeser import *
 from .konstanten import *
 
 __author__ = 'Dominik Zobel';
-__version__ = '0.5.6';
+__version__ = '0.6.0';
 __package__ = 'miniSoilLAB';

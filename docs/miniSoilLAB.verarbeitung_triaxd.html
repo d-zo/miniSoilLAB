@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.verarbeitung_triaxd</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.verarbeitung_triaxd</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_triaxd.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/verarbeitung_triaxd.py</a></td></tr></table>
+    <p><span class="code">verarbeitung_triaxd.py&nbsp;&nbsp;&nbsp;v0.2&nbsp;(2021-11)</span></p>
+<p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-KennwerteTriaxD"><strong>KennwerteTriaxD</strong></a>(daten, refwerte)</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;JSON-Struktur&nbsp;daten,&nbsp;in&nbsp;der&nbsp;die&nbsp;Daten&nbsp;zu&nbsp;Triax-D-Versuchen&nbsp;gespeichert&nbsp;sind<br>
+und&nbsp;aktualisiert/berechnet&nbsp;die&nbsp;entsprechenden&nbsp;Kennwerte.</span></dd></dl>
+ <dl><dt><a name="-LagerungsdichtenTriaxDBestimmen"><strong>LagerungsdichtenTriaxDBestimmen</strong></a>(daten, refwerte, grenzen_min=[-0.1, 0.6], grenzen_max=[0.6, 1.2])</dt><dd><span class="code">Anhand&nbsp;der&nbsp;uebergebenen&nbsp;Trockendichten&nbsp;in&nbsp;refwerte&nbsp;und&nbsp;der&nbsp;berechneten&nbsp;Trockendichte&nbsp;der<br>
+Daten&nbsp;in&nbsp;"_Ref_*"&nbsp;wird&nbsp;bestimmt,&nbsp;welche&nbsp;Versuche&nbsp;als&nbsp;locker&nbsp;bzw.&nbsp;dicht&nbsp;eingestuft&nbsp;werden.<br>
+Als&nbsp;Toleranz&nbsp;werden&nbsp;grenzen_min/grenzen_max&nbsp;verwendet,&nbsp;wobei&nbsp;sich&nbsp;die&nbsp;beiden&nbsp;Werte&nbsp;auf&nbsp;das<br>
+Intervall&nbsp;[Trockendichte-min,&nbsp;Trockendichte-max]&nbsp;beziehen&nbsp;mit&nbsp;0&nbsp;=&nbsp;Trockendichte-min&nbsp;und<br>
+1&nbsp;=&nbsp;Trockendichte-max.&nbsp;Gibt&nbsp;zwei&nbsp;(ggfs.&nbsp;leere)&nbsp;Listen&nbsp;mit&nbsp;den&nbsp;Namen&nbsp;der&nbsp;"_Ref_*"-Strukturen<br>
+zurueck,&nbsp;die&nbsp;als&nbsp;locker&nbsp;bzw.&nbsp;dicht&nbsp;eingestuft&nbsp;worden&nbsp;sind.</span></dd></dl>
+ <dl><dt><a name="-TriaxDStruktur"><strong>TriaxDStruktur</strong></a>()</dt><dd><span class="code">#&nbsp;-------------------------------------------------------------------------------------------------</span></dd></dl>
+ <dl><dt><a name="-VorbereitungTriaxD"><strong>VorbereitungTriaxD</strong></a>(daten)</dt><dd><span class="code">Erwartet&nbsp;eine&nbsp;eingelesene&nbsp;JSON-Struktur&nbsp;daten,&nbsp;in&nbsp;der&nbsp;die&nbsp;Daten&nbsp;zu&nbsp;Triax-D-Versuchen<br>
+gespeichert&nbsp;sind.&nbsp;Die&nbsp;uebergebene&nbsp;Struktur&nbsp;wird&nbsp;modifiziert,&nbsp;um&nbsp;eine&nbsp;einheitliche&nbsp;Struktur&nbsp;fuer<br>
+eine&nbsp;spaetere&nbsp;Weiterverarbeitung&nbsp;zu&nbsp;haben.</span></dd></dl>
+</td></tr></table>
+</body></html>

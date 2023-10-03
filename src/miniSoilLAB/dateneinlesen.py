@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-dateneinlesen.py   v0.5 (2020-12)
+dateneinlesen.py   v0.6 (2021-11)
 """
 
 # Copyright 2020-2021 Dominik Zobel.
@@ -14,7 +14,7 @@ dateneinlesen.py   v0.5 (2020-12)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -43,13 +43,11 @@ def BodenmusterdateiEinlesen(dateiname):
    Eintraege Dateimuster und Zielordner enthaelt.
    """
    eintraege = dict();
-   zeile = 0;
    idx_leseversuch = 0;
    max_leseversuche = 5;
    try:
       with open(dateiname, 'r', encoding='utf-8') as eingabe:
-         zeile += 1;
-         for zeile in eingabe:
+         for idx_zeile, zeile in enumerate(eingabe):
             if (len(zeile) == 0):
                continue;
             #
@@ -73,7 +71,8 @@ def BodenmusterdateiEinlesen(dateiname):
             #
             schluessel = einzelteile[0].strip();
             if (schluessel in eintraege.keys()):
-               print('# Warnung: Eintrag in Zeile ' + str(zeile) + ' wird ignoriert (Bodenname ' + schluessel + ' bereits eingelesen)');
+               print('# Warnung: Eintrag in Zeile ' + str(idx_zeile) \
+                  + ' wird ignoriert (Bodenname ' + schluessel + ' bereits eingelesen)');
                continue;
             #
             eintraege.update([(schluessel, [einzelteile[1].strip(), einzelteile[2].strip()])]);
@@ -88,7 +87,7 @@ def BodenmusterdateiEinlesen(dateiname):
 
 # -------------------------------------------------------------------------------------------------
 def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, ignoriere=['rohdaten', '.dta',
-   '.eax', '.gds', '.tvc']):
+   '.eax', '.gds', '.tvc'], verarbeitet=True):
    """Lese alle Dateien der Boeden ein, die in muster hinterlegt sind (falls schluessel=None),
    oder nur diejenigen, die als Liste an schluessel uebergeben worden sind. Die Werte der Schluessel
    in muster entsprechen dem dateimuster und dem zielordner fuer den jeweiligen Bodennamen. Es
@@ -108,7 +107,7 @@ def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, ignoriere=
          continue;
       #
       tempboden = BodendatenEinlesen(bodenname=bodenname, dateimuster=dateimuster,
-         zielordner=zielordner, ignoriere=ignoriere);
+         zielordner=zielordner, ignoriere=ignoriere, verarbeitet=verarbeitet);
       if (tempboden is None):
          print('# Warnung: Boden ' + bodenname + ' ungueltig (Pfad/Muster korrekt?)');
          continue;
@@ -121,85 +120,271 @@ def BodendatenMitSchluesselAusMusterEinlesen(muster, schluessel=None, ignoriere=
 
 # -------------------------------------------------------------------------------------------------
 def BodendatenEinlesen(bodenname, dateimuster, zielordner, ignoriere=['rohdaten', '.dta', '.eax',
-   '.gds', '.tvc']):
+   '.gds', '.tvc'], verarbeitet=True):
    """Lese alle Dateien aus dem zielordner ein, die dateimuster enthalten. Speichere die
-   eingelesenen Datein in einer Struktur mit dem Schluessel bodenname und gib diese zurueck.
+   eingelesenen Dateien in einer Struktur mit dem Schluessel bodenname und gib diese zurueck.
    Es werden alle Dateien ignoriert, in deren Namen sich ein in ignoriere definierter Begriff
-   befindet.
+   befindet. Gibt None zurueck, falls keine Daten eingelesen werden koennen.
    """
    import os
-   from .datenstruktur import Datenstruktur
    #
    if (zielordner[-1] == os.sep):
       zielordner = zielordner[:-1];
    #
-   zieldateiliste = ZieldateienFinden(zielordner=zielordner, dateimuster=dateimuster);
-   if (zieldateiliste == []):
-      return None;
-   #
-   print('# --- Lese Dateien zu: ' + bodenname);
-   bodendaten = Datenstruktur();
-   for dateiname in zieldateiliste:
+   temp_dateiliste = ZieldateienFinden(zielordner=zielordner, dateimuster=dateimuster);
+   dateiliste = [];
+   for dateiname in temp_dateiliste:
+      ueberspringen = False;
       for bezeichnung in ignoriere:
          if (bezeichnung in dateiname.lower()):
-            continue;
+            ueberspringen = True;
+            break;
       #
-      eingelesen = DateiEinlesen(dateiname=dateiname)
+      if (not ueberspringen):
+         dateiliste += [dateiname];
+   #
+   if (dateiliste == []):
+      return None;
+   else:
+      return BodendatenDateilisteEinlesen(bodenname=bodenname, dateiliste=dateiliste, verarbeitet=verarbeitet);
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def ListendateiEinlesen(dateiname):
+   """Liest den Inhalt einer Listendatei (dateiname) ein, die eine Dateiliste fuer einen oder
+   mehrere Boeden enthaelt. Die erste Zeile einer Liste enthaelt den Namen des Bodens mit einem
+   abschliessenden Doppelpunkt und danach folgt eine Liste an Dateinamen (die nicht auf einem
+   Doppelpunkt enden duerfen). Jede Zeile muss genau einem Dateinamen entsprechen, leer sein oder
+   eine Kommentarzeile sein (Raute # als erstes Zeichen).
+   Gibt ein dict mit den Bodennamen als Schluessel zurueck, das fuer jeden Bodennamen die
+   Liste der dazugehoerigen Dateinamen enthaelt.
+   """
+   eintraege = dict();
+   temp_bezeichnung = None;
+   temp_liste = [];
+   idx_leseversuch = 0;
+   max_leseversuche = 5;
+   try:
+      with open(dateiname, 'r', encoding='utf-8') as eingabe:
+         for idx_zeile, zeile in enumerate(eingabe):
+            zeile = zeile.strip();
+            #
+            if (len(zeile) == 0):
+               continue;
+            #
+            if (zeile.lstrip()[0] == '#'):
+               continue;
+            #
+            if ('#' in zeile):
+               zeile = zeile[:zeile.index('#')].rstrip();
+            #
+            if (zeile.endswith(':')):
+               if (temp_bezeichnung is not None):
+                  eintraege.update([(temp_bezeichnung, temp_liste)]);
+               #
+               temp_bezeichnung = zeile[:-1];
+               temp_liste = [];
+            else:
+               if (temp_bezeichnung is None):
+                  idx_leseversuch += 1;
+                  print('# Warnung: Bodenname vor der folgenden Datenzeile erwartet');
+                  print(zeile);
+                  #
+                  if (idx_leseversuch == max_leseversuche):
+                     print('# Fehler: Zuviele ungueltige Zeilen - Breche Lesevorgang ab');
+                     break;
+                  #
+                  continue;
+               #
+               temp_liste += [zeile];
+         #
+         if (temp_bezeichnung is not None):
+            eintraege.update([(temp_bezeichnung, temp_liste)]);
+   except FileNotFoundError:
+      print('# Fehler: Listendatei konnte nicht gefunden/geoeffnet werden');
+   except:
+      print('# Fehler: Listendatei konnte nicht eingelesen werden');
+   #
+   return eintraege;
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def BodendatenListeEinlesen(dateiname, verarbeitet=True):
+   """Liest den Inhalt einer Listendatei (dateiname) ein, die eine Dateiliste fuer einen oder
+   mehrere Boeden enthaelt. Die erste Zeile einer Liste enthaelt den Namen des Bodens mit einem
+   abschliessenden Doppelpunkt und danach folgt eine Liste an Dateinamen (die nicht auf einem
+   Doppelpunkt enden duerfen). Jede Zeile muss genau einem Dateinamen entsprechen, leer sein oder
+   eine Kommentarzeile sein (Raute # als erstes Zeichen).
+   Fuer alle Boeden werden alle Dateien eingelesen und in einer Struktur mit dem jeweiligen
+   Bodennamen als Schluessel gespeichert. Diese Struktur wird zurueckgegeben.
+   """
+   from .datenstruktur import Datenstruktur
+   #
+   bodendaten = Datenstruktur();
+   bodenliste = ListendateiEinlesen(dateiname=dateiname);
+   if (len(bodenliste) == {}):
+      print('# Warnung: Keine Daten aus Listendatei ' + dateiname + ' eingelesen');
+   else:
+      for bodenname, dateiliste in bodenliste.items():
+         tempboden = BodendatenDateilisteEinlesen(bodenname=bodenname, dateiliste=dateiliste,
+            verarbeitet=verarbeitet);
+         if (tempboden is None):
+            print('# Warnung: Boden ' + bodenname + ' ungueltig (Dateinamen in Liste korrekt?)');
+            continue;
+         #
+         bodendaten.update(tempboden);
+   #
+   return bodendaten;
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def BasispfadErmitteln(dateiliste):
+   """Finde den laengsten gemeinsamen Pfad aller Dateien in dateiliste und
+   gebe ihn zurueck.
+   """
+   basispfad = '';
+   # Alle gemeinsamen Zeichen finden
+   num_pruefstellen = min(len(pfad) for pfad in dateiliste);
+   for idx_pos in range(num_pruefstellen):
+      if (all([(pfad[idx_pos] == dateiliste[0][idx_pos]) for pfad in dateiliste])):
+         basispfad += dateiliste[0][idx_pos];
+      else:
+         break;
+   #
+   # Aus den gemeinsamen Zeichen den letzten Pfad extrahieren
+   # (d.h. alle Zeichen am Ende entfernen, die keinen Unterordner andeuten)
+   while (basispfad != ''):
+      if (basispfad.endswith('/') or basispfad.endswith('\\')):
+         break;
+      #
+      basispfad = basispfad[:-1];
+   #
+   return basispfad;
+#
+
+
+# FIXME: Andere Position/Datei
+# -------------------------------------------------------------------------------------------------
+def StrukturZuSchluesselInBasisstrukturHinzufuegen(basisstruktur, schluessel, struktur):
+   """Erwartet eine basisstruktur und eine weitere struktur. Pruefe, ob schluessel in basisstruktur
+   existiert (ggfs. erzeugen) und fuege die struktur dort mit der Bezeichnung "_Ref_" und der
+   kleinsten, nicht vergebenen dreistelligen Nummer ab 001 hinzu. Aendert basisstruktur und
+   gibt die tatsaechlich gewaehlte Bezeichnung zurueck.
+   """
+   from .datenstruktur import Datenstruktur
+   #
+   if (schluessel not in basisstruktur):
+      refid = '_Ref_' + str(1).zfill(3);
+      basisstruktur.update([(schluessel, Datenstruktur({refid: struktur}))]);
+   else:
+      refid = '_Ref_' + str(len(list(basisstruktur[schluessel].keys()))+1).zfill(3);
+      basisstruktur[schluessel].update({refid: struktur});
+   #
+   return refid;
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def BodendatenDateilisteEinlesen(bodenname, dateiliste, verarbeitet=True):
+   """Lese alle Dateien aus dateiliste ein, speichere die eingelesenen Daten in einer Struktur mit
+   dem Schluessel bodenname und gib diese zurueck.
+   """
+   from .konstanten import debugmodus
+   from .datenstruktur import Datenstruktur
+   from .kennwerte import Kennwertberechnungen
+   #
+   if (debugmodus):
+      print('# --- Einzulesende Dateien: ' + bodenname);
+      for idx_datei, datei in enumerate(dateiliste):
+         print(str(idx_datei+1).zfill(2) + ') ' + datei);
+      #
+      print('# ---');
+   #
+   bodendaten = Datenstruktur();
+   for dateiname in dateiliste:
+      eingelesen = DateiEinlesen(dateiname=dateiname, verarbeitet=False);
       if (eingelesen is not None):
          if (len(eingelesen.keys()) == 0):
-            print('# Hinweis: Keine Daten aus aktueller Datei eingelesen');
+            print('# Warnung: Keine Daten aus aktueller Datei eingelesen');
             continue;
          #
-         if (len(eingelesen.keys()) > 1):
-            print('# Hinweis: Mehrere Schluessel in einer Datei nicht unterstuetzt - ignoriere Eintraege');
+         schluesselliste = list(eingelesen.keys());
+         if (len(schluesselliste) > 1):
+            print('# Warnung: Mehrere Schluessel in einer Datei nicht unterstuetzt - ignoriere Eintraege');
             continue;
          #
-         bezugsname = eingelesen.keys()[0];
-         if (bezugsname in bodendaten.keys()):
-            print('# Warnung: ' + bezugsname + ' existiert bereits und wird ueberschrieben');
-            del bodendaten[bezugsname];
-         #
-         bodendaten.update(eingelesen);
+         # Es existiert genau ein Schluessel
+         schluessel = schluesselliste[0];
+         StrukturZuSchluesselInBasisstrukturHinzufuegen(basisstruktur=bodendaten,
+            schluessel=schluessel, struktur=eingelesen[schluessel]);
    #
    if (len(bodendaten.keys()) == 0):
       return None;
    #
-   bodendaten.update([('Basisordner', zielordner)]);
+   bodendaten.update([('Basisordner', BasispfadErmitteln(dateiliste))]);
+   #
+   if (debugmodus):
+      print('# Hinweis: Alle Dateien zu ' + bodenname + ' eingelesen');
+   #
+   if (verarbeitet):
+      if (debugmodus):
+         print('# --- Berechne Kennwerte zu ' + bodenname);
+      #
+      if (not Kennwertberechnungen(daten=bodendaten)):
+         print('# Warnung: Es konnten nicht alle Kennwerte fuer Boden ' + bodenname + ' berechnet werden');
    #
    boden = Datenstruktur();
    boden.update([(bodenname, bodendaten)]);
-   print('# Hinweis: ' + bodenname + ' aus Dateien eingelesen');
-   print('# ---');
+   #
+   if (debugmodus):
+      print('# ---');
+   #
    return boden;
 #
 
 
 # -------------------------------------------------------------------------------------------------
-def DateiEinlesen(dateiname):
+def DateiEinlesen(dateiname, verarbeitet=True):
    """Lese die Datei namens dateiname ein, sofern es sich um einen unterstuetzten Dateityp/-namen
    handelt.
    """
+   from .konstanten import debugmodus
    from .xlshilfen import LeseXLSDaten
    from .rohdaten import LeseDTADaten, LeseEAXDaten, LeseGDSDaten, LeseTVCDaten, LeseKVSDaten
    #
    if ((dateiname[-3:].lower() == 'xls') or (dateiname[-4:].lower() == 'xlsx')):
-      # Wird in Funktion ausgegeben
-      #print('#  - LeseXLS: ' + dateiname);
-      return LeseXLSDaten(dateiname=dateiname);
+      ignoriere = ['rohdaten'];
+      if (not verarbeitet):
+         ignoriere = [];
+      #
+      return LeseXLSDaten(dateiname=dateiname, verarbeitet=verarbeitet, ignoriere=ignoriere);
    elif (dateiname[-3:].lower() == 'dta'):
-      print('# - LeseDTA: ' + dateiname);
+      if (debugmodus):
+         print('# - LeseDTA: ' + dateiname);
+      #
       return LeseDTADaten(dateiname=dateiname);
    elif (dateiname[-3:].lower() == 'eax'):
-      print('# - LeseEAX: ' + dateiname);
+      if (debugmodus):
+         print('# - LeseEAX: ' + dateiname);
+      #
       return LeseEAXDaten(dateiname=dateiname);
    elif (dateiname[-3:].lower() == 'gds'):
-      print('# - LeseGDS: ' + dateiname);
+      if (debugmodus):
+         print('# - LeseGDS: ' + dateiname);
+      #
       return LeseGDSDaten(dateiname=dateiname);
    elif (dateiname[-3:].lower() == 'tvc'):
-      print('# - LeseTVC: ' + dateiname);
+      if (debugmodus):
+         print('# - LeseTVC: ' + dateiname);
+      #
       return LeseTVCDaten(dateiname=dateiname);
    elif (dateiname[-3:].lower() == 'kvs'):
-      print('# - LeseKVS: ' + dateiname);
+      if (debugmodus):
+         print('# - LeseKVS: ' + dateiname);
+      #
       return LeseKVSDaten(dateiname=dateiname);
    else:
       #print('# Hinweis: Ignoriere ' + dateiname);
@@ -234,7 +419,12 @@ def ZieldateienFinden(zielordner, dateimuster, ignoriereOrdnernamen=['alt']):
    if (zielordner[-1] != os_sep):
       zielordner += os_sep;
    #
-   remuster = re_compile(dateimuster);
+   try:
+      remuster = re_compile(dateimuster);
+   except:
+      print('# Warnung: Fehler im regulaeren Ausdruck \"' + dateimuster + '\"');
+      return [];
+   #
    zieldateiliste = [];
    for (pfad, _, dateiliste) in os_walk(zielordner):
       # Ignoriere alle Dateien aus (Unter-)ordner eines Eintrags aus ignoriereOrdnernamen
@@ -285,15 +475,16 @@ def _JSONDateiEinlesen(dateiname, bezeichnung='Datei'):
          eingelesen = json.load(eingabe, object_hook=Eingabedaten_json);
    except FileNotFoundError:
       print('# Fehler: Datei konnte nicht gefunden/geoeffnet werden');
-   except:
-      print('# Fehler: ' + bezeichnung + ' konnte nicht eingelesen werden');
+   except Exception as e:
+      print('# Fehler: Datei ' + dateiname + ' konnte nicht eingelesen werden');
+      print(e);
    #
    return eingelesen;
 #
 
 
 # -------------------------------------------------------------------------------------------------
-def DatensatzSpeichern(datensatz, dateiname):
+def _DatensatzSpeichern(datensatz, dateiname):
    """Speichere die Stuktur datensatz als JSON-formatierte Datei namens dateiname.
    """
    import json
@@ -329,4 +520,21 @@ def DatensatzSpeichern(datensatz, dateiname):
    #
    with open(dateiname, 'w') as ausgabe:
       json.dump(datensatz, ausgabe, cls=DatenstrukturEncoder, indent=1);
+#
+
+
+# -------------------------------------------------------------------------------------------------
+def DatensatzSpeichern(datensatz, dateiname, refspeichern=True):
+   """Speichere die Stuktur datensatz als JSON-formatierte Datei namens dateiname. Mit
+   respeichern=False werden die Rohdaten und Verweise darauf nicht der Datei gespeichert.
+   """
+   import copy
+   from .datenstruktur import EintraegeEntfernen
+   #
+   ausgabedaten = datensatz;
+   if (not refspeichern):
+      ausgabedaten = copy.deepcopy(datensatz);
+      EintraegeEntfernen(mod_struktur=ausgabedaten, entfernen_start=['_Ref_', '_Refwahl']);
+   #
+   _DatensatzSpeichern(datensatz=ausgabedaten, dateiname=dateiname);
 #

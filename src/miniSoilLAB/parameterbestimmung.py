@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-parameterbestimmung.py   v0.5 (2019-11)
+parameterbestimmung.py   v0.6 (2021-06)
 """
 
 # Copyright 2020-2021 Dominik Zobel.
@@ -14,7 +14,7 @@ parameterbestimmung.py   v0.5 (2019-11)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -29,29 +29,39 @@ def HypoplastischeParameterFuerBoden(boden, referenzspannungen, einflussinterval
    werden sollen. Fuer Details und Informationen zu den optionalen Parametern siehe auch
    HypoplastischeParameterBestimmen().
    """
+   from .datenstruktur import Datenstruktur
+   from .verarbeitung_hilfen import GespeicherterWertOderUebergabe
+   #
    direkt = True;
    # Zuerst probieren, aus allen Einzeldaten zu verwenden
-   if (any([(daten not in boden) for daten in ['LoDi', 'Oedo-CRS', 'Triax-D-locker', 'Triax-D-dicht']])):
-      print('Mindestens ein Eintrag von [LoDi, Oedo-CRS, Triax-D-locker, Triax-D-dicht] fehlt zur Direktermittlung der Parameter');
-      direkt = False;
+   for voraussetzung in ['LoDi', 'Oedo-CRS', 'Triax-D', 'Auswertung-Hypoplastisch']:
+      if (voraussetzung not in boden):
+         print('# Warnung: Eintrag ' + voraussetzung + ' fehlt zur Direktermittlung der Parameter');
+         direkt = False;
+         break;
+   #
+   if (direkt):
+      if (any([(daten not in boden['Triax-D']) for daten in ['Triax-D-locker', 'Triax-D-dicht']])):
+         print('# Warnung: lockerer und dichter Triax zur Direktermittlung der Parameter benoetigt');
+         direkt = False;
    #
    if (direkt):
       try:
          reibungswinkel_krit = boden['Auswertung-Hypoplastisch']['Schuettkegel']['Reibungswinkel-krit [Grad]'];
-         porenzahl_min = boden['LoDi']['Dichteste-Lagerung']['Porenzahl-min [-]'];
-         porenzahl_max = boden['LoDi']['Lockerste-Lagerung']['Porenzahl-max [-]'];
+         porenzahl_min = boden['LoDi']['Porenzahl-min [-]'];
+         porenzahl_max = boden['LoDi']['Porenzahl-max [-]'];
          spannungen_oedo_locker = boden['Oedo-CRS']['Oedo-locker']['Spannung [kN/m^2]'];
          porenzahlen_oedo_locker = boden['Oedo-CRS']['Oedo-locker']['Porenzahl [-]'];
          spannungen_oedo_dicht = boden['Oedo-CRS']['Oedo-dicht']['Spannung [kN/m^2]'];
          porenzahlen_oedo_dicht = boden['Oedo-CRS']['Oedo-dicht']['Porenzahl [-]'];
-         reibungswinkel_peak_locker = boden['Triax-D-locker']['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
-         reibungswinkel_peak_dicht = boden['Triax-D-dicht']['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
-         dilatanzwinkel =  boden['Triax-D-dicht']['Versuch 1']['Peakzustand']['Dilatanzwinkel [Grad]'];
+         reibungswinkel_peak_locker = boden['Triax-D']['Triax-D-locker']['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
+         reibungswinkel_peak_dicht = boden['Triax-D']['Triax-D-dicht']['Mohr-Coulomb']['Ohne Kohaesion']['Reibungswinkel-eff [Grad]'];
+         dilatanzwinkel = boden['Triax-D']['Triax-D-dicht']['Versuch 1']['Peakzustand']['Dilatanzwinkel [Grad]'];
          # FIXME: Warum aus Versuch 1 (hat i.d.R. die kleinste Differenz zwischen sig1 und sig3)
-         sigma1_prime = boden['Triax-D-dicht']['Versuch 1']['Peakzustand']['Sigma_1_prime [kN/m^2]'];
-         sigma3_prime = boden['Triax-D-dicht']['Versuch 1']['Peakzustand']['Sigma_3_prime [kN/m^2]'];
+         sigma1_prime = boden['Triax-D']['Triax-D-dicht']['Versuch 1']['Peakzustand']['Sigma_1_prime [kN/m^2]'];
+         sigma3_prime = boden['Triax-D']['Triax-D-dicht']['Versuch 1']['Peakzustand']['Sigma_3_prime [kN/m^2]'];
          spannung_peak_mittel = (sigma1_prime + 2.0*sigma3_prime)/3.0;
-         porenzahl_peak = boden['Triax-D-dicht']['Versuch 1']['Peakzustand']['Porenzahl [-]'];
+         porenzahl_peak = boden['Triax-D']['Triax-D-dicht']['Versuch 1']['Peakzustand']['Porenzahl [-]'];
       except KeyError as errormessage:
          print('Eintrag ' + str(errormessage) + ' fuer Direktermittlung der Parameter fehlt/ungueltig');
          direkt = False;
@@ -67,15 +77,14 @@ def HypoplastischeParameterFuerBoden(boden, referenzspannungen, einflussinterval
          porenzahlen_oedo_dicht = boden['Auswertung-Hypoplastisch']['Oedo-dicht']['Porenzahl [-]'];
          reibungswinkel_peak_locker = boden['Auswertung-Hypoplastisch']['Triax-D']['Reibungswinkel-Peak-locker [Grad]'];
          reibungswinkel_peak_dicht = boden['Auswertung-Hypoplastisch']['Triax-D']['Reibungswinkel-Peak-dicht [Grad]'];
-         dilatanzwinkel =  boden['Auswertung-Hypoplastisch']['Triax-D']['Dilatanzwinkel [Grad]'];
-         # FIXME: Warum aus Versuch 1 (hat i.d.R. die kleinste Differenz zwischen sig1 und sig3)
+         dilatanzwinkel = boden['Auswertung-Hypoplastisch']['Triax-D']['Dilatanzwinkel [Grad]'];
          spannung_peak_mittel = boden['Auswertung-Hypoplastisch']['Triax-D']['Spannung-Peak-eff [kN/m^2]'];
          porenzahl_peak = boden['Auswertung-Hypoplastisch']['Triax-D']['Porenzahl-Peak [-]'];
       except KeyError as errormessage:
          print('# Hinweis: Erforderliche Daten ' + str(errormessage) + ' fuer hypoplastische Parameter nicht vorhanden');
          return [];
    #
-   return HypoplastischeParameterBestimmen(reibungswinkel_krit=reibungswinkel_krit,
+   parameter = HypoplastischeParameterBestimmen(reibungswinkel_krit=reibungswinkel_krit,
       porenzahl_min=porenzahl_min, porenzahl_max=porenzahl_max,
       spannungen_oedo_locker=spannungen_oedo_locker, porenzahlen_oedo_locker=porenzahlen_oedo_locker,
       spannungen_oedo_dicht=spannungen_oedo_dicht, porenzahlen_oedo_dicht=porenzahlen_oedo_dicht,
@@ -83,6 +92,19 @@ def HypoplastischeParameterFuerBoden(boden, referenzspannungen, einflussinterval
       reibungswinkel_peak_dicht=reibungswinkel_peak_dicht, dilatanzwinkel=dilatanzwinkel,
       spannung_peak_mittel=spannung_peak_mittel, porenzahl_peak=porenzahl_peak,
       referenzspannungen=referenzspannungen, einflussintervall=einflussintervall);
+   if (parameter != []):
+      auswertung = GespeicherterWertOderUebergabe(daten=boden['Auswertung-Hypoplastisch'],
+         bezeichnung='Parameter-miniSoilLAB', uebergabe=Datenstruktur());
+      auswertung.update([('Parameter', parameter)]);
+      auswertung.update([('Parameter-Hilfe', ['phi_c [Grad]', 'h_s [MPa]', 'n [-]', 'e_d [-]',
+      'e_c [-]', 'e_i [-]', 'alpha [-]', 'beta [-]'])]);
+      #
+      einstellungen = GespeicherterWertOderUebergabe(daten=auswertung,
+         bezeichnung='Einstellungen', uebergabe=Datenstruktur());
+      einstellungen.update([('Referenzspannungen', referenzspannungen)]);
+      einstellungen.update([('Einflussintervall', einflussintervall)]);
+   #
+   return parameter;
 #
 
 
@@ -114,7 +136,9 @@ def HypoplastischeParameterBestimmen(reibungswinkel_krit, porenzahl_min, porenza
    #
    wertspanne = einflussintervall;
    if (einflussintervall > 1.0/12.0):
-      print('# Hinweis: einflussintervall muss kleiner/gleich 1/12 sein - ersetze aktuellen Wert mit 1/12');
+      if (debugmodus):
+         print('# Hinweis: einflussintervall muss kleiner/gleich 1/12 sein - ersetze aktuellen Wert mit 1/12');
+      #
       wertspanne = 1.0/12.0;
    #
    if (spannungen_oedo_dicht[0] == 0.0):
@@ -131,29 +155,34 @@ def HypoplastischeParameterBestimmen(reibungswinkel_krit, porenzahl_min, porenza
    #
    spannung_C, spannung_F = referenzspannungen;
    if (spannung_F < spannung_C):
-      print('# Hinweis: Obere Referenzspannung kleiner als untere Referenzspannung - tausche Werte');
       temp_spannung = spannung_F;
       spannung_F = spannung_C;
       spannung_C = temp_spannung;
+      #
+      if (debugmodus):
+         print('# Hinweis: Obere Referenzspannung kleiner als untere Referenzspannung - tausche Werte');
    #
    # Obere Grenze ist egal, aber aufgrund des Logarithmus muss der Minimalwert groesser als Null sein
    if (spannung_C < 1e-6):
       spannung_C = 1e-6;
    #
    if (spannung_C == spannung_F):
-      print('# Hinweis: Untere und obere Referenzspannung identisch - verdopple obere Referenzspannung');
       spannung_F = 2.0*spannung_C;
+      if (debugmodus):
+         print('# Hinweis: Untere und obere Referenzspannung identisch - verdopple obere Referenzspannung');
    #
    # Um sicherzustellen, dass der Wert aufgrund von Rundungs- und Rechenungenauigkeiten echt innerhalb
    # des gueltigen Intervalls liegt, wird ein zusaetzlicher Faktor verwendet
    sicherheitsfak = 1.01;
    if (10**(log10(spannung_C) - wertspanne*log_spannungsbereich) < min_spannung):
       spannung_C = 10**(log10(min_spannung) + sicherheitsfak*wertspanne*log_spannungsbereich);
-      print('# Hinweis: Untere Referenzspannung unter der Intervallgrenze - ersetze durch ' + str(spannung_C));
+      if (debugmodus):
+         print('# Hinweis: Untere Referenzspannung unter der Intervallgrenze - ersetze durch ' + str(spannung_C));
    #
    if (10**(log10(spannung_F) + wertspanne*log_spannungsbereich) > max_spannung):
       spannung_F = 10**(log10(max_spannung) - sicherheitsfak*wertspanne*log_spannungsbereich);
-      print('# Hinweis: Obere Referenzspannung ueber der Intervallgrenze - ersetze durch ' + str(spannung_F));
+      if (debugmodus):
+         print('# Hinweis: Obere Referenzspannung ueber der Intervallgrenze - ersetze durch ' + str(spannung_F));
    #
    spannung_A = 10**(log10(spannung_C) - wertspanne*log_spannungsbereich); # [kN/m^2]
    spannung_B = 10**(log10(spannung_C) + wertspanne*log_spannungsbereich); # [kN/m^2]
@@ -162,7 +191,7 @@ def HypoplastischeParameterBestimmen(reibungswinkel_krit, porenzahl_min, porenza
    #
    phi_c = reibungswinkel_krit*grad2rad;
    spannungen = [spannung_A, spannung_C, spannung_B, spannung_D, spannung_F, spannung_E];
-   mitteldruecke = [(1.0 + 2.0*(1.0 - sin(phi_c)))* einzelspannung/3.0  for einzelspannung in spannungen];
+   mitteldruecke = [(1.0 + 2.0*(1.0 - sin(phi_c)))* einzelspannung/3.0 for einzelspannung in spannungen];
    #
    if (debugmodus):
       print('# Debug: Zwischenwerte bei der Berechnung der hypoplastischen Parameter');
@@ -218,7 +247,8 @@ def HypoplastischeParameterBestimmen(reibungswinkel_krit, porenzahl_min, porenza
    porenzahl_peak_null = porenzahl_peak / exp(-(3.0*spannung_peak_mittel/h_s)**n);
    r_e = (porenzahl_peak_null-porenzahl_min) / (porenzahl_max-porenzahl_min);
    if (r_e <= 0.0):
-      print('# Fehler: r_e=' + str(r_e) + ' muss groesser Null sein');
+      print('# Fehler: r_e=' + str(r_e) + ' muss groesser Null sein ' \
+         '(e_peak,0=' + str(round(porenzahl_peak_null*1e3)/1e3) + ')');
       return [];
    #
    K_p = (1.0+sin(reibungswinkel_peak_dicht*grad2rad)) / (1.0-sin(reibungswinkel_peak_dicht*grad2rad));
@@ -226,7 +256,7 @@ def HypoplastischeParameterBestimmen(reibungswinkel_krit, porenzahl_min, porenza
    A = (a/(2.0+K_p))**2 * (1.0 - (K_p*(4.0-K_p)) / (5.0*K_p-2.0));
    #
    if (debugmodus):
-      print('   e_peak,null=' + str(round(porenzahl_peak_null*1e3)/1e3) + ', r_e=' \
+      print('   e_peak,0=' + str(round(porenzahl_peak_null*1e3)/1e3) + ', r_e=' \
          + str(round(r_e*1e3)/1e3) + ', K_p=' + str(round(K_p*1e3)/1e3) + ', a=' \
          + str(round(a*1e3)/1e3) + ', A=' + str(round(A*1e3)/1e3));
    #
@@ -309,8 +339,11 @@ def ErweiterteHypoplastischeParameterFuerBoden(boden, offset=0, glaettungswert=1
    Versuchs. Fuer die Bestimmung von R_max werden refspanne Punkte (vor und) nach dem Peakwert
    verwendet, um ein Peakplateau (E_max an der Position R_max) zu bestimmen.
    """
+   from .datenstruktur import Datenstruktur
+   from .verarbeitung_hilfen import GespeicherterWertOderUebergabe
+   #
    try:
-      hoehen = boden['Triax-p-q']['4-Nach Konsolidation']['Hoehe [mm]'];
+      hoehen = boden['Triax-p-q']['3-Konsolidation']['Hoehe [mm]'];
    except:
       print('# Warnung: Eintrag fuer Hoehe nicht gefunden');
       return [];
@@ -347,9 +380,22 @@ def ErweiterteHypoplastischeParameterFuerBoden(boden, offset=0, glaettungswert=1
       print('# Zuweisung der Spannungspfade fehlerhaft. Es werden exakt ein 0, 90 und 180 Grad Pfad benoetigt');
       return [];
    #
-   return ErweiterteHypoplastischeParameterBestimmen(stauchungen=stauchungen, hoehen=hoehen,
+   parameter = ErweiterteHypoplastischeParameterBestimmen(stauchungen=stauchungen, hoehen=hoehen,
       hauptspannungsdifferenzen=hauptspannungsdifferenzen, offset=offset,
       glaettungswert=glaettungswert, refspanne=refspanne);
+   if (parameter != []):
+      auswertung = GespeicherterWertOderUebergabe(daten=boden['Triax-p-q'],
+         bezeichnung='Parameter-miniSoilLAB', uebergabe=Datenstruktur());
+      auswertung.update([('Parameter', parameter)]);
+      auswertung.update([('Parameter-Hilfen', ['m_T [-]', 'm_R [-]', 'R_max [-]', 'beta_r [-]', 'chi [-]'])]);
+      #
+      einstellungen = GespeicherterWertOderUebergabe(daten=auswertung,
+         bezeichnung='Einstellungen', uebergabe=Datenstruktur());
+      einstellungen.update([('Offset', offset)]);
+      einstellungen.update([('Glaettungswert', glaettungswert)]);
+      einstellungen.update([('Referenzspanne', refspanne)]);
+   #
+   return parameter;
 #
 
 
@@ -480,7 +526,8 @@ def ErweiterteHypoplastischeParameterBestimmen(stauchungen, hoehen, hauptspannun
    # so kann dies als Spielraum fuer die Werte interpretiert werden (deshalb wird Kehrwert verwendet)
    if (m_T < 1.0):
       m_T = 1.0/m_T;
-      print('# Hinweis: m_T wurde invertiert');
+      if (debugmodus):
+         print('# Hinweis: m_T wurde invertiert');
    #
    if (debugmodus):
       print('   R_max=' + str(round(R_max*1e6)/1e6) + ', m_T=' + str(round(m_T*1e2)/1e2) + ', m_R=' \
@@ -511,6 +558,9 @@ def ViskohypoplastischeParameterFuerBoden(boden, intervallgroesse=25, p1logverha
    Referenzbodens. Fuer Details und Informationen zu den optionalen Parametern siehe auch
    ViskohypoplastischeParameterBestimmen().
    """
+   from .datenstruktur import Datenstruktur
+   from .verarbeitung_hilfen import GespeicherterWertOderUebergabe
+   #
    try:
       spannungen_crs = boden['Oedo-CRS-Visko']['Spannung [kN/m^2]'];
       porenzahlen_crs = boden['Oedo-CRS-Visko']['Porenzahl [-]'];
@@ -519,7 +569,7 @@ def ViskohypoplastischeParameterFuerBoden(boden, intervallgroesse=25, p1logverha
       # FIXME: Stimmt so nicht (oder?)
       reibungswinkel_krit = boden['Triax-CU']['Mohr-Coulomb']['Mit Kohaesion']['Reibungswinkel-eff [Grad]'];
    except:
-      print('# Hinweis: Erforderliche Daten fuer viskohypoplastische Parameter nicht vorhanden');
+      print('# Warnung: Erforderliche Daten fuer viskohypoplastische Parameter nicht vorhanden');
       return [];
    #
    stunden_crl = [];
@@ -539,15 +589,30 @@ def ViskohypoplastischeParameterFuerBoden(boden, intervallgroesse=25, p1logverha
       laststufen_crl += [temp_laststufen];
    #
    if (len(stunden_crl) < 2):
-      print('# Hinweis: Weniger als zwei Laststufen mit Oedo-CRL');
+      print('# Warnung: Weniger als zwei Laststufen mit Oedo-CRL');
       return [];
    #
-   return ViskohypoplastischeParameterBestimmen(spannungen_crs=spannungen_crs,
+   parameter = ViskohypoplastischeParameterBestimmen(spannungen_crs=spannungen_crs,
       porenzahlen_crs=porenzahlen_crs, hoehe_crs=hoehe_crs, stauchungsrate_crs=stauchungsrate_crs,
       reibungswinkel_krit=reibungswinkel_krit, stunden_crl=stunden_crl,
       porenzahlen_crl=porenzahlen_crl, laststufen_crl=laststufen_crl,
       intervallgroesse=intervallgroesse, p1logverhaeltnis=p1logverhaeltnis,
       p5logverhaeltnis=p5logverhaeltnis, zwischenpunkte=zwischenpunkte);
+   #
+   if (parameter != []):
+      auswertung = GespeicherterWertOderUebergabe(daten=boden['Oedo-CRS-Visko'],
+         bezeichnung='Parameter-miniSoilLAB', uebergabe=Datenstruktur());
+      auswertung.update([('Parameter', parameter)]);
+      auswertung.update([('Parameter-Hilfen', ['e100 [-]', 'lambda [-]', 'kappa [-]', 'beta_x [-]', 'I_v [-]', 'D_r [-]', 'OCR [-]'])]);
+      #
+      einstellungen = GespeicherterWertOderUebergabe(daten=auswertung,
+         bezeichnung='Einstellungen', uebergabe=Datenstruktur());
+      einstellungen.update([('Intervallgroesse', intervallgroesse)]);
+      einstellungen.update([('P1 Logverhaeltnis', p1logverhaeltnis)]);
+      einstellungen.update([('P5 Logverhaeltnis', p5logverhaeltnis)]);
+      einstellungen.update([('Zwischenpunkte', zwischenpunkte)]);
+   #
+   return parameter;
 #
 
 
@@ -575,7 +640,7 @@ def _ViskohypoplastischTangentenpunkte(zeit, spez_setzung, log_zu_sqrt=[1, 1], z
    for idx in range(len(sortsetzung)-1):
       if (sortsetzung[idx+1] < sortsetzung[idx]):
          # FIXME: Daten ab Minimum abschneiden?
-         print('# Hinweis: Setzung des Oedo-CRL Versuchs nimmt ab statt zu');
+         print('# Warnung: Setzung des Oedo-CRL Versuchs nimmt ab statt zu');
          return [None, None, None, None, None, None];
    #
    # --- Variante log ---
@@ -670,30 +735,52 @@ def _ViskohypoplastischTangentenpunkte(zeit, spez_setzung, log_zu_sqrt=[1, 1], z
 
 # -------------------------------------------------------------------------------------------------
 def _ViskohypoplastischCalphaUndIv(zeit, porenzahl, laststufen=[1, 10], reibungswinkel=False,
-   zwischenpunkte=5):
+   zwischenpunkte=5, einflussbereich_ca=0.25):
    """Berechnet aus der uebergebenen zeit (in Stunden) und porenzahl eines CRL-Oedometerversuchs
    den Kriechbeiwert c_alpha und (wenn reibungswinkel nicht False sondern ein Wert in Grad ist)
    den Viskositaetsindex I_v. Fuer die Berechnung von I_v werden auch die beiden laststufen
    [sigma_start, sigma_ende] benoetigt. Mit zwischenpunkte kann gesteuert werden, wie fein zwischen
    den Punkten mit einer Spline interpoliert werden soll. Gibt [c_alpha, I_v] zurueck.
+   
+   Fuer die Berechnung von c_alpha wird die mittlere Steigung in einem Bereich der Groesse
+   einflussbereich_ca am Ende der logarithmierten zeit betrachtet.
    """
    from math import sin, log10
    from .konstanten import grad2rad
-   from .gleichungsloeser import Spline2DInterpolation, AbleitungDyNachDx
+   from .gleichungsloeser import LinearInterpoliertenIndexUndFaktor
    from .gleichungsloeser import SortierenUndDoppelteXEintraegeEntfernen
    #
    sortzeit, sortporenzahl = SortierenUndDoppelteXEintraegeEntfernen(x=zeit, y=porenzahl);
    xlogzeit = [log10(x) for x in sortzeit[1:]];
-   ylogpor = sortporenzahl[1:];
-   xlog, ypor = Spline2DInterpolation(xwerte=[xlogzeit[0]] + xlogzeit,
-      ywerte=[ylogpor[0]] + ylogpor, zwischenpunkte=zwischenpunkte, tangentenfaktor=1.0);
-   xablpor, yablpor = AbleitungDyNachDx(x=xlog, y=ypor);
-   # FIXME: Maximalwert noch zusaetzlich pruefen, nicht dass ein Ausreisser verwendet wird
-   c_alpha = -max(yablpor[-int(4.0*zwischenpunkte):]);
-   if (c_alpha <= 0.0):
-      print('# Warnung: c_alpha ist kleiner/gleich Null (setze auf Null)');
+   ypor = sortporenzahl[1:];
+   #
+   grenzwert = xlogzeit[0] + (1.0-einflussbereich_ca)*(xlogzeit[-1]-xlogzeit[0]);
+   idx_davor, faktor = LinearInterpoliertenIndexUndFaktor(vergleichswert=grenzwert, vergleichswertliste=xlogzeit);
+   xwerte = [xlogzeit[idx_davor] + faktor*(xlogzeit[idx_davor+1]-xlogzeit[idx_davor])] + xlogzeit[idx_davor+1:];
+   ywerte = [ypor[idx_davor] + faktor*(ypor[idx_davor+1]-ypor[idx_davor])] + ypor[idx_davor+1:];
+   #
+   gesamtsteigung = (ywerte[-1]-ywerte[0])/(xwerte[-1]-xwerte[0]);
+   if (gesamtsteigung >= 0.0):
+      print('# Warnung: Gesamtsteigung im Einflussbereich bei Bestimmung von c_alpha ungueltig (>= Null)');
       c_alpha = 0.0;
+   else:
+      xmittel = 0;
+      ymittel = 0;
+      # Nur Anteile beruecksichtigen, deren Steigung groesser als gesamtsteigung und kleiner als Null sind.
+      for idx in range(len(xwerte)-1):
+         xdiff = xwerte[idx+1]-xwerte[idx];
+         ydiff = ywerte[idx+1]-ywerte[idx];
+         steigung = ydiff/xdiff;
+         if ((steigung < 0.0) and (steigung >= gesamtsteigung)):
+            xmittel += xdiff;
+            ymittel += ydiff;
       #
+      if (xmittel == 0.0):
+         print('# Warnung: c_alpha ungueltig (setze auf Null)');
+         c_alpha = 0.0;
+      else:
+         c_alpha = ymittel/xmittel;
+   #
    if (not reibungswinkel):
       I_v = None;
    else:

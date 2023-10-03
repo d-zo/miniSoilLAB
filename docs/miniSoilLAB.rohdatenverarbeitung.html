@@ -1,26 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module miniSoilLAB.rohdatenverarbeitung</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head><body bgcolor="#f0f0f8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module miniSoilLAB.rohdatenverarbeitung</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f8;
+}
 
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
-<tr bgcolor="#7799ee">
-<td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="miniSoilLAB.html"><font color="#ffffff">miniSoilLAB</font></a>.rohdatenverarbeitung</strong></big></big></font></td
-><td align=right valign=bottom
-></td></tr></table>
-    <p><tt>rohdatenverarbeitung.py&nbsp;&nbsp;&nbsp;v0.2&nbsp;(2020-12)</tt></p>
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="miniSoilLAB.html" class="white">miniSoilLAB</a>.rohdatenverarbeitung</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/rohdatenverarbeitung.py">/home/seriousjr/Files/WWW/github/miniSoilLAB/utils/temp_work_dir/miniSoilLAB/rohdatenverarbeitung.py</a></td></tr></table>
+    <p><span class="code">rohdatenverarbeitung.py&nbsp;&nbsp;&nbsp;v0.2&nbsp;(2020-12)</span></p>
 <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-VerarbeitungRohdatenGDSTriax"><strong>VerarbeitungRohdatenGDSTriax</strong></a>(dateiname, lagerungsdichte, korndichte)</dt><dd><tt>Liest&nbsp;eine&nbsp;gds-Datei&nbsp;fuer&nbsp;einen&nbsp;drainierten&nbsp;Triaxialversuch&nbsp;(Triax-D)&nbsp;ein&nbsp;und&nbsp;erzeugt&nbsp;eine<br>
-interne&nbsp;Struktur&nbsp;der&nbsp;Daten.&nbsp;Dazu&nbsp;wird&nbsp;der&nbsp;dateiname&nbsp;der&nbsp;Rohdaten&nbsp;sowie&nbsp;eine&nbsp;Bezeichnung&nbsp;der<br>
-lagerungsdichte&nbsp;("locker"&nbsp;oder&nbsp;"dicht")&nbsp;sowie&nbsp;die&nbsp;korndichte&nbsp;in&nbsp;[g/cm^3]&nbsp;erwartet.<br>
-Es&nbsp;kann&nbsp;entweder&nbsp;ein&nbsp;dateiname&nbsp;oder&nbsp;eine&nbsp;Liste&nbsp;mit&nbsp;drei&nbsp;dateinamen&nbsp;uebergeben&nbsp;werden.<br>
-Gibt&nbsp;eine&nbsp;Datenstruktur&nbsp;mit&nbsp;den&nbsp;Versuchsdaten&nbsp;zurueck.</tt></dd></dl>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-VerarbeitungRohdatenEAXOedoCRS"><strong>VerarbeitungRohdatenEAXOedoCRS</strong></a>(dateiname_l, dateiname_d)</dt><dd><span class="code">Liest&nbsp;eine&nbsp;EAX-Datei&nbsp;fuer&nbsp;einen&nbsp;Oedometerversuch&nbsp;ein&nbsp;und&nbsp;erzeugt&nbsp;eine&nbsp;interne&nbsp;Struktur<br>
+der&nbsp;Daten.&nbsp;Dazu&nbsp;werden&nbsp;(Dateinamen&nbsp;zu)&nbsp;Rohdaten&nbsp;für&nbsp;einen&nbsp;lockeren&nbsp;Oedometerversuch<br>
+(dateiname_l)&nbsp;und&nbsp;einen&nbsp;dichten&nbsp;Oedometerversuch&nbsp;(dateiname_d)&nbsp;erwartet.<br>
+Gibt&nbsp;eine&nbsp;Datenstruktur&nbsp;mit&nbsp;den&nbsp;Versuchsdaten&nbsp;zurueck.</span></dd></dl>
+ <dl><dt><a name="-VerarbeitungRohdatenGDSTriaxD"><strong>VerarbeitungRohdatenGDSTriaxD</strong></a>(dateinamen, korndichte)</dt><dd><span class="code">Liest&nbsp;eine/mehrere&nbsp;gds-Datei&nbsp;fuer&nbsp;einen&nbsp;drainierten&nbsp;Triaxialversuch&nbsp;(Triax-D)&nbsp;ein&nbsp;und<br>
+erzeugt&nbsp;eine&nbsp;interne&nbsp;Struktur&nbsp;der&nbsp;Daten.&nbsp;Dazu&nbsp;werden&nbsp;die&nbsp;dateinamen&nbsp;der&nbsp;Rohdaten&nbsp;sowie&nbsp;die<br>
+korndichte&nbsp;(in&nbsp;[g/cm^3])&nbsp;erwartet.&nbsp;dateinamen&nbsp;ist&nbsp;eine&nbsp;Liste&nbsp;mit&nbsp;bis&nbsp;zu&nbsp;drei&nbsp;Eintraegen.<br>
+Gibt&nbsp;eine&nbsp;Datenstruktur&nbsp;mit&nbsp;den&nbsp;Versuchsdaten&nbsp;zurueck.</span></dd></dl>
 </td></tr></table>
 </body></html>

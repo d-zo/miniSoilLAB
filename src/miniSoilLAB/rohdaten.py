@@ -14,7 +14,7 @@ rohdaten.py   v0.3 (2019-09)
 #
 # miniSoilLAB is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -77,7 +77,7 @@ def LeseEAXDaten(dateiname):
    daten.update([('Daten', messdaten)]);
    daten.update([('Dateiname', dateiname)]);
    rueckgabe = Datenstruktur();
-   rueckgabe.update([('Einax', daten)]);
+   rueckgabe.update([('EAX', daten)]);
    return rueckgabe;
 #
 
@@ -138,7 +138,7 @@ def LeseDTADaten(dateiname):
    daten.update([('Daten', messdaten)]);
    daten.update([('Dateiname', dateiname)]);
    rueckgabe = Datenstruktur();
-   rueckgabe.update([('Einax', daten)]);
+   rueckgabe.update([('DTA', daten)]);
    return rueckgabe;
 #
 
@@ -193,7 +193,7 @@ def LeseGDSDaten(dateiname):
    daten.update([('Dateiname', dateiname)]);
    #
    rueckgabe = Datenstruktur();
-   rueckgabe.update([('Triax', daten)]);
+   rueckgabe.update([('GDS', daten)]);
    return rueckgabe;
 #
 
@@ -266,13 +266,14 @@ def LeseTVCDaten(dateiname):
    daten.update([('Dateiname', dateiname)]);
    #
    rueckgabe = Datenstruktur();
-   rueckgabe.update([('Triax', daten)]);
+   rueckgabe.update([('TVC', daten)]);
    return rueckgabe;
 #
 
 
 # -------------------------------------------------------------------------------------------------
-def Interpolationsblock_Aus_KVSdaten(korndurchmesser, sum_masseprozent, nursiebung=True):
+def Interpolationsblock_Aus_KVSdaten(korndurchmesser, sum_masseprozent, interpolationspunkte=24,
+   nursiebung=True):
    """Ermittle anhand von der uebergebenen Werte korndurchmesser und sum_masseprozent eine geeignete
    Interpolation der Daten. Bestimme zusaetzlich die Ungleichfoermigkeitszahl und Kruemmungszahl,
    falls nursiebung=True. Gibt eine Struktur mit den interpolierten und berechneten Werten zurueck.
@@ -284,7 +285,7 @@ def Interpolationsblock_Aus_KVSdaten(korndurchmesser, sum_masseprozent, nursiebu
    # Fuege fuer die Interpolation eine Punkt direkt hinter dem Startpunkt und direkt vor dem Endpunkt hinzu,
    # um eine horizontale Tangente am Anfang und am Ende zu erzielen
    tol = 1e-6;
-   interpolationspunkte = 24;
+   #
    x_inter, y_inter = Spline2DInterpolation(xwerte=[korndurchmesser[0]+tol] + korndurchmesser + [korndurchmesser[-1]-tol],
       ywerte=[sum_masseprozent[0]] + sum_masseprozent + [sum_masseprozent[-1]],
       zwischenpunkte=interpolationspunkte, tangentenfaktor=0.75);
@@ -301,7 +302,6 @@ def Interpolationsblock_Aus_KVSdaten(korndurchmesser, sum_masseprozent, nursiebu
          block_interpoliert.update([('Ungleichfoermigkeitszahl [-]', round(10.0*Ungleichfoermigkeitszahl)/10.0)]);
          block_interpoliert.update([('Kruemmungszahl [-]', round(10.0*Kruemmungszahl)/10.0)]);
    #
-   block_interpoliert.update([('Interpolationspunkte [-]', interpolationspunkte)]);
    block_interpoliert.update([('Siebdurchmesser [mm]', x_inter)]);
    block_interpoliert.update([('Summierte Masseanteile Gesamtmenge [%]', y_inter)]);
    #
@@ -416,8 +416,7 @@ def LeseKVSDaten(dateiname):
                # Formeln (4) und (5) sowie Stokessche Gleichung aus Bild 3 von DIN 18123
                zaehigkeit_w = [0.00178/(1.0 + 0.0337*temp + 0.00022*temp**2) for temp in schlaemmtemperaturen];
                dichte_w = [1.0/(1.0+((2.31*temp-2.0)**2 -182.0)*1e-6) for temp in schlaemmtemperaturen];
-               #refhoehe = temp_araeometer['Laenge Skala [cm]'] + temp_araeometer['Abstand Birne-Skala [cm]'] \
-               #   + 0.5*(temp_araeometer['Laenge Birne [cm]'] - temp_araeometer['Volumen Birne [cm^3]']/temp_araeometer['Flaeche Messzylinder [cm^2]']);
+               #
                h_s = [temp_araeometer['Laenge Skala [cm]'] / (1.03 - 0.995)*(1.03 - (wert/1000.0 + 1.0)) for wert in schlaemmdichten];
                refhoehen = [einzel_h_s + temp_araeometer['Abstand Birne-Skala [cm]'] \
                   + 0.5*(temp_araeometer['Laenge Birne [cm]'] - temp_araeometer['Volumen Birne [cm^3]']/temp_araeometer['Flaeche Messzylinder [cm^2]']) for einzel_h_s in h_s];
@@ -451,11 +450,6 @@ def LeseKVSDaten(dateiname):
             temp_block.update([('Korndurchmesser [mm]', korndurchmesser)]);
             temp_block.update([('Summierte Masseanteile Gesamtmenge [%]', sum_masseprozent)]);
             #
-            # Interpolieren der Daten und Bestimmung von Ungleichfoermigkeitszahl und Kruemmungszahl
-            block_interpoliert = Interpolationsblock_Aus_KVSdaten(korndurchmesser=korndurchmesser,
-               sum_masseprozent=sum_masseprozent, nursiebung=not schlaemmung);
-            temp_block.update([('Interpolation', block_interpoliert)]);
-            #
             daten.update([('Sieblinie ' + str(idx_block), temp_block)]);
             idx_blockzeile = -1;
             zeile_Ignorieren = True;
@@ -470,7 +464,7 @@ def LeseKVSDaten(dateiname):
             mod_zeile = mod_zeile[0:mod_zeile.index('\t')];
          #
          idx_blockzeile += 1;
-         if   (idx_blockzeile < 4):
+         if (idx_blockzeile < 4):
             schluesselliste = ['Ort', 'Entnahmestelle', 'Tiefe', 'Bodenart'];
             temp_block.update([(schluesselliste[idx_blockzeile], mod_zeile)]);
          elif (idx_blockzeile == 4):
@@ -516,7 +510,7 @@ def LeseKVSDaten(dateiname):
    daten.update([('Dateiname', dateiname)]);
    #
    rueckgabe = Datenstruktur();
-   rueckgabe.update([('Kornverteilung', daten)]);
+   rueckgabe.update([('KVS', daten)]);
    return rueckgabe;
 #
 
