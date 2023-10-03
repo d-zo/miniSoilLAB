@@ -9,12 +9,12 @@
 | || | | | || | |_.´  .    | |. '.|   --./  .--.  `|      /
 |_||_|_|_|_||_|_|___.´ \__,|_| \_,`_____'__/    `__.___.-'
 
-                                          D.Zobel 2019-2021
+                                          D.Zobel 2019-2023
 
 Programm zur Aufbereitung von geotechnischen Laborversuchen
 """
 
-# Copyright 2020-2021 Dominik Zobel.
+# Copyright 2020-2023 Dominik Zobel.
 # All rights reserved.
 #
 # This file is part of the miniSoilLAB package.
@@ -44,6 +44,7 @@ from .datenstruktur import *
 from .gleichungsloeser import *
 from .konstanten import *
 
-__author__ = 'Dominik Zobel';
-__version__ = '0.6.0';
-__package__ = 'miniSoilLAB';
+__author__ = 'Dominik Zobel'
+__version__ = '0.6.0'
+__package__ = 'miniSoilLAB'
+
